@@ -22,7 +22,6 @@ public class RMIServer {
             LocateRegistry.createRegistry(5000);
             Naming.bind("rmi://localhost:5000/AuthenticationForm", new Authentication());
             System.out.println("Server Started ...");
-            
         } catch (RemoteException ex) {
             System.out.println("Remote Exception Occured!");
         } catch (AlreadyBoundException ex) {

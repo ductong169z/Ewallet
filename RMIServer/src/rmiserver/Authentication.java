@@ -59,7 +59,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
             st.setString(6, fullname);
             st.setString(7, phone);
             
-            // execute statement
+            // execute update (insert)
             st.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("An SQL Error Occured!");
@@ -107,6 +107,8 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
         try {
             // connect to database
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/se1401", "root", "");
+            
+            // statement to retrieve all users with such inputted username and password 
             PreparedStatement st = conn.prepareStatement("Select * from user where Username = BINARY ? and Password = BINARY ?");
 
             // set the values in the statement

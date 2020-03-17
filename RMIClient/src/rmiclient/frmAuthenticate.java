@@ -355,7 +355,7 @@ public class frmAuthenticate extends javax.swing.JFrame {
                 error = true; // mark that there's an error occured
             }
 
-            // call method createUser in RMI Server to execute
+            // call method createUser on server side to execute
             try {
                 result = iAuth.createUser(username, hashPassword, fullname, gender, email, phone, address);
             } catch (RemoteException ex) {
@@ -363,7 +363,7 @@ public class frmAuthenticate extends javax.swing.JFrame {
                 error = true; // mark that there's an error occured
             }
 
-            // if there are no errors, and operation is successful
+            // if there are no errors, and operation is successful on server side
             if (!error && result == 0) {
                 // clear all input fields
                 txtUsername.setText("");
@@ -374,16 +374,8 @@ public class frmAuthenticate extends javax.swing.JFrame {
                 txtPhone.setText("");
                 txtAddress.setText("");
                 JOptionPane.showMessageDialog(this, "Adding new user to database succesfully!", "Creating new user successfully", JOptionPane.INFORMATION_MESSAGE);
-                // if operation is unsuccessful
+                // if operation is unsuccessful on server side
             } else if (result == 1) {
-                // clear all input fields
-                txtUsername.setText("");
-                txtPassword.setText("");
-                txtPasswordConfirm.setText("");
-                txtFullname.setText("");
-                txtEmail.setText("");
-                txtPhone.setText("");
-                txtAddress.setText("");
                 JOptionPane.showMessageDialog(this, "Adding new user to database failed!\nSQL Exception Occured!", "Creating new user failed", JOptionPane.ERROR_MESSAGE);
                 // if there's an error occured
             } else {
@@ -403,11 +395,12 @@ public class frmAuthenticate extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
             // if there are no fields having null value or being empty and both password fields match
         } else {
+            /* Temp variables to store values from the fields user inputted */
             String username = txtUsernameLog.getText();
             String password = String.valueOf(txtPasswordLog.getPassword());
             int result = -1; // store the result of operation (0 if successful, 1 if unsuccessful)
 
-            // call method validateUser in RMI Server to execute
+            // call method validateUser on server side to execute
             try {
                 result = iAuth.validateUser(username, password);
             } catch (RemoteException ex) {
@@ -415,7 +408,7 @@ public class frmAuthenticate extends javax.swing.JFrame {
                 error = true; // mark that there's an error occured
             }
 
-            // if there are no errors occured, and operation successful
+            // if there are no errors occured, and operation successful on server side
             if (!error && result == 0) {
                 // clear all input fields
                 txtUsernameLog.setText("");
@@ -423,8 +416,11 @@ public class frmAuthenticate extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "You are logged in!", "Login successfully", JOptionPane.INFORMATION_MESSAGE);
                 // if login failed (but no errors)
             } else if (!error && result == 2) {
-                JOptionPane.showMessageDialog(this, "Username or Password is incorrect!\n(CASE-SENSITIVE)", "Login failed", JOptionPane.ERROR_MESSAGE);
-                // if there's an error occured and/or operation unsuccessful
+                JOptionPane.showMessageDialog(this, "Username or Password is incorrect!\n(CASE-SENSITIVE)", "Login failed", JOptionPane.WARNING_MESSAGE);
+                // if operation unsuccessful on server side
+            } else if (result == 1) {
+                JOptionPane.showMessageDialog(this, "An error occured on server side!", "Login failed", JOptionPane.ERROR_MESSAGE);
+                // if there's an error occured on client side 
             } else {
                 JOptionPane.showMessageDialog(this, "An error occured!", "Login failed", JOptionPane.ERROR_MESSAGE);
             }
