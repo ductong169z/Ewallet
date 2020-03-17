@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 /**
- * Class contains Main
+ * Class contains Main to run server
  * 
  */
 public class RMIServer {

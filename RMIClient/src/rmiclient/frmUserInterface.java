@@ -16,14 +16,14 @@ import java.security.NoSuchAlgorithmException;
 import javax.swing.JOptionPane;
 import rmiserver.IAuthentication;
 
-public class frmAuthenticate extends javax.swing.JFrame {
+public class frmUserInterface extends javax.swing.JFrame {
 
     IAuthentication iAuth;
 
     /**
-     * Creates new form frmAuthenticate
+     * Creates new form frmUserInterface
      */
-    public frmAuthenticate() {
+    public frmUserInterface() {
         initComponents();
         try {
             // look up the registry created in RMI Server
@@ -289,14 +289,14 @@ public class frmAuthenticate extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabList, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+                .addComponent(tabList)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabList, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addComponent(tabList)
                 .addContainerGap())
         );
 
@@ -445,28 +445,30 @@ public class frmAuthenticate extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmAuthenticate.class
+            java.util.logging.Logger.getLogger(frmUserInterface.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmAuthenticate.class
+            java.util.logging.Logger.getLogger(frmUserInterface.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmAuthenticate.class
+            java.util.logging.Logger.getLogger(frmUserInterface.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmAuthenticate.class
+            java.util.logging.Logger.getLogger(frmUserInterface.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmAuthenticate().setVisible(true);
+                new frmUserInterface().setVisible(true);
             }
         });
     }
