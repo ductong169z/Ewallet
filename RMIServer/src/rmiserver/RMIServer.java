@@ -13,7 +13,7 @@ import java.rmi.registry.LocateRegistry;
 
 /**
  * Class contains Main
- * @author Admin
+ * 
  */
 public class RMIServer {
 

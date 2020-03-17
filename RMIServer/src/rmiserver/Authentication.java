@@ -17,7 +17,7 @@ import java.sql.SQLException;
 
 /**
  * Class implementation from interface IAuthentication
- * @author Admin
+ * 
  */
 public class Authentication extends UnicastRemoteObject implements IAuthentication {
 
