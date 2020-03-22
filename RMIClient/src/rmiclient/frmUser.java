@@ -32,8 +32,8 @@ public class frmUser extends javax.swing.JFrame {
      */
     public frmUser() {
         initComponents();
+        this.setLocationRelativeTo(null);
         try {
-            initComponents();
             BufferedImage img = ImageIO.read(new File("deposit.png"));
             Image resizeImage = img.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon imageicon = new ImageIcon(resizeImage);

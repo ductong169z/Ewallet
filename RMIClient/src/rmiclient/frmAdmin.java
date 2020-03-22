@@ -16,6 +16,7 @@ public class frmAdmin extends javax.swing.JFrame {
      */
     public frmAdmin() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
