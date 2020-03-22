@@ -69,7 +69,6 @@ public class frmUser extends javax.swing.JFrame {
             
             try {
                 // look up the registry created in RMI Server
-
                 iAuth = (IAuthentication) Naming.lookup("rmi://localhost:5000/AuthenticationForm");
             } catch (NotBoundException ex) {
                 System.out.println("Not Bound Exception Occured!");
@@ -80,21 +79,12 @@ public class frmUser extends javax.swing.JFrame {
             } catch (Exception ex) {
                 System.out.println("An unknown error occured!");
             }
-            // set icon for the frame
-            // Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
-//        this.setIconImage(icon);
-//        this.setLocationRelativeTo(null); // center the form
+//            set icon for the frame
+//              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
+//            this.setIconImage(icon);
         } catch (IOException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // set icon for the frame
-        // Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
-//        this.setIconImage(icon);
-//        this.setLocationRelativeTo(null); // center the form
-        // set icon for the frame
-        // Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
-//        this.setIconImage(icon);
-//        this.setLocationRelativeTo(null); // center the form
     }
 
     /**
