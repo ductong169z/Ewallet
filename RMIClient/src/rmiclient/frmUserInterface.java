@@ -52,7 +52,13 @@ public class frmUserInterface extends javax.swing.JFrame {
     private void initComponents() {
 
         grpGender = new javax.swing.ButtonGroup();
-        tabList = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        panelLogin = new javax.swing.JPanel();
+        lblUsernameLog = new javax.swing.JLabel();
+        lblPasswordLog = new javax.swing.JLabel();
+        txtUsernameLog = new javax.swing.JTextField();
+        txtPasswordLog = new javax.swing.JPasswordField();
+        btnOKLog = new javax.swing.JButton();
         panelRegister = new javax.swing.JPanel();
         lblUsername = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
@@ -72,61 +78,139 @@ public class frmUserInterface extends javax.swing.JFrame {
         btnOK = new javax.swing.JButton();
         lblAddress = new javax.swing.JLabel();
         txtAddress = new javax.swing.JTextField();
-        panelLogin = new javax.swing.JPanel();
-        lblUsernameLog = new javax.swing.JLabel();
-        lblPasswordLog = new javax.swing.JLabel();
-        txtUsernameLog = new javax.swing.JTextField();
-        txtPasswordLog = new javax.swing.JPasswordField();
-        btnOKLog = new javax.swing.JButton();
+        panelUser = new javax.swing.JPanel();
+        lblMenu = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        lblBalance = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        txtBalance = new javax.swing.JTextField();
+        pnTransaction = new javax.swing.JPanel();
+        btnWithdraw = new javax.swing.JButton();
+        btnTransfer = new javax.swing.JButton();
+        btnDeposit = new javax.swing.JButton();
+        btnPaytuition = new javax.swing.JButton();
+        btnBuyMobile = new javax.swing.JButton();
+        pnAccountmanagement = new javax.swing.JPanel();
+        btnChangeInfo = new javax.swing.JButton();
+        btnDeleteAccount = new javax.swing.JButton();
+        btnTransactionHistory = new javax.swing.JButton();
+        panelAdmin = new javax.swing.JPanel();
+        lblMenu1 = new javax.swing.JLabel();
+        lblWelcome = new javax.swing.JLabel();
+        pnReport = new javax.swing.JPanel();
+        btnDepositreport = new javax.swing.JButton();
+        btnWithdrawrport = new javax.swing.JButton();
+        btnTransferreport = new javax.swing.JButton();
+        pnUsermanagement = new javax.swing.JPanel();
+        btnCreatenewuser = new javax.swing.JButton();
+        btnResetpassword = new javax.swing.JButton();
+        btnSuspendUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Authentication Form");
 
-        tabList.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jPanel1.setLayout(new java.awt.CardLayout());
 
-        lblUsername.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        panelLogin.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+
+        lblUsernameLog.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblUsernameLog.setText("Username:");
+
+        lblPasswordLog.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPasswordLog.setText("Password:");
+
+        txtUsernameLog.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtPasswordLog.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnOKLog.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnOKLog.setText("OK");
+        btnOKLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKLogActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
+        panelLogin.setLayout(panelLoginLayout);
+        panelLoginLayout.setHorizontalGroup(
+            panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblPasswordLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblUsernameLog, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtUsernameLog, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                    .addComponent(txtPasswordLog, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(20, 20, 20))
+            .addGroup(panelLoginLayout.createSequentialGroup()
+                .addGap(190, 190, 190)
+                .addComponent(btnOKLog, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelLoginLayout.setVerticalGroup(
+            panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLoginLayout.createSequentialGroup()
+                .addGap(151, 151, 151)
+                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUsernameLog)
+                    .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPasswordLog)
+                    .addComponent(txtPasswordLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
+                .addComponent(btnOKLog)
+                .addContainerGap(185, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(panelLogin, "card2");
+
+        lblUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblUsername.setText("Username:");
 
-        txtUsername.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        txtPassword.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lblPassword.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lblPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPassword.setText("Password:");
 
-        lblPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lblPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPasswordConfirm.setText("Confirmation:");
 
-        txtPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lblFullname.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lblFullname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblFullname.setText("Fullname:");
 
-        txtFullname.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtFullname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lblGender.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lblGender.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblGender.setText("Gender:");
 
         grpGender.add(rdoMale);
-        rdoMale.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        rdoMale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoMale.setSelected(true);
         rdoMale.setText("Male");
 
         grpGender.add(rdoFemale);
-        rdoFemale.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        rdoFemale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoFemale.setText("Female");
 
-        lblEmail.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lblEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblEmail.setText("Email:");
 
-        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lblPhone.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lblPhone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPhone.setText("Phone:");
 
-        txtPhone.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtPhone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        btnOK.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        btnOK.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnOK.setText("OK");
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,10 +218,10 @@ public class frmUserInterface extends javax.swing.JFrame {
             }
         });
 
-        lblAddress.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lblAddress.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblAddress.setText("Address:");
 
-        txtAddress.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtAddress.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout panelRegisterLayout = new javax.swing.GroupLayout(panelRegister);
         panelRegister.setLayout(panelRegisterLayout);
@@ -149,7 +233,7 @@ public class frmUserInterface extends javax.swing.JFrame {
                     .addComponent(lblPhone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblGender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblFullname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                    .addComponent(lblFullname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
                     .addComponent(lblAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(lblPasswordConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -178,15 +262,15 @@ public class frmUserInterface extends javax.swing.JFrame {
                             .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(20, 20, 20))
-            .addGroup(panelRegisterLayout.createSequentialGroup()
-                .addGap(185, 185, 185)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegisterLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(192, 192, 192))
         );
         panelRegisterLayout.setVerticalGroup(
             panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRegisterLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(37, 37, 37)
                 .addGroup(panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsername)
                     .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -219,85 +303,284 @@ public class frmUserInterface extends javax.swing.JFrame {
                 .addGroup(panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAddress)
                     .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addComponent(btnOK)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(panelRegister, "card3");
+
+        lblMenu.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblMenu.setText("Menu");
+
+        lblName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblName.setText("Name:");
+
+        lblBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBalance.setText("Balance:");
+
+        txtName.setEditable(false);
+        txtName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtName.setBorder(null);
+
+        txtBalance.setEditable(false);
+        txtBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtBalance.setBorder(null);
+
+        pnTransaction.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transaction", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 14))); // NOI18N
+
+        btnWithdraw.setText("Withdraw");
+
+        btnTransfer.setText("Transfer");
+
+        btnDeposit.setText("Deposit");
+
+        btnPaytuition.setText("Pay Tuition");
+
+        btnBuyMobile.setText("Buy Mobile Card");
+
+        javax.swing.GroupLayout pnTransactionLayout = new javax.swing.GroupLayout(pnTransaction);
+        pnTransaction.setLayout(pnTransactionLayout);
+        pnTransactionLayout.setHorizontalGroup(
+            pnTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnTransactionLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(pnTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnWithdraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDeposit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPaytuition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBuyMobile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        pnTransactionLayout.setVerticalGroup(
+            pnTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnTransactionLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(btnDeposit)
+                .addGap(18, 18, 18)
+                .addComponent(btnWithdraw)
+                .addGap(18, 18, 18)
+                .addComponent(btnTransfer)
+                .addGap(18, 18, 18)
+                .addComponent(btnPaytuition)
+                .addGap(18, 18, 18)
+                .addComponent(btnBuyMobile)
+                .addContainerGap(59, Short.MAX_VALUE))
+        );
+
+        pnAccountmanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 14))); // NOI18N
+
+        btnChangeInfo.setText("Change Info");
+
+        btnDeleteAccount.setText("Delete Account");
+
+        btnTransactionHistory.setText("Transaction History");
+
+        javax.swing.GroupLayout pnAccountmanagementLayout = new javax.swing.GroupLayout(pnAccountmanagement);
+        pnAccountmanagement.setLayout(pnAccountmanagementLayout);
+        pnAccountmanagementLayout.setHorizontalGroup(
+            pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnAccountmanagementLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnChangeInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTransactionHistory))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        pnAccountmanagementLayout.setVerticalGroup(
+            pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnAccountmanagementLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(btnChangeInfo)
+                .addGap(18, 18, 18)
+                .addComponent(btnDeleteAccount)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(btnTransactionHistory)
                 .addContainerGap())
         );
 
-        tabList.addTab("Register", panelRegister);
+        javax.swing.GroupLayout panelUserLayout = new javax.swing.GroupLayout(panelUser);
+        panelUser.setLayout(panelUserLayout);
+        panelUserLayout.setHorizontalGroup(
+            panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUserLayout.createSequentialGroup()
+                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelUserLayout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(lblMenu))
+                    .addGroup(panelUserLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelUserLayout.createSequentialGroup()
+                                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblBalance))
+                                .addGap(31, 31, 31)
+                                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                                    .addComponent(txtBalance)))
+                            .addGroup(panelUserLayout.createSequentialGroup()
+                                .addComponent(pnTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pnAccountmanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(28, 28, 28))
+        );
+        panelUserLayout.setVerticalGroup(
+            panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUserLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(lblMenu)
+                .addGap(18, 18, 18)
+                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBalance)
+                    .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnTransaction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelUserLayout.createSequentialGroup()
+                        .addComponent(pnAccountmanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
 
-        panelLogin.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jPanel1.add(panelUser, "card4");
 
-        lblUsernameLog.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        lblUsernameLog.setText("Username:");
+        lblMenu1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblMenu1.setText("Menu");
 
-        lblPasswordLog.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        lblPasswordLog.setText("Password:");
+        lblWelcome.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblWelcome.setText("WELCOME ADMIN!!!");
 
-        txtUsernameLog.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        pnReport.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Report", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 14))); // NOI18N
 
-        txtPasswordLog.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-
-        btnOKLog.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        btnOKLog.setText("OK");
-        btnOKLog.addActionListener(new java.awt.event.ActionListener() {
+        btnDepositreport.setText("Deposit Report");
+        btnDepositreport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOKLogActionPerformed(evt);
+                btnDepositreportActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
-        panelLogin.setLayout(panelLoginLayout);
-        panelLoginLayout.setHorizontalGroup(
-            panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblPasswordLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblUsernameLog, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
-                .addGap(37, 37, 37)
-                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtUsernameLog, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                    .addComponent(txtPasswordLog, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(20, 20, 20))
-            .addGroup(panelLoginLayout.createSequentialGroup()
-                .addGap(190, 190, 190)
-                .addComponent(btnOKLog, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+        btnWithdrawrport.setText("Withdraw Report");
+        btnWithdrawrport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWithdrawrportActionPerformed(evt);
+            }
+        });
+
+        btnTransferreport.setText("Stranfer Report");
+        btnTransferreport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransferreportActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnReportLayout = new javax.swing.GroupLayout(pnReport);
+        pnReport.setLayout(pnReportLayout);
+        pnReportLayout.setHorizontalGroup(
+            pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnReportLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnWithdrawrport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTransferreport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDepositreport, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+        pnReportLayout.setVerticalGroup(
+            pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnReportLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(btnDepositreport)
+                .addGap(18, 18, 18)
+                .addComponent(btnWithdrawrport)
+                .addGap(18, 18, 18)
+                .addComponent(btnTransferreport)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        panelLoginLayout.setVerticalGroup(
-            panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLoginLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUsernameLog)
-                    .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+
+        pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 14))); // NOI18N
+
+        btnCreatenewuser.setText("Create New User");
+
+        btnResetpassword.setText("Reset Password");
+
+        btnSuspendUser.setText("Suspend User");
+
+        javax.swing.GroupLayout pnUsermanagementLayout = new javax.swing.GroupLayout(pnUsermanagement);
+        pnUsermanagement.setLayout(pnUsermanagementLayout);
+        pnUsermanagementLayout.setHorizontalGroup(
+            pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnUsermanagementLayout.createSequentialGroup()
+                .addContainerGap(53, Short.MAX_VALUE)
+                .addGroup(pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCreatenewuser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnResetpassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSuspendUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
+        );
+        pnUsermanagementLayout.setVerticalGroup(
+            pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnUsermanagementLayout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(btnCreatenewuser)
                 .addGap(18, 18, 18)
-                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPasswordLog)
-                    .addComponent(txtPasswordLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addComponent(btnOKLog)
-                .addContainerGap(318, Short.MAX_VALUE))
+                .addComponent(btnResetpassword)
+                .addGap(18, 18, 18)
+                .addComponent(btnSuspendUser)
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
-        tabList.addTab("Login", panelLogin);
+        javax.swing.GroupLayout panelAdminLayout = new javax.swing.GroupLayout(panelAdmin);
+        panelAdmin.setLayout(panelAdminLayout);
+        panelAdminLayout.setHorizontalGroup(
+            panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAdminLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblWelcome)
+                .addGap(173, 173, 173))
+            .addGroup(panelAdminLayout.createSequentialGroup()
+                .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAdminLayout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(lblMenu1))
+                    .addGroup(panelAdminLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnUsermanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelAdminLayout.setVerticalGroup(
+            panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAdminLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(lblMenu1)
+                .addGap(18, 18, 18)
+                .addComponent(lblWelcome)
+                .addGap(28, 28, 28)
+                .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnUsermanagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(panelAdmin, "card5");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabList)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabList)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -427,6 +710,18 @@ public class frmUserInterface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnOKLogActionPerformed
 
+    private void btnDepositreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositreportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDepositreportActionPerformed
+
+    private void btnWithdrawrportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawrportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnWithdrawrportActionPerformed
+
+    private void btnTransferreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferreportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTransferreportActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -474,27 +769,54 @@ public class frmUserInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuyMobile;
+    private javax.swing.JButton btnChangeInfo;
+    private javax.swing.JButton btnCreatenewuser;
+    private javax.swing.JButton btnDeleteAccount;
+    private javax.swing.JButton btnDeposit;
+    private javax.swing.JButton btnDepositreport;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnOKLog;
+    private javax.swing.JButton btnPaytuition;
+    private javax.swing.JButton btnResetpassword;
+    private javax.swing.JButton btnSuspendUser;
+    private javax.swing.JButton btnTransactionHistory;
+    private javax.swing.JButton btnTransfer;
+    private javax.swing.JButton btnTransferreport;
+    private javax.swing.JButton btnWithdraw;
+    private javax.swing.JButton btnWithdrawrport;
     private javax.swing.ButtonGroup grpGender;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblAddress;
+    private javax.swing.JLabel lblBalance;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFullname;
     private javax.swing.JLabel lblGender;
+    private javax.swing.JLabel lblMenu;
+    private javax.swing.JLabel lblMenu1;
+    private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPasswordConfirm;
     private javax.swing.JLabel lblPasswordLog;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JLabel lblUsernameLog;
+    private javax.swing.JLabel lblWelcome;
+    private javax.swing.JPanel panelAdmin;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelRegister;
+    private javax.swing.JPanel panelUser;
+    private javax.swing.JPanel pnAccountmanagement;
+    private javax.swing.JPanel pnReport;
+    private javax.swing.JPanel pnTransaction;
+    private javax.swing.JPanel pnUsermanagement;
     private javax.swing.JRadioButton rdoFemale;
     private javax.swing.JRadioButton rdoMale;
-    private javax.swing.JTabbedPane tabList;
     private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtBalance;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFullname;
+    private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JPasswordField txtPasswordConfirm;
     private javax.swing.JPasswordField txtPasswordLog;
