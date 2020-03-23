@@ -18,19 +18,20 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import rmiserver.IAuthentication;
+import rmiserver.User;
 
 /**
  *
  * @author dorew
  */
 public class frmUser extends javax.swing.JFrame {
-
-    IAuthentication iAuth;
     
+    IAuthentication iAuth;
+
     /**
      * Creates new form frmUser
      */
-    public frmUser() {
+    public frmUser(User info) {
         initComponents();
         this.setLocationRelativeTo(null);
         try {
@@ -66,7 +67,8 @@ public class frmUser extends javax.swing.JFrame {
             Image resizedelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon deleteicon = new ImageIcon(resizedelete);
             btnDeleteAccount.setIcon(deleteicon);
-            
+            txtName.setText(info.getFullname());
+            txtBalance.setText(info.getMoney()+" VND");
             try {
                 // look up the registry created in RMI Server
                 iAuth = (IAuthentication) Naming.lookup("rmi://localhost:5000/AuthenticationForm");
@@ -86,6 +88,8 @@ public class frmUser extends javax.swing.JFrame {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+   
 
     /**
      * This method is called from within the constructor to initialize the form.

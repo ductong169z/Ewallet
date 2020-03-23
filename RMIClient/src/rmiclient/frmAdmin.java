@@ -5,6 +5,8 @@
  */
 package rmiclient;
 
+import rmiserver.User;
+
 /**
  *
  * @author dorew
@@ -14,7 +16,7 @@ public class frmAdmin extends javax.swing.JFrame {
     /**
      * Creates new form frmAdmin
      */
-    public frmAdmin() {
+    public frmAdmin(User info) {
         initComponents();
         this.setLocationRelativeTo(null);
     }
