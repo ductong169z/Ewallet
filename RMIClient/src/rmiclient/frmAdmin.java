@@ -1,11 +1,10 @@
-
 /**
- * 
+ *
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- * 
+ *
  */
 package rmiclient;
 
@@ -13,13 +12,21 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import rmiserver.IAdminFunc;
 import rmiserver.User;
 
 public class frmAdmin extends javax.swing.JFrame {
+
+    IAdminFunc iAdmin;
+    User adminInfo; // store logged in admin info
 
     /**
      * Creates new form frmAdmin
@@ -28,19 +35,19 @@ public class frmAdmin extends javax.swing.JFrame {
         try {
             initComponents();
             /* Add the icons to the buttons */
-            
+
             // Add icon for the Create New User Button
             BufferedImage add = ImageIO.read(new File("adduser.png"));
             Image resizeAdd = add.getScaledInstance(btnCreateNewUser.getHeight(), btnCreateNewUser.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon addIcon = new ImageIcon(resizeAdd);
             btnCreateNewUser.setIcon(addIcon);
-                                   
+
             // Add icon for the Reset Password Button
             BufferedImage reset = ImageIO.read(new File("reset.png"));
             Image resizeReset = reset.getScaledInstance(btnResetPassword.getHeight(), btnResetPassword.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon resetIcon = new ImageIcon(resizeReset);
             btnResetPassword.setIcon(resetIcon);
-            
+
             // Add icon for the Suspend User Button
             BufferedImage block = ImageIO.read(new File("blocked.png"));
             Image resizeBlock = block.getScaledInstance(btnSuspendUser.getHeight(), btnSuspendUser.getWidth(), Image.SCALE_SMOOTH);
@@ -52,13 +59,13 @@ public class frmAdmin extends javax.swing.JFrame {
             Image resizeRDeposit = rDeposit.getScaledInstance(btnDepositReport.getHeight(), btnDepositReport.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon rDepositIcon = new ImageIcon(resizeRDeposit);
             btnDepositReport.setIcon(rDepositIcon);
-            
+
             // Add icon for the Withdraw Report Button
             BufferedImage rWithdraw = ImageIO.read(new File("rwithdraw.png"));
             Image resizeRWithdraw = rWithdraw.getScaledInstance(btnWithdrawReport.getHeight(), btnWithdrawReport.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon rWithdrawIcon = new ImageIcon(resizeRWithdraw);
             btnWithdrawReport.setIcon(rWithdrawIcon);
-            
+
             // Add icon for the Transfer Report Button
             BufferedImage rTransfer = ImageIO.read(new File("rtransfer.png"));
             Image resizeRTransfer = rTransfer.getScaledInstance(btnTransferReport.getHeight(), btnTransferReport.getWidth(), Image.SCALE_SMOOTH);
@@ -70,23 +77,26 @@ public class frmAdmin extends javax.swing.JFrame {
         }
     }
 
-    public frmAdmin(User info) {
+    // constructor
+    public frmAdmin(User adminInfo) {
+        this.adminInfo = adminInfo;
+
         try {
             initComponents();
             /* Add the icons to the buttons */
-            
+
             // Add icon for the Create New User Button
             BufferedImage add = ImageIO.read(new File("adduser.png"));
             Image resizeAdd = add.getScaledInstance(btnCreateNewUser.getHeight(), btnCreateNewUser.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon addIcon = new ImageIcon(resizeAdd);
             btnCreateNewUser.setIcon(addIcon);
-                                   
+
             // Add icon for the Reset Password Button
             BufferedImage reset = ImageIO.read(new File("reset.png"));
             Image resizeReset = reset.getScaledInstance(btnResetPassword.getHeight(), btnResetPassword.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon resetIcon = new ImageIcon(resizeReset);
             btnResetPassword.setIcon(resetIcon);
-            
+
             // Add icon for the Suspend User Button
             BufferedImage block = ImageIO.read(new File("blocked.png"));
             Image resizeBlock = block.getScaledInstance(btnSuspendUser.getHeight(), btnSuspendUser.getWidth(), Image.SCALE_SMOOTH);
@@ -98,22 +108,35 @@ public class frmAdmin extends javax.swing.JFrame {
             Image resizeRDeposit = rDeposit.getScaledInstance(btnDepositReport.getHeight(), btnDepositReport.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon rDepositIcon = new ImageIcon(resizeRDeposit);
             btnDepositReport.setIcon(rDepositIcon);
-            
+
             // Add icon for the Withdraw Report Button
             BufferedImage rWithdraw = ImageIO.read(new File("rwithdraw.png"));
             Image resizeRWithdraw = rWithdraw.getScaledInstance(btnWithdrawReport.getHeight(), btnWithdrawReport.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon rWithdrawIcon = new ImageIcon(resizeRWithdraw);
             btnWithdrawReport.setIcon(rWithdrawIcon);
-            
+
             // Add icon for the Transfer Report Button
             BufferedImage rTransfer = ImageIO.read(new File("rtransfer.png"));
             Image resizeRTransfer = rTransfer.getScaledInstance(btnTransferReport.getHeight(), btnTransferReport.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon rTransferIcon = new ImageIcon(resizeRTransfer);
             btnTransferReport.setIcon(rTransferIcon);
             this.setLocationRelativeTo(null); // center the form
+
+            /* Connects to server */
+            iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
+            
+            /* Set Admin name in Welcome text */
+            lblWelcome.setText("Welcome " + adminInfo.getFullname() + " !!!");
+            
+        } catch (NotBoundException ex) {
+            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
 
     /**
@@ -125,7 +148,7 @@ public class frmAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         panelAdmin = new javax.swing.JPanel();
-        lblMenu1 = new javax.swing.JLabel();
+        lblMenu = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
         pnReport = new javax.swing.JPanel();
         btnDepositReport = new javax.swing.JButton();
@@ -145,11 +168,11 @@ public class frmAdmin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EWallet (Admin UI)");
 
-        lblMenu1.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
-        lblMenu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblMenu1.setText("Admin Menu");
+        lblMenu.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
+        lblMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblMenu.setText("Admin Menu");
 
-        lblWelcome.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        lblWelcome.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblWelcome.setText("WELCOME ADMIN !!!");
 
@@ -221,7 +244,7 @@ public class frmAdmin extends javax.swing.JFrame {
                 .addComponent(btnTransferReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
@@ -286,27 +309,32 @@ public class frmAdmin extends javax.swing.JFrame {
         panelAdminLayout.setHorizontalGroup(
             panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAdminLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnUsermanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAdminLayout.createSequentialGroup()
-                .addGap(232, 232, 232)
-                .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                    .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
-                .addGap(232, 232, 232))
+                .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAdminLayout.createSequentialGroup()
+                        .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelAdminLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(pnReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(pnUsermanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelAdminLayout.createSequentialGroup()
+                                .addGap(232, 232, 232)
+                                .addComponent(lblMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 1, Short.MAX_VALUE))
+                    .addGroup(panelAdminLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panelAdminLayout.setVerticalGroup(
             panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAdminLayout.createSequentialGroup()
-                .addComponent(lblMenu1)
+                .addComponent(lblMenu)
                 .addGap(30, 30, 30)
                 .addComponent(lblWelcome)
                 .addGap(30, 30, 30)
                 .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                    .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                     .addComponent(pnUsermanagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -357,7 +385,7 @@ public class frmAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel lblMenu1;
+    private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel panelAdmin;
     private javax.swing.JPanel pnReport;

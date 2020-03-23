@@ -15,8 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AdminFunc extends UnicastRemoteObject implements IAdminFunc  {
+    
     // constructor
-
     public AdminFunc() throws RemoteException {
         super();
 
@@ -27,4 +27,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc  {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /* Override methods in IAdminFunc interface */
+    
 }

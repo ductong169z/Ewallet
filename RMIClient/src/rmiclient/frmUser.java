@@ -1,11 +1,10 @@
-
 /**
- * 
+ *
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- * 
+ *
  */
 package rmiclient;
 
@@ -27,6 +26,7 @@ import rmiserver.User;
 public class frmUser extends javax.swing.JFrame {
 
     IUserFunc iUser;
+    User userInfo; // store logged in user info
 
     /**
      * Creates new form frmUser
@@ -85,27 +85,28 @@ public class frmUser extends javax.swing.JFrame {
             ImageIcon deleteIcon = new ImageIcon(resizeDelete);
             btnDeleteAccount.setIcon(deleteIcon);
 
-            try {
-                // look up the registry created in RMI Server
-                iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
-            } catch (NotBoundException ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (RemoteException ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            /* Connects to server */
+            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
+
+            /* Display user's full name and balance */
+            txtName.setText(userInfo.getFullname());
+            txtBalance.setText(userInfo.getMoney() + " VND");
+
 //            set icon for the frame
 //              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
 //            this.setIconImage(icon);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public frmUser(User info) {
+    public frmUser(User userInfo) {
         initComponents();
         this.setLocationRelativeTo(null); // center the frame
         try {
@@ -159,25 +160,22 @@ public class frmUser extends javax.swing.JFrame {
             ImageIcon deleteIcon = new ImageIcon(resizeDelete);
             btnDeleteAccount.setIcon(deleteIcon);
 
+            /* Connects to server */
+            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
+
             /* Display user's full name and balance */
-            txtName.setText(info.getFullname());
-            txtBalance.setText(info.getMoney() + " VND");
-            
-            try {
-                // look up the registry created in RMI Server
-                iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
-            } catch (NotBoundException ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (RemoteException ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            txtName.setText(userInfo.getFullname());
+            txtBalance.setText(userInfo.getMoney() + " VND");
+
 //            set icon for the frame
 //              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
 //            this.setIconImage(icon);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -453,7 +451,7 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnWithdrawActionPerformed
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed

@@ -292,7 +292,7 @@ public class frmRegister extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
 
-            // if there are no errors, and operation is successful on server side
+            // if operation is successful on server side
             if (result == 0) {
                 // clear all input fields
                 txtUsername.setText("");

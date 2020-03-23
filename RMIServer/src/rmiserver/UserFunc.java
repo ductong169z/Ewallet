@@ -20,8 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserFunc extends UnicastRemoteObject implements IUserFunc {
+    
     // constructor
-
     public UserFunc() throws RemoteException {
         super();
 
@@ -84,8 +84,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             rs = st.executeQuery();
             rs.next();
 
-            int userID = rs.getInt(1); // store the user ID of the user (just added to database above)
-            System.out.println(userID);
+            int userID = rs.getInt(1); // store the user ID of the user (who has just been added to database above)
 
             // execute SQL statements
             st = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(" + userID + ", 2)");

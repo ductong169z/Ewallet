@@ -107,7 +107,6 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
             System.out.println(ex.getMessage());
             error = true; // if any errors occured
             return null;
-
         }
 
     }
