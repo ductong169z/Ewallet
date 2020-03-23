@@ -1,7 +1,11 @@
 
 /**
- *
- * @author Quan Duc Loc CE140037 SE1401
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiserver;
 
@@ -13,6 +17,5 @@ import java.rmi.RemoteException;
  * 
  */
 public interface IAuthentication extends Remote{
-    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException;
     public User validateUser(String username, String password) throws RemoteException;
 }
