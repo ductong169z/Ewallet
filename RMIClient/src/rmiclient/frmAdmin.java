@@ -99,6 +99,11 @@ public class frmAdmin extends javax.swing.JFrame {
         pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
         btnCreatenewuser.setText("Create New User");
+        btnCreatenewuser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreatenewuserActionPerformed(evt);
+            }
+        });
 
         btnResetpassword.setText("Reset Password");
 
@@ -191,6 +196,12 @@ public class frmAdmin extends javax.swing.JFrame {
     private void btnTransferreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferreportActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnTransferreportActionPerformed
+
+    private void btnCreatenewuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreatenewuserActionPerformed
+        // TODO add your handling code here:
+        frmRegister newReg = new frmRegister();
+        newReg.setVisible(true);
+    }//GEN-LAST:event_btnCreatenewuserActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
