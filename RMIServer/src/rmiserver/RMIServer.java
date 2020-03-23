@@ -19,10 +19,11 @@ public class RMIServer {
 
     public static void main(String[] args) {
         try {
-            LocateRegistry.createRegistry(5000);
-            Naming.bind("rmi://localhost:5000/AuthenticationForm", new Authentication());
+            LocateRegistry.createRegistry(69);
+            Naming.bind("rmi://localhost:69/AuthenticationForm", new Authentication());
             System.out.println("Server Started ...");
         } catch (RemoteException ex) {
+            System.out.println(ex.getMessage());
             System.out.println("Remote Exception Occured!");
         } catch (AlreadyBoundException ex) {
             System.out.println("Already Bound Exception Occured!");
