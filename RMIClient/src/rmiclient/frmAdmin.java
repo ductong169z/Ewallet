@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+
+/**
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiclient;
 
@@ -15,10 +19,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import rmiserver.User;
 
-/**
- *
- * @author dorew
- */
 public class frmAdmin extends javax.swing.JFrame {
 
     /**
@@ -27,31 +27,44 @@ public class frmAdmin extends javax.swing.JFrame {
     public frmAdmin() {
         try {
             initComponents();
+            /* Add the icons to the buttons */
+            
+            // Add icon for the Create New User Button
             BufferedImage add = ImageIO.read(new File("adduser.png"));
-            Image resizeadd = add.getScaledInstance(btnCreatenewuser.getHeight(), btnCreatenewuser.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon addicon = new ImageIcon(resizeadd);
-            btnCreatenewuser.setIcon(addicon);
+            Image resizeAdd = add.getScaledInstance(btnCreateNewUser.getHeight(), btnCreateNewUser.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon addIcon = new ImageIcon(resizeAdd);
+            btnCreateNewUser.setIcon(addIcon);
+                                   
+            // Add icon for the Reset Password Button
+            BufferedImage reset = ImageIO.read(new File("reset.png"));
+            Image resizeReset = reset.getScaledInstance(btnResetPassword.getHeight(), btnResetPassword.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon resetIcon = new ImageIcon(resizeReset);
+            btnResetPassword.setIcon(resetIcon);
+            
+            // Add icon for the Suspend User Button
             BufferedImage block = ImageIO.read(new File("blocked.png"));
-            Image resizeblock = block.getScaledInstance(btnSuspendUser.getHeight(), btnSuspendUser.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon blockicon = new ImageIcon(resizeblock);
-            btnSuspendUser.setIcon(blockicon);
-            BufferedImage password = ImageIO.read(new File("password.png"));
-            Image resizepassword = password.getScaledInstance(btnResetpassword.getHeight(), btnResetpassword.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon passwordicon = new ImageIcon(resizepassword);
-            btnResetpassword.setIcon(passwordicon);
-            BufferedImage rdeposit = ImageIO.read(new File("rdeposit.png"));
-            Image resizerdeposit = rdeposit.getScaledInstance(btnDepositreport.getHeight(), btnDepositreport.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon rdepositicon = new ImageIcon(resizerdeposit);
-            btnDepositreport.setIcon(rdepositicon);
-            BufferedImage rwithdraw = ImageIO.read(new File("rwithdraw.png"));
-            Image resizerwithdraw = rwithdraw.getScaledInstance(btnWithdrawrport.getHeight(), btnWithdrawrport.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon withdrawicon = new ImageIcon(resizerwithdraw);
-            btnWithdrawrport.setIcon(withdrawicon);
-            BufferedImage transfer = ImageIO.read(new File("rtransfer.png"));
-            Image resizetransfer = transfer.getScaledInstance(btnTransferreport.getHeight(), btnTransferreport.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon transfericon = new ImageIcon(resizetransfer);
-            btnTransferreport.setIcon(transfericon);
-            this.setLocationRelativeTo(null);
+            Image resizeBlock = block.getScaledInstance(btnSuspendUser.getHeight(), btnSuspendUser.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon blockIcon = new ImageIcon(resizeBlock);
+            btnSuspendUser.setIcon(blockIcon);
+
+            // Add icon for the Deposit Report Button
+            BufferedImage rDeposit = ImageIO.read(new File("rdeposit.png"));
+            Image resizeRDeposit = rDeposit.getScaledInstance(btnDepositReport.getHeight(), btnDepositReport.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon rDepositIcon = new ImageIcon(resizeRDeposit);
+            btnDepositReport.setIcon(rDepositIcon);
+            
+            // Add icon for the Withdraw Report Button
+            BufferedImage rWithdraw = ImageIO.read(new File("rwithdraw.png"));
+            Image resizeRWithdraw = rWithdraw.getScaledInstance(btnWithdrawReport.getHeight(), btnWithdrawReport.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon rWithdrawIcon = new ImageIcon(resizeRWithdraw);
+            btnWithdrawReport.setIcon(rWithdrawIcon);
+            
+            // Add icon for the Transfer Report Button
+            BufferedImage rTransfer = ImageIO.read(new File("rtransfer.png"));
+            Image resizeRTransfer = rTransfer.getScaledInstance(btnTransferReport.getHeight(), btnTransferReport.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon rTransferIcon = new ImageIcon(resizeRTransfer);
+            btnTransferReport.setIcon(rTransferIcon);
+            this.setLocationRelativeTo(null); // center the form
         } catch (IOException ex) {
             Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,31 +73,44 @@ public class frmAdmin extends javax.swing.JFrame {
     public frmAdmin(User info) {
         try {
             initComponents();
+            /* Add the icons to the buttons */
+            
+            // Add icon for the Create New User Button
             BufferedImage add = ImageIO.read(new File("adduser.png"));
-            Image resizeadd = add.getScaledInstance(btnCreatenewuser.getHeight(), btnCreatenewuser.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon addicon = new ImageIcon(resizeadd);
-            btnCreatenewuser.setIcon(addicon);
+            Image resizeAdd = add.getScaledInstance(btnCreateNewUser.getHeight(), btnCreateNewUser.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon addIcon = new ImageIcon(resizeAdd);
+            btnCreateNewUser.setIcon(addIcon);
+                                   
+            // Add icon for the Reset Password Button
+            BufferedImage reset = ImageIO.read(new File("reset.png"));
+            Image resizeReset = reset.getScaledInstance(btnResetPassword.getHeight(), btnResetPassword.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon resetIcon = new ImageIcon(resizeReset);
+            btnResetPassword.setIcon(resetIcon);
+            
+            // Add icon for the Suspend User Button
             BufferedImage block = ImageIO.read(new File("blocked.png"));
-            Image resizeblock = block.getScaledInstance(btnSuspendUser.getHeight(), btnSuspendUser.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon blockicon = new ImageIcon(resizeblock);
-            btnSuspendUser.setIcon(blockicon);
-            BufferedImage password = ImageIO.read(new File("password.png"));
-            Image resizepassword = password.getScaledInstance(btnResetpassword.getHeight(), btnResetpassword.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon passwordicon = new ImageIcon(resizepassword);
-            btnResetpassword.setIcon(passwordicon);
-            BufferedImage rdeposit = ImageIO.read(new File("rdeposit.png"));
-            Image resizerdeposit = rdeposit.getScaledInstance(btnDepositreport.getHeight(), btnDepositreport.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon rdepositicon = new ImageIcon(resizerdeposit);
-            btnDepositreport.setIcon(rdepositicon);
-            BufferedImage rwithdraw = ImageIO.read(new File("rwithdraw.png"));
-            Image resizerwithdraw = rwithdraw.getScaledInstance(btnWithdrawrport.getHeight(), btnWithdrawrport.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon withdrawicon = new ImageIcon(resizerwithdraw);
-            btnWithdrawrport.setIcon(withdrawicon);
-            BufferedImage transfer = ImageIO.read(new File("rtransfer.png"));
-            Image resizetransfer = transfer.getScaledInstance(btnTransferreport.getHeight(), btnTransferreport.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon transfericon = new ImageIcon(resizetransfer);
-            btnTransferreport.setIcon(transfericon);
-            this.setLocationRelativeTo(null);
+            Image resizeBlock = block.getScaledInstance(btnSuspendUser.getHeight(), btnSuspendUser.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon blockIcon = new ImageIcon(resizeBlock);
+            btnSuspendUser.setIcon(blockIcon);
+
+            // Add icon for the Deposit Report Button
+            BufferedImage rDeposit = ImageIO.read(new File("rdeposit.png"));
+            Image resizeRDeposit = rDeposit.getScaledInstance(btnDepositReport.getHeight(), btnDepositReport.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon rDepositIcon = new ImageIcon(resizeRDeposit);
+            btnDepositReport.setIcon(rDepositIcon);
+            
+            // Add icon for the Withdraw Report Button
+            BufferedImage rWithdraw = ImageIO.read(new File("rwithdraw.png"));
+            Image resizeRWithdraw = rWithdraw.getScaledInstance(btnWithdrawReport.getHeight(), btnWithdrawReport.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon rWithdrawIcon = new ImageIcon(resizeRWithdraw);
+            btnWithdrawReport.setIcon(rWithdrawIcon);
+            
+            // Add icon for the Transfer Report Button
+            BufferedImage rTransfer = ImageIO.read(new File("rtransfer.png"));
+            Image resizeRTransfer = rTransfer.getScaledInstance(btnTransferReport.getHeight(), btnTransferReport.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon rTransferIcon = new ImageIcon(resizeRTransfer);
+            btnTransferReport.setIcon(rTransferIcon);
+            this.setLocationRelativeTo(null); // center the form
         } catch (IOException ex) {
             Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -102,128 +128,157 @@ public class frmAdmin extends javax.swing.JFrame {
         lblMenu1 = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
         pnReport = new javax.swing.JPanel();
-        btnDepositreport = new javax.swing.JButton();
-        btnWithdrawrport = new javax.swing.JButton();
-        btnTransferreport = new javax.swing.JButton();
+        btnDepositReport = new javax.swing.JButton();
+        btnWithdrawReport = new javax.swing.JButton();
+        btnTransferReport = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         pnUsermanagement = new javax.swing.JPanel();
-        btnCreatenewuser = new javax.swing.JButton();
-        btnResetpassword = new javax.swing.JButton();
+        btnCreateNewUser = new javax.swing.JButton();
+        btnResetPassword = new javax.swing.JButton();
         btnSuspendUser = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("EWallet (Admin UI)");
 
         lblMenu1.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
         lblMenu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMenu1.setText("Admin Menu");
 
         lblWelcome.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblWelcome.setText("WELCOME ADMIN !!!");
 
         pnReport.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Report", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
+        pnReport.setPreferredSize(new java.awt.Dimension(292, 412));
 
-        btnDepositreport.addActionListener(new java.awt.event.ActionListener() {
+        btnDepositReport.setBorder(null);
+        btnDepositReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDepositreportActionPerformed(evt);
+                btnDepositReportActionPerformed(evt);
             }
         });
 
-        btnWithdrawrport.addActionListener(new java.awt.event.ActionListener() {
+        btnWithdrawReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnWithdrawrportActionPerformed(evt);
+                btnWithdrawReportActionPerformed(evt);
             }
         });
 
-        btnTransferreport.addActionListener(new java.awt.event.ActionListener() {
+        btnTransferReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTransferreportActionPerformed(evt);
+                btnTransferReportActionPerformed(evt);
             }
         });
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Deposit Report");
+        jLabel1.setPreferredSize(new java.awt.Dimension(120, 20));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Withdraw Report");
+        jLabel2.setPreferredSize(new java.awt.Dimension(120, 20));
 
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Transfer Report");
+        jLabel3.setPreferredSize(new java.awt.Dimension(120, 20));
 
         javax.swing.GroupLayout pnReportLayout = new javax.swing.GroupLayout(pnReport);
         pnReport.setLayout(pnReportLayout);
         pnReportLayout.setHorizontalGroup(
             pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnReportLayout.createSequentialGroup()
-                .addGap(103, 103, 103)
+                .addGap(80, 80, 80)
                 .addGroup(pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(btnWithdrawrport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTransferreport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDepositreport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(108, Short.MAX_VALUE))
+                    .addGroup(pnReportLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnWithdrawReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTransferReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDepositReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         pnReportLayout.setVerticalGroup(
             pnReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnReportLayout.createSequentialGroup()
-                .addComponent(btnDepositreport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(btnDepositReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addGap(5, 5, 5)
-                .addComponent(btnWithdrawrport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTransferreport, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnWithdrawReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTransferReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
         btnSuspendUser.setBorder(null);
 
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Create New User");
+        jLabel4.setPreferredSize(new java.awt.Dimension(120, 20));
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Reset Password");
+        jLabel5.setPreferredSize(new java.awt.Dimension(120, 20));
 
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Suspend User");
+        jLabel6.setPreferredSize(new java.awt.Dimension(120, 20));
 
         javax.swing.GroupLayout pnUsermanagementLayout = new javax.swing.GroupLayout(pnUsermanagement);
         pnUsermanagement.setLayout(pnUsermanagementLayout);
         pnUsermanagementLayout.setHorizontalGroup(
             pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnUsermanagementLayout.createSequentialGroup()
-                .addContainerGap(109, Short.MAX_VALUE)
+            .addGroup(pnUsermanagementLayout.createSequentialGroup()
                 .addGroup(pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addGroup(pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnResetpassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnCreatenewuser, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnSuspendUser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(87, 87, 87))
+                    .addGroup(pnUsermanagementLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addGroup(pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnUsermanagementLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(btnResetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnUsermanagementLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(btnCreateNewUser, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(pnUsermanagementLayout.createSequentialGroup()
+                        .addGap(110, 110, 110)
+                        .addComponent(btnSuspendUser, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         pnUsermanagementLayout.setVerticalGroup(
             pnUsermanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnUsermanagementLayout.createSequentialGroup()
-                .addComponent(btnCreatenewuser, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(jLabel4)
+                .addContainerGap()
+                .addComponent(btnCreateNewUser, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnResetpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnResetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSuspendUser, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelAdminLayout = new javax.swing.GroupLayout(panelAdmin);
@@ -232,28 +287,28 @@ public class frmAdmin extends javax.swing.JFrame {
             panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAdminLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnUsermanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAdminLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(232, 232, 232)
                 .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                     .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
-                .addGap(254, 254, 254))
+                .addGap(232, 232, 232))
         );
         panelAdminLayout.setVerticalGroup(
             panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAdminLayout.createSequentialGroup()
                 .addComponent(lblMenu1)
-                .addGap(29, 29, 29)
+                .addGap(30, 30, 30)
                 .addComponent(lblWelcome)
-                .addGap(18, 18, 18)
-                .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnUsermanagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                    .addComponent(pnUsermanagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -262,40 +317,40 @@ public class frmAdmin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDepositreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositreportActionPerformed
+    private void btnDepositReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositReportActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDepositreportActionPerformed
+    }//GEN-LAST:event_btnDepositReportActionPerformed
 
-    private void btnWithdrawrportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawrportActionPerformed
+    private void btnWithdrawReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawReportActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnWithdrawrportActionPerformed
+    }//GEN-LAST:event_btnWithdrawReportActionPerformed
 
-    private void btnTransferreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferreportActionPerformed
+    private void btnTransferReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferReportActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnTransferreportActionPerformed
+    }//GEN-LAST:event_btnTransferReportActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCreatenewuser;
-    private javax.swing.JButton btnDepositreport;
-    private javax.swing.JButton btnResetpassword;
+    private javax.swing.JButton btnCreateNewUser;
+    private javax.swing.JButton btnDepositReport;
+    private javax.swing.JButton btnResetPassword;
     private javax.swing.JButton btnSuspendUser;
-    private javax.swing.JButton btnTransferreport;
-    private javax.swing.JButton btnWithdrawrport;
+    private javax.swing.JButton btnTransferReport;
+    private javax.swing.JButton btnWithdrawReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

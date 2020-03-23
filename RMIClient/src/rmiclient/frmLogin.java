@@ -1,6 +1,11 @@
+
 /**
- *
- * @author Quan Duc Loc CE140037 SE1401
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiclient;
 
@@ -27,7 +32,7 @@ public class frmLogin extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         try {
             // look up the registry created in RMI Server
-            iAuth = (IAuthentication) Naming.lookup("rmi://localhost:69/AuthenticationForm");
+            iAuth = (IAuthentication) Naming.lookup("rmi://localhost:69/Authentication");
         } catch (NotBoundException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -189,25 +194,23 @@ public class frmLogin extends javax.swing.JFrame {
             /* Temp variables to store values from the fields user inputted */
             String username = txtUsernameLog.getText();
             String password = String.valueOf(txtPasswordLog.getPassword());
-            User result;// store the result of operation (0 if successful, 1 if unsuccessful)
+            User result; // store the user return from operation
 
             // call method validateUser on server side to execute
             try {
                 result = iAuth.validateUser(username, password);
                 if (result != null) {
                     if (result.getRole_id() == 2) {
-                        frmUser lol = new frmUser(result);
-                        lol.setVisible(true);
-                        frmAdmin lol1 = new frmAdmin(result);
-                        lol1.setVisible(true);
-                        this.setVisible(error);
+                        JOptionPane.showMessageDialog(this, "You are now logged in as a User!", "Login Successfully", JOptionPane.INFORMATION_MESSAGE);
+                        new frmUser(result).setVisible(true);
+                        this.setVisible(false);
                     } else {
-                        frmAdmin lol = new frmAdmin(result);
-                        lol.setVisible(true);
+                        JOptionPane.showMessageDialog(this, "You are now logged in as an Admin!", "Login Successfully", JOptionPane.INFORMATION_MESSAGE);
+                        new frmAdmin(result).setVisible(true);
+                        this.setVisible(false);
                     }
-
                 } else {
-                    JOptionPane.showMessageDialog(this, "Login failed", "", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Username or Password is incorrect or Cannot connect to Database", "Login failed", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Login failed", JOptionPane.ERROR_MESSAGE);

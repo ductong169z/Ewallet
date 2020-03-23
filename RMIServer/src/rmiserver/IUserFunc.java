@@ -1,17 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+
+/**
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiserver;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-/**
- *
- * @author Quan Duc Loc CE140037 (SE1401)
- */
 public interface IUserFunc extends Remote {
 
     public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException;

@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+
+/**
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiclient;
 
@@ -17,59 +21,73 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import rmiserver.IAuthentication;
+import rmiserver.IUserFunc;
 import rmiserver.User;
 
-/**
- *
- * @author dorew
- */
 public class frmUser extends javax.swing.JFrame {
 
-    IAuthentication iAuth;
+    IUserFunc iUser;
 
     /**
      * Creates new form frmUser
      */
     public frmUser() {
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null); // center the frame
         try {
-            BufferedImage img = ImageIO.read(new File("deposit.png"));
-            Image resizeImage = img.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon imageicon = new ImageIcon(resizeImage);
-            btnDeposit.setIcon(imageicon);
-            BufferedImage img1 = ImageIO.read(new File("withdraw.png"));
-            Image resizeImage1 = img1.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon imageicon1 = new ImageIcon(resizeImage1);
-            btnWithdraw.setIcon(imageicon1);
+            /* Add the icons to the buttons */
+
+            // Add icon for the Create New User Button
+            BufferedImage deposit = ImageIO.read(new File("deposit.png"));
+            Image resizeDeposit = deposit.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon depositIcon = new ImageIcon(resizeDeposit);
+            btnDeposit.setIcon(depositIcon);
+
+            // Add icon for the Create New User Button
+            BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
+            Image resizeWithdraw = withdraw.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon withdrawIcon = new ImageIcon(resizeWithdraw);
+            btnWithdraw.setIcon(withdrawIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage transfer = ImageIO.read(new File("transfer.png"));
-            Image resizetransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon transfericon = new ImageIcon(resizetransfer);
-            btnTransfer.setIcon(transfericon);
+            Image resizeTransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon transferIcon = new ImageIcon(resizeTransfer);
+            btnTransfer.setIcon(transferIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage tuition = ImageIO.read(new File("tuition.png"));
-            Image resizetuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon tuitionicon = new ImageIcon(resizetuition);
-            btnPaytuition.setIcon(tuitionicon);
+            Image resizeTuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon tuitionIcon = new ImageIcon(resizeTuition);
+            btnPaytuition.setIcon(tuitionIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage card = ImageIO.read(new File("card.png"));
-            Image resizecard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon cardicon = new ImageIcon(resizecard);
-            btnBuyMobile.setIcon(cardicon);
-            BufferedImage edit = ImageIO.read(new File("edit.png"));
-            Image resizeedit = edit.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon editicon = new ImageIcon(resizeedit);
-            btnChangeInfo.setIcon(editicon);
+            Image resizeCard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon cardIcon = new ImageIcon(resizeCard);
+            btnBuyMobile.setIcon(cardIcon);
+
+            // Add icon for the Create New User Button
+            BufferedImage changeInfo = ImageIO.read(new File("changeinfo.png"));
+            Image resizeChangeInfo = changeInfo.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon changeInfoIcon = new ImageIcon(resizeChangeInfo);
+            btnChangeInfo.setIcon(changeInfoIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage history = ImageIO.read(new File("history.png"));
-            Image resizehistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon historyicon = new ImageIcon(resizehistory);
-            btnTransactionHistory.setIcon(historyicon);
+            Image resizeHistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon historyIcon = new ImageIcon(resizeHistory);
+            btnTransactionHistory.setIcon(historyIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage delete = ImageIO.read(new File("delete.png"));
-            Image resizedelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon deleteicon = new ImageIcon(resizedelete);
-            btnDeleteAccount.setIcon(deleteicon);
+            Image resizeDelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon deleteIcon = new ImageIcon(resizeDelete);
+            btnDeleteAccount.setIcon(deleteIcon);
+
             try {
                 // look up the registry created in RMI Server
-                iAuth = (IAuthentication) Naming.lookup("rmi://localhost:5000/AuthenticationForm");
+                iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
             } catch (NotBoundException ex) {
                 Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MalformedURLException ex) {
@@ -89,45 +107,65 @@ public class frmUser extends javax.swing.JFrame {
 
     public frmUser(User info) {
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null); // center the frame
         try {
-            BufferedImage img = ImageIO.read(new File("deposit.png"));
-            Image resizeImage = img.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon imageicon = new ImageIcon(resizeImage);
-            btnDeposit.setIcon(imageicon);
-            BufferedImage img1 = ImageIO.read(new File("withdraw.png"));
-            Image resizeImage1 = img1.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon imageicon1 = new ImageIcon(resizeImage1);
-            btnWithdraw.setIcon(imageicon1);
+            /* Add the icons to the buttons */
+
+            // Add icon for the Create New User Button
+            BufferedImage deposit = ImageIO.read(new File("deposit.png"));
+            Image resizeDeposit = deposit.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon depositIcon = new ImageIcon(resizeDeposit);
+            btnDeposit.setIcon(depositIcon);
+
+            // Add icon for the Create New User Button
+            BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
+            Image resizeWithdraw = withdraw.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon withdrawIcon = new ImageIcon(resizeWithdraw);
+            btnWithdraw.setIcon(withdrawIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage transfer = ImageIO.read(new File("transfer.png"));
-            Image resizetransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon transfericon = new ImageIcon(resizetransfer);
-            btnTransfer.setIcon(transfericon);
+            Image resizeTransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon transferIcon = new ImageIcon(resizeTransfer);
+            btnTransfer.setIcon(transferIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage tuition = ImageIO.read(new File("tuition.png"));
-            Image resizetuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon tuitionicon = new ImageIcon(resizetuition);
-            btnPaytuition.setIcon(tuitionicon);
+            Image resizeTuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon tuitionIcon = new ImageIcon(resizeTuition);
+            btnPaytuition.setIcon(tuitionIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage card = ImageIO.read(new File("card.png"));
-            Image resizecard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon cardicon = new ImageIcon(resizecard);
-            btnBuyMobile.setIcon(cardicon);
-            BufferedImage edit = ImageIO.read(new File("edit.png"));
-            Image resizeedit = edit.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon editicon = new ImageIcon(resizeedit);
-            btnChangeInfo.setIcon(editicon);
+            Image resizeCard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon cardIcon = new ImageIcon(resizeCard);
+            btnBuyMobile.setIcon(cardIcon);
+
+            // Add icon for the Create New User Button
+            BufferedImage changeInfo = ImageIO.read(new File("changeinfo.png"));
+            Image resizeChangeInfo = changeInfo.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon changeInfoIcon = new ImageIcon(resizeChangeInfo);
+            btnChangeInfo.setIcon(changeInfoIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage history = ImageIO.read(new File("history.png"));
-            Image resizehistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon historyicon = new ImageIcon(resizehistory);
-            btnTransactionHistory.setIcon(historyicon);
+            Image resizeHistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon historyIcon = new ImageIcon(resizeHistory);
+            btnTransactionHistory.setIcon(historyIcon);
+
+            // Add icon for the Create New User Button
             BufferedImage delete = ImageIO.read(new File("delete.png"));
-            Image resizedelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon deleteicon = new ImageIcon(resizedelete);
-            btnDeleteAccount.setIcon(deleteicon);
+            Image resizeDelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon deleteIcon = new ImageIcon(resizeDelete);
+            btnDeleteAccount.setIcon(deleteIcon);
+
+            /* Display user's full name and balance */
             txtName.setText(info.getFullname());
             txtBalance.setText(info.getMoney() + " VND");
+            
             try {
                 // look up the registry created in RMI Server
-                iAuth = (IAuthentication) Naming.lookup("rmi://localhost:5000/AuthenticationForm");
+                iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
             } catch (NotBoundException ex) {
                 Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MalformedURLException ex) {
@@ -179,6 +217,7 @@ public class frmUser extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("EWallet");
 
         panelUser.setPreferredSize(new java.awt.Dimension(580, 600));
 
@@ -415,7 +454,6 @@ public class frmUser extends javax.swing.JFrame {
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
         // TODO add your handling code here:
-        new frmReport().setVisible(true);
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed

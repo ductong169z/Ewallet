@@ -1,7 +1,11 @@
 
 /**
- *
- * @author Quan Duc Loc CE140037 SE1401
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiserver;
 
@@ -22,7 +26,11 @@ public class RMIServer {
     public static void main(String[] args) {
         try {
             LocateRegistry.createRegistry(69);
-            Naming.bind("rmi://localhost:69/AuthenticationForm", new EWallet());
+            LocateRegistry.createRegistry(70);
+            LocateRegistry.createRegistry(71);
+            Naming.bind("rmi://localhost:69/Authentication", new Authentication());
+            Naming.bind("rmi://localhost:70/UserFunctions", new UserFunc());
+            Naming.bind("rmi://localhost:71/AdminFunctions", new AdminFunc());
             System.out.println("Server Started ...");
         } catch (RemoteException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);

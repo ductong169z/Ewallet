@@ -1,21 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+
+/**
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiclient;
 
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import rmiserver.IUserFunc;
 
-/**
- *
- * @author dorew
- */
 public class frmRegister extends javax.swing.JFrame {
 
     IUserFunc iUser;
@@ -25,6 +30,20 @@ public class frmRegister extends javax.swing.JFrame {
      */
     public frmRegister() {
         initComponents();
+
+        try {
+            // look up the registry created in RMI Server
+            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
+        } catch (NotBoundException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.setLocationRelativeTo(null);
     }
 
@@ -57,7 +76,7 @@ public class frmRegister extends javax.swing.JFrame {
         lblAddress = new javax.swing.JLabel();
         txtAddress = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblUsername.setText("Username:");
