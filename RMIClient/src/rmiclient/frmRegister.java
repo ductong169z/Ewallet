@@ -25,6 +25,7 @@ public class frmRegister extends javax.swing.JFrame {
      */
     public frmRegister() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -36,6 +37,7 @@ public class frmRegister extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        genderGroup = new javax.swing.ButtonGroup();
         panelRegister = new javax.swing.JPanel();
         lblUsername = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
@@ -81,10 +83,12 @@ public class frmRegister extends javax.swing.JFrame {
         lblGender.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblGender.setText("Gender:");
 
+        genderGroup.add(rdoMale);
         rdoMale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoMale.setSelected(true);
         rdoMale.setText("Male");
 
+        genderGroup.add(rdoFemale);
         rdoFemale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoFemale.setText("Female");
 
@@ -298,6 +302,7 @@ public class frmRegister extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOK;
+    private javax.swing.ButtonGroup genderGroup;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFullname;

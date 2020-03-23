@@ -14,22 +14,31 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementation from interface IAuthentication
- * 
+ *
  */
 public class Authentication extends UnicastRemoteObject implements IAuthentication {
 
     // constructor
     public Authentication() throws RemoteException {
         super();
+
+        // register the JDBC driver
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /* Override and define abstract methods */
-    
     /**
      * create user and store into database
+     *
      * @param username
      * @param password
      * @param fullname
@@ -38,7 +47,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
      * @param phone
      * @param address
      * @return 0 if operation successful, 1 if unsuccessful
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
     public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException {
@@ -47,7 +56,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
         // add user info to database
         try {
             // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/se1401", "root", "");
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123");
             PreparedStatement st = conn.prepareStatement("Insert into user values(?, ?, ?, ?, ?, ?, ?)");
 
             // set values in the statement
@@ -58,7 +67,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
             st.setString(5, gender);
             st.setString(6, fullname);
             st.setString(7, phone);
-            
+
             // execute update (insert)
             st.executeUpdate();
         } catch (SQLException ex) {
@@ -76,13 +85,14 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
 
     /**
      * validate user upon login process
+     *
      * @param username
      * @param password
      * @return 0 if operation successful, 1 or 2 if unsuccessful
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
-    public int validateUser(String username, String password) throws RemoteException{
+    public int validateUser(String username, String password) throws RemoteException {
         boolean error = false; // check if there's any errors occured
         String hashPassword = ""; // store password that is MD5 hashed version of user's password (for validation)
 
@@ -106,8 +116,8 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
 
         try {
             // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/se1401", "root", "");
-            
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123");
+
             // statement to retrieve all users with such inputted username and password 
             PreparedStatement st = conn.prepareStatement("Select * from user where Username = BINARY ? and Password = BINARY ?");
 
@@ -120,7 +130,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
             // if there is a user found, return 0 (successful operation)
             if (rs.next()) {
                 return 0;
-            // if there is no user found, return 2 (successful operation but, login failed)
+                // if there is no user found, return 2 (successful operation but, login failed)
             } else {
                 return 2;
             }
