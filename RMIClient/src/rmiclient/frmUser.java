@@ -25,12 +25,68 @@ import rmiserver.User;
  * @author dorew
  */
 public class frmUser extends javax.swing.JFrame {
-    
+
     IAuthentication iAuth;
 
     /**
      * Creates new form frmUser
      */
+    public frmUser() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        try {
+            BufferedImage img = ImageIO.read(new File("deposit.png"));
+            Image resizeImage = img.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon imageicon = new ImageIcon(resizeImage);
+            btnDeposit.setIcon(imageicon);
+            BufferedImage img1 = ImageIO.read(new File("withdraw.png"));
+            Image resizeImage1 = img1.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon imageicon1 = new ImageIcon(resizeImage1);
+            btnWithdraw.setIcon(imageicon1);
+            BufferedImage transfer = ImageIO.read(new File("transfer.png"));
+            Image resizetransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon transfericon = new ImageIcon(resizetransfer);
+            btnTransfer.setIcon(transfericon);
+            BufferedImage tuition = ImageIO.read(new File("tuition.png"));
+            Image resizetuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon tuitionicon = new ImageIcon(resizetuition);
+            btnPaytuition.setIcon(tuitionicon);
+            BufferedImage card = ImageIO.read(new File("card.png"));
+            Image resizecard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon cardicon = new ImageIcon(resizecard);
+            btnBuyMobile.setIcon(cardicon);
+            BufferedImage edit = ImageIO.read(new File("edit.png"));
+            Image resizeedit = edit.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon editicon = new ImageIcon(resizeedit);
+            btnChangeInfo.setIcon(editicon);
+            BufferedImage history = ImageIO.read(new File("history.png"));
+            Image resizehistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon historyicon = new ImageIcon(resizehistory);
+            btnTransactionHistory.setIcon(historyicon);
+            BufferedImage delete = ImageIO.read(new File("delete.png"));
+            Image resizedelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
+            ImageIcon deleteicon = new ImageIcon(resizedelete);
+            btnDeleteAccount.setIcon(deleteicon);
+            try {
+                // look up the registry created in RMI Server
+                iAuth = (IAuthentication) Naming.lookup("rmi://localhost:5000/AuthenticationForm");
+            } catch (NotBoundException ex) {
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+//            set icon for the frame
+//              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
+//            this.setIconImage(icon);
+        } catch (IOException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public frmUser(User info) {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -73,13 +129,13 @@ public class frmUser extends javax.swing.JFrame {
                 // look up the registry created in RMI Server
                 iAuth = (IAuthentication) Naming.lookup("rmi://localhost:5000/AuthenticationForm");
             } catch (NotBoundException ex) {
-                System.out.println("Not Bound Exception Occured!");
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MalformedURLException ex) {
-                System.out.println("Malformed URL Exception Occured!");
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (RemoteException ex) {
-                System.out.println("Remote Exception Occured!");
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
-                System.out.println("An unknown error occured!");
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
 //            set icon for the frame
 //              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
@@ -90,8 +146,7 @@ public class frmUser extends javax.swing.JFrame {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
@@ -360,8 +415,7 @@ public class frmUser extends javax.swing.JFrame {
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
         // TODO add your handling code here:
-        frmReport rp = new frmReport();
-        rp.setVisible(true);
+        new frmReport().setVisible(true);
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
