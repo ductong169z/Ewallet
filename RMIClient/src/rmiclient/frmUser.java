@@ -68,7 +68,7 @@ public class frmUser extends javax.swing.JFrame {
             ImageIcon deleteicon = new ImageIcon(resizedelete);
             btnDeleteAccount.setIcon(deleteicon);
             txtName.setText(info.getFullname());
-            txtBalance.setText(info.getMoney()+" VND");
+            txtBalance.setText(info.getMoney() + " VND");
             try {
                 // look up the registry created in RMI Server
                 iAuth = (IAuthentication) Naming.lookup("rmi://localhost:5000/AuthenticationForm");
@@ -88,8 +88,6 @@ public class frmUser extends javax.swing.JFrame {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -362,6 +360,8 @@ public class frmUser extends javax.swing.JFrame {
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
         // TODO add your handling code here:
+        frmReport rp = new frmReport();
+        rp.setVisible(true);
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
