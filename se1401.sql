@@ -12,7 +12,7 @@
  Target Server Version : 11002100
  File Encoding         : 65001
 
- Date: 21/03/2020 09:30:50
+ Date: 23/03/2020 15:33:13
 */
 
 
@@ -36,6 +36,15 @@ GO
 -- ----------------------------
 -- Records of roles
 -- ----------------------------
+BEGIN TRANSACTION
+GO
+
+INSERT INTO [dbo].[roles] VALUES (N'1', N'Admin'), (N'2', N'User')
+GO
+
+COMMIT
+GO
+
 
 -- ----------------------------
 -- Table structure for setting
@@ -58,6 +67,88 @@ GO
 -- ----------------------------
 -- Records of setting
 -- ----------------------------
+BEGIN TRANSACTION
+GO
+
+COMMIT
+GO
+
+
+-- ----------------------------
+-- Table structure for tuition
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[tuition]') AND type IN ('U'))
+	DROP TABLE [dbo].[tuition]
+GO
+
+CREATE TABLE [dbo].[tuition] (
+  [id] int  IDENTITY(1,1) NOT NULL,
+  [id_student] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [id_uni] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [name] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
+  [tuition] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL
+)
+GO
+
+ALTER TABLE [dbo].[tuition] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Records of tuition
+-- ----------------------------
+BEGIN TRANSACTION
+GO
+
+SET IDENTITY_INSERT [dbo].[tuition] ON
+GO
+
+INSERT INTO [dbo].[tuition] ([id], [id_student], [id_uni], [name], [tuition]) VALUES (N'1', N'CE140196', N'1', N'Nguyen Duc Tong', N'16500000'), (N'2', N'CE140037', N'1', N'Quan Duc Loc', N'16500000'), (N'3', N'CE140085', N'1', N'Tranh Minh Thang', N'16500000')
+GO
+
+SET IDENTITY_INSERT [dbo].[tuition] OFF
+GO
+
+COMMIT
+GO
+
+
+-- ----------------------------
+-- Table structure for universities
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[universities]') AND type IN ('U'))
+	DROP TABLE [dbo].[universities]
+GO
+
+CREATE TABLE [dbo].[universities] (
+  [id] int  IDENTITY(1,1) NOT NULL,
+  [name] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL
+)
+GO
+
+ALTER TABLE [dbo].[universities] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Records of universities
+-- ----------------------------
+BEGIN TRANSACTION
+GO
+
+SET IDENTITY_INSERT [dbo].[universities] ON
+GO
+
+INSERT INTO [dbo].[universities] ([id], [name]) VALUES (N'1', N'FPT University
+'), (N'2', N'Can Tho University'), (N'3', N'Can Tho University of Medicine and Pharmacy'), (N'4', N'Tay Do University'), (N'5', N'Nam Can Tho University')
+GO
+
+SET IDENTITY_INSERT [dbo].[universities] OFF
+GO
+
+COMMIT
+GO
+
 
 -- ----------------------------
 -- Table structure for user_deposit
@@ -71,7 +162,8 @@ CREATE TABLE [dbo].[user_deposit] (
   [user_id] int  NULL,
   [deposit_money] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
   [created_at] timestamp  NULL,
-  [type] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL
+  [type] int  NULL,
+  [description] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL
 )
 GO
 
@@ -82,10 +174,16 @@ GO
 -- ----------------------------
 -- Records of user_deposit
 -- ----------------------------
+BEGIN TRANSACTION
+GO
+
 SET IDENTITY_INSERT [dbo].[user_deposit] ON
 GO
 
 SET IDENTITY_INSERT [dbo].[user_deposit] OFF
+GO
+
+COMMIT
 GO
 
 
@@ -110,10 +208,19 @@ GO
 -- ----------------------------
 -- Records of user_money
 -- ----------------------------
+BEGIN TRANSACTION
+GO
+
 SET IDENTITY_INSERT [dbo].[user_money] ON
 GO
 
+INSERT INTO [dbo].[user_money] ([id], [user_id], [total_money]) VALUES (N'1', N'1', N'0')
+GO
+
 SET IDENTITY_INSERT [dbo].[user_money] OFF
+GO
+
+COMMIT
 GO
 
 
@@ -137,6 +244,15 @@ GO
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
+BEGIN TRANSACTION
+GO
+
+INSERT INTO [dbo].[user_role] VALUES (N'1', N'2')
+GO
+
+COMMIT
+GO
+
 
 -- ----------------------------
 -- Table structure for user_withdraw
@@ -150,7 +266,8 @@ CREATE TABLE [dbo].[user_withdraw] (
   [user_id] int  NULL,
   [withdraw_money] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL,
   [created_at] timestamp  NULL,
-  [type] int  NULL
+  [type] int  NULL,
+  [description] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS  NULL
 )
 GO
 
@@ -161,10 +278,16 @@ GO
 -- ----------------------------
 -- Records of user_withdraw
 -- ----------------------------
+BEGIN TRANSACTION
+GO
+
 SET IDENTITY_INSERT [dbo].[user_withdraw] ON
 GO
 
 SET IDENTITY_INSERT [dbo].[user_withdraw] OFF
+GO
+
+COMMIT
 GO
 
 
@@ -194,10 +317,19 @@ GO
 -- ----------------------------
 -- Records of users
 -- ----------------------------
+BEGIN TRANSACTION
+GO
+
 SET IDENTITY_INSERT [dbo].[users] ON
 GO
 
+INSERT INTO [dbo].[users] ([id], [username], [password], [fullname], [address], [phone], [mail], [gender]) VALUES (N'1', N'ductong', N'202cb962ac59075b964b07152d234b70', N'Nguyen Duc Tong', N'null', N'0787816931', NULL, N'1')
+GO
+
 SET IDENTITY_INSERT [dbo].[users] OFF
+GO
+
+COMMIT
 GO
 
 
@@ -205,6 +337,38 @@ GO
 -- Primary Key structure for table roles
 -- ----------------------------
 ALTER TABLE [dbo].[roles] ADD CONSTRAINT [PK__roles__3213E83FEB67F782] PRIMARY KEY CLUSTERED ([id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Auto increment value for tuition
+-- ----------------------------
+DBCC CHECKIDENT ('[dbo].[tuition]', RESEED, 3)
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table tuition
+-- ----------------------------
+ALTER TABLE [dbo].[tuition] ADD CONSTRAINT [PK__tuition__3213E83F5DA22183] PRIMARY KEY CLUSTERED ([id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Auto increment value for universities
+-- ----------------------------
+DBCC CHECKIDENT ('[dbo].[universities]', RESEED, 5)
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table universities
+-- ----------------------------
+ALTER TABLE [dbo].[universities] ADD CONSTRAINT [PK__Universi__3213E83FF71786FC] PRIMARY KEY CLUSTERED ([id])
 WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
 ON [PRIMARY]
 GO

@@ -153,6 +153,8 @@ public class frmAdmin extends javax.swing.JFrame {
 
         pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
+        btnSuspendUser.setBorder(null);
+
         jLabel4.setText("Create New User");
 
         jLabel5.setText("Reset Password");

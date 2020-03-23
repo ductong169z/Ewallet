@@ -232,6 +232,11 @@
             <Component class="javax.swing.JButton" name="btnResetpassword">
             </Component>
             <Component class="javax.swing.JButton" name="btnSuspendUser">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
               <Properties>
