@@ -1,11 +1,10 @@
-
 /**
- * 
+ *
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- * 
+ *
  */
 package rmiserver;
 
@@ -20,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserFunc extends UnicastRemoteObject implements IUserFunc {
-    
+
     // constructor
     public UserFunc() throws RemoteException {
         super();
@@ -106,7 +105,25 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
     @Override
     public int deposit() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean error = false; // check if there's any errors occured
+
+        // add user info to database
+        try {
+            // connect to database
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123");
+
+            
+        } catch (SQLException ex) {
+            System.out.println("An SQL Error Occured!");
+            error = true; // if any errors occured
+        }
+
+        // return 0 if there are no errors (successful operation), else return 1 (unsuccessful)
+        if (!error) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     @Override
