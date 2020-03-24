@@ -195,6 +195,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
+        schoolname.size();
         return schoolname;
     }
 

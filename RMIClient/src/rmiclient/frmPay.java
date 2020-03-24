@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.GroupLayout;
 import java.rmi.RemoteException;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import rmiserver.IUserFunc;
@@ -32,13 +34,18 @@ public class frmPay extends javax.swing.JFrame {
         try {
             this.payOption = payOption;
             initComponents();
-            iuser = (IUserFunc) Naming.lookup("rmi://localhost:70:UserFunctions");
+            iuser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
             if (payOption == 1) {
                 lblTitle.setText("Pay Tuition");
                 this.setTitle("Pay Tuition");
                 lblSelection.setText("School:");
                 lblInput.setText("Student ID:");
                 lblNotification.setText("");
+                school = iuser.getSchool();
+                cbSelection.removeItemAt(0);
+                for(String value: school.values()){
+                        cbSelection.addItem(value);
+                }
             } else if (payOption == 2) {
                 lblTitle.setText("Top Up");
                 this.setTitle("Top Up Mobile Account");
