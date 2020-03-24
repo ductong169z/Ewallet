@@ -479,6 +479,7 @@ public class frmUser extends javax.swing.JFrame {
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
         // TODO add your handling code here:
+        new frmReport(4).setVisible(true);
     }//GEN-LAST:event_btnTransactionHistoryActionPerformed
 
     private void btnPaytuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaytuitionActionPerformed
