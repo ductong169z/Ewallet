@@ -1,10 +1,11 @@
+
 /**
- *
+ * 
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- *
+ * 
  */
 package rmiserver;
 
@@ -27,16 +28,13 @@ import java.util.logging.Logger;
  */
 public class Authentication extends UnicastRemoteObject implements IAuthentication {
 
-    Connection conn;
-
     // constructor
-    public Authentication(Connection conn) throws RemoteException {
+    public Authentication() throws RemoteException {
         super();
 
         // register the JDBC driver
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            this.conn = conn;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,6 +74,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
 
         try {
             // connect to database
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
 
             // statement to retrieve all users with such inputted username and password 
             PreparedStatement st = conn.prepareStatement("Select * from users where username = ? and password = ?");
