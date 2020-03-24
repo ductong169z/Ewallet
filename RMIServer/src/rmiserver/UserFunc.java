@@ -14,7 +14,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,8 +57,6 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
         // add user info to database
         try {
-            // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
 
             /* Check if phone number already exists in database */
             PreparedStatement stCheckPhone = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
@@ -143,13 +140,11 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
         // add user info to database
         try {
-            // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
             PreparedStatement stGetLim = conn.prepareStatement("SELECT * FROM setting");
             ResultSet rsGetLim = stGetLim.executeQuery();
             rsGetLim.next();
 
-            int maxDepositLimit = rsGetLim.getInt("deposit_lim"); // maximum deposit amount in 1 day
+            int maxDepositLim = rsGetLim.getInt("deposit_lim"); // maximum deposit amount in 1 day
             int totalDeposit = -1; // total deposit amount in current day
             String currentTime = java.time.LocalDate.now().toString(); // current time when user perform deposit
 
@@ -161,14 +156,15 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
             ResultSet rsGetTotal = stGetTotal.executeQuery();
 
+            // if there are already some transactions of deposit performed earlier
             if (rsGetTotal.next()) {
                 totalDeposit = rsGetTotal.getInt(1);
             } else {
                 totalDeposit = 0;
             }
 
-            if (totalDeposit + depositAmount > maxDepositLimit) {
-                oldUserInfo.setDeposit_lim(maxDepositLimit - totalDeposit);
+            if (totalDeposit + depositAmount > maxDepositLim) {
+                oldUserInfo.setDeposit_lim(maxDepositLim - totalDeposit);
                 return oldUserInfo;
             } else {
                 PreparedStatement stCreateDeposit = conn.prepareStatement("INSERT INTO user_deposit(user_id, money, created_at, type) VALUES(?, ?, ?, ?)");
@@ -199,8 +195,70 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     }
 
     @Override
-    public int withdraw() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User withdraw(User oldUserInfo, int withdrawAmount) throws RemoteException {
+        boolean error = false; // check if there's any errors occured
+        User newUserInfo = oldUserInfo;
+
+        // add user info to database
+        try {
+            PreparedStatement stGetLim = conn.prepareStatement("SELECT * FROM setting");
+            ResultSet rsGetLim = stGetLim.executeQuery();
+            rsGetLim.next();
+
+            int maxWithdrawLim = rsGetLim.getInt("withdraw_lim"); // maximum withdraw amount in 1 day
+            int totalWithdraw = -1; // total withdraw amount in current day
+            String currentTime = java.time.LocalDate.now().toString(); // current time when user perform deposit
+
+            /* get the total withdraw amount in current day */
+            PreparedStatement stGetTotal = conn.prepareStatement("SELECT SUM(money) FROM user_deposit WHERE user_id = ? AND created_at = ?");
+
+            stGetTotal.setInt(1, newUserInfo.getId());
+            stGetTotal.setString(2, currentTime);
+
+            ResultSet rsGetTotal = stGetTotal.executeQuery();
+
+            // if there are already some transactions of withdrawal performed earlier
+            if (rsGetTotal.next()) {
+                totalWithdraw = rsGetTotal.getInt(1);
+            } else if (totalWithdraw == maxWithdrawLim) {
+                return null;
+            } else {
+                totalWithdraw = 0;
+            }
+
+            if (totalWithdraw + withdrawAmount > oldUserInfo.getMoney()) {
+                oldUserInfo.setDeposit_lim(-1);
+                oldUserInfo.setWithdraw_lim(oldUserInfo.getMoney() - totalWithdraw);
+                return oldUserInfo;
+            } else if (totalWithdraw + withdrawAmount > maxWithdrawLim) {
+                oldUserInfo.setWithdraw_lim(maxWithdrawLim - totalWithdraw);
+                return oldUserInfo;
+            } else {
+                PreparedStatement stCreateDeposit = conn.prepareStatement("INSERT INTO user_withdraw(user_id, money, created_at, type) VALUES(?, ?, ?, ?)");
+                stCreateDeposit.setInt(1, newUserInfo.getId());
+                stCreateDeposit.setInt(2, withdrawAmount);
+                stCreateDeposit.setString(3, currentTime);
+                stCreateDeposit.setInt(4, 0);
+                stCreateDeposit.executeUpdate();
+
+                PreparedStatement stUpdateMoney = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
+                stUpdateMoney.setInt(1, newUserInfo.getMoney() - withdrawAmount);
+                stUpdateMoney.setInt(2, newUserInfo.getId());
+                stUpdateMoney.executeUpdate();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            error = true; // if any errors occured
+        }
+
+        // return 0 if there are no errors (successful operation), else return 1 (unsuccessful)
+        if (!error) {
+            newUserInfo.setMoney(newUserInfo.getMoney() - withdrawAmount);
+            return newUserInfo;
+        } else {
+            return oldUserInfo;
+        }
     }
 
     @Override

@@ -5,9 +5,6 @@
  */
 package rmiclient;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +21,8 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
     String action;
     User userInfo;
     IUserFunc iUser;
+    int maxDepositLim;
+    int maxWithdrawLim;
 
     /**
      * Creates new form frmDepositWithdraw
@@ -33,34 +32,6 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
      */
     public frmDepositWithdraw(String action, User userInfo) {
         initComponents();
-
-        this.action = action;
-        this.userInfo = userInfo;
-
-        txtPhoneNumber.setText(userInfo.getPhone());
-        txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-
-        if (action.equals("deposit")) {
-            this.setTitle("Deposit Transaction");
-            lblAmount.setText("Deposit Amount");
-            btnConfirm.setText("Confirm Deposit");
-        } else if (action.equals("withdraw")) {
-            this.setTitle("Withdraw Transaction");
-            lblAmount.setText("Withdraw Amount");
-            btnConfirm.setText("Confirm Withdraw");
-        }
-
-        try {
-            /* Connects to server */
-            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         this.setLocationRelativeTo(null);
     }
 
@@ -151,43 +122,67 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        String txtAmountString; // deposit amount in String
+        int txtAmountInt; // deposit amount in integer
+        boolean error; // check if user input is wrong
+        User result; // store the result (new User info from Server)
+
+        /* Update Deposit Limit and Withdraw Limit */
+        this.maxDepositLim = userInfo.getDeposit_lim();
+        this.maxWithdrawLim = userInfo.getWithdraw_lim();
+
+        /* Switch action dependent on deposit or withdraw transaction*/
         switch (action) {
             case "deposit":
 
-                String txtAmountString = txtAmount.getText();
-                int txtAmountInt = -1;
-                boolean error = false;
-                User result = null;
+                /* initialize variables */
+                txtAmountString = txtAmount.getText(); // get string from input field
+                txtAmountInt = -1; // indicate that number conversion is not done
+                error = false; // by default there's no error
+                result = null; // by default the result is null
 
+                /* Check if user not enter anything or just spaces */
                 if (txtAmountString == null || txtAmountString.trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
                 } else {
+                    // try number conversion from text (String) to integer
                     try {
                         txtAmountInt = Integer.parseInt(txtAmountString);
                     } catch (NumberFormatException ex) {
-                        error = true;
+                        error = true; // indicate that there's an error in conversion
                     }
 
+                    // if there's an error occured
                     if (error) {
-                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                    } else if (!error && (txtAmountInt < 1000 || txtAmountInt > userInfo.getDeposit_lim())) {
-                        JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + userInfo.getDeposit_lim() + " (inclusive)", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field.", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        // check if user enter wrong deposit amount (must be at least 1000 VND, and at most deposit limit)
+                    } else if (txtAmountInt < 1000 || txtAmountInt > maxDepositLim) {
+                        JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + maxDepositLim + " (inclusive).", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
                     } else {
+                        // call method in server to execute
                         try {
                             result = iUser.deposit(userInfo, txtAmountInt);
                         } catch (RemoteException ex) {
                             Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
-                        if (result.getDeposit_lim() == userInfo.getDeposit_lim()&& result.getMoney() != userInfo.getMoney()) {
-                            JOptionPane.showMessageDialog(this, "Deposit successfully! New Account Balance is " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
-                            userInfo = result;
-                            txtBalance.setText(result.getMoney() + " VND");
-                            txtAmount.setText("");
-                        } else if (result.getDeposit_lim() == userInfo.getDeposit_lim() && result.getMoney() == userInfo.getMoney()) {
+                        // if user already reached maximum deposit limit
+                        if (result == null) {
+                            JOptionPane.showMessageDialog(this, "You have already reached maximum deposit limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            this.dispose();
+                            // if deposit is successful 
+                        } else if (result.getMoney() != userInfo.getMoney()) {
+                            JOptionPane.showMessageDialog(this, "Deposit successfully! \nNew Account Balance: " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
+                            userInfo = result; // update User info
+                            txtBalance.setText(result.getMoney() + " VND"); // set new balance
+                            txtAmount.setText(""); // empty the deposit amount inputted
+                            // if deposit failed
+                        } else if (result.getDeposit_lim() == userInfo.getDeposit_lim()) {
                             JOptionPane.showMessageDialog(this, "Deposit failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            // if the total deposit amount in current day exceeds deposit limit (with current deposit amount)
                         } else {
-                            JOptionPane.showMessageDialog(this, "Total deposit amount exceeds limit of " + userInfo.getDeposit_lim() + "\nYou should deposit at maximum " + result.getDeposit_lim(), "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(this, "Total deposit amount today exceeds limit of " + userInfo.getDeposit_lim() + " VND! \nYou can only deposit at maximum " + result.getDeposit_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            this.maxDepositLim = result.getDeposit_lim(); // update the maximum deposit limit
                         }
                     }
                 }
@@ -195,6 +190,63 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
 
             case "withdraw":
 
+                /* initialize variables */
+                txtAmountString = txtAmount.getText(); // get string from input field
+                txtAmountInt = -1; // indicate that number conversion is not done
+                error = false; // by default there's no error
+                result = null; // by default the result is null
+
+                /* Check if user not enter anything or just spaces */
+                if (txtAmountString == null || txtAmountString.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please enter a number in \"Withdraw Amount\" field", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // try number conversion from text (String) to integer
+                    try {
+                        txtAmountInt = Integer.parseInt(txtAmountString);
+                    } catch (NumberFormatException ex) {
+                        error = true; // indicate that there's an error in conversion
+                    }
+
+                    // if there's an error occured
+                    if (error) {
+                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Withdraw Amount\" field.", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        // check if user enter wrong withdraw amount (must be at least 1000 VND, and at most withdraw limit)
+                    } else if (maxWithdrawLim > userInfo.getMoney() && (txtAmountInt < 1000 || txtAmountInt > maxWithdrawLim)) {
+                        JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + userInfo.getMoney() + " (inclusive).", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (maxWithdrawLim <= userInfo.getMoney() && txtAmountInt < 1000 || txtAmountInt > maxWithdrawLim) {
+                        JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + maxWithdrawLim + " (inclusive).", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // call method in server to execute
+                        try {
+                            result = iUser.withdraw(userInfo, txtAmountInt);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        // if user already reached maximum withdraw limit
+                        if (result == null) {
+                            JOptionPane.showMessageDialog(this, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            this.dispose();
+                            // if withdrawal is successful 
+                        } else if (result.getMoney() != userInfo.getMoney()) {
+                            JOptionPane.showMessageDialog(this, "Withdraw successfully! \nNew Account Balance: " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
+                            userInfo = result; // update User info
+                            txtBalance.setText(result.getMoney() + " VND"); // set new balance
+                            txtAmount.setText(""); // empty the withdraw amount inputted
+                            // if withdrawal failed
+                        } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
+                            JOptionPane.showMessageDialog(this, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            // if the withdraw amount exceeds current balance
+                        } else if (result.getDeposit_lim() == -1) {
+                            JOptionPane.showMessageDialog(this, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            this.maxWithdrawLim = userInfo.getMoney(); // update the maximum withdraw limit
+                            // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                        }
+                    }
+                }
                 break;
         }
     }//GEN-LAST:event_btnConfirmActionPerformed
