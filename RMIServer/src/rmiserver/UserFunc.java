@@ -137,7 +137,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         // add user info to database
         try {
             // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123");
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "sa@123");
 
         } catch (SQLException ex) {
             System.out.println("An SQL Error Occured!");
@@ -195,8 +195,28 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
-        schoolname.size();
         return schoolname;
+    }
+
+    @Override
+    public String getTuition(String schoolId, String studentId) throws RemoteException {
+        String tuitionInfo = null;
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "sa@123");
+            PreparedStatement st = conn.prepareStatement("select name, tuition from tuition where tuition.id_student like ? and tuition.id_uni = ? ");
+            st.setString(1, studentId);
+            st.setString(2, "\'"+ schoolId +"\'");
+            System.out.println(st.toString());
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                System.out.println(rs.getString("name") + rs.getString("tuition"));
+               tuitionInfo = rs.getString("name") + ": " + rs.getString("tuition");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return tuitionInfo;
     }
 
 }

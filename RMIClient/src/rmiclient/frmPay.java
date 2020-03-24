@@ -26,7 +26,8 @@ public class frmPay extends javax.swing.JFrame {
 
     IUserFunc iuser;
     int payOption; // pay option 1 is tuition fee, 2 is mobile card
-    Map<String, String> school = new HashMap<>();
+    Map<String, String> schools = new HashMap<>();
+
     /**
      * Creates new form frmPaytuition
      */
@@ -41,10 +42,10 @@ public class frmPay extends javax.swing.JFrame {
                 lblSelection.setText("School:");
                 lblInput.setText("Student ID:");
                 lblNotification.setText("");
-                school = iuser.getSchool();
+                schools = iuser.getSchool();
                 cbSelection.removeItemAt(0);
-                for(String value: school.values()){
-                        cbSelection.addItem(value);
+                for (String value : schools.values()) {
+                    cbSelection.addItem(value);
                 }
             } else if (payOption == 2) {
                 lblTitle.setText("Top Up");
@@ -85,7 +86,7 @@ public class frmPay extends javax.swing.JFrame {
         txtInput = new javax.swing.JTextField();
         lblNotification = new javax.swing.JLabel();
         btnPay = new javax.swing.JButton();
-        btnPay1 = new javax.swing.JButton();
+        btnCheck = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pay Tuition");
@@ -121,11 +122,11 @@ public class frmPay extends javax.swing.JFrame {
         btnPay.setText("Confirm");
         btnPay.setEnabled(false);
 
-        btnPay1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        btnPay1.setText("Check");
-        btnPay1.addActionListener(new java.awt.event.ActionListener() {
+        btnCheck.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btnCheck.setText("Check");
+        btnCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPay1ActionPerformed(evt);
+                btnCheckActionPerformed(evt);
             }
         });
 
@@ -151,7 +152,7 @@ public class frmPay extends javax.swing.JFrame {
                 .addContainerGap(107, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnPay1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnPay))
                     .addComponent(lblNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -175,7 +176,7 @@ public class frmPay extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPay)
-                    .addComponent(btnPay1))
+                    .addComponent(btnCheck))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
 
@@ -187,19 +188,27 @@ public class frmPay extends javax.swing.JFrame {
         lblNotification.setText("abcasd");
     }//GEN-LAST:event_txtInputInputMethodTextChanged
 
-    private void btnPay1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPay1ActionPerformed
+    private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
         // TODO add your handling code here:
-        if(payOption == 1){
-            
-        }else if(payOption ==  2){
-            
+        if (payOption == 1) {
+            try {
+                int schoolId = (int) cbSelection.getSelectedIndex() + 1;
+                System.out.println(schoolId);
+                String tuitionInfo = iuser.getTuition(String.valueOf(schoolId), txtInput.getText());
+                System.out.println(tuitionInfo);
+                lblNotification.setText(tuitionInfo);
+            } catch (RemoteException ex) {
+                Logger.getLogger(frmPay.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (payOption == 2) {
+
         }
-    }//GEN-LAST:event_btnPay1ActionPerformed
+    }//GEN-LAST:event_btnCheckActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnPay;
-    private javax.swing.JButton btnPay1;
     private javax.swing.JComboBox<String> cbSelection;
     private javax.swing.JLabel lblInput;
     private javax.swing.JLabel lblNotification;
