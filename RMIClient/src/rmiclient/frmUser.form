@@ -294,7 +294,7 @@
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Buy Mobile Card"/>
+                <Property name="text" type="java.lang.String" value="Top Up Mobile Account"/>
               </Properties>
             </Component>
           </SubComponents>

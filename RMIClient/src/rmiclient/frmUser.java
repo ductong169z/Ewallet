@@ -289,7 +289,7 @@ public class frmUser extends javax.swing.JFrame {
         jLabel4.setText("Pay Tuition");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Buy Mobile Card");
+        jLabel5.setText("Top Up Mobile Account");
 
         javax.swing.GroupLayout pnTransactionLayout = new javax.swing.GroupLayout(pnTransaction);
         pnTransaction.setLayout(pnTransactionLayout);

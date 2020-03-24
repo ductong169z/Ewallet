@@ -28,15 +28,18 @@ public class frmPay extends javax.swing.JFrame {
             lblInput.setText("Student ID:");
             lblNotification.setText("");
         } else if (payOption == 2) {
-            lblTitle.setText("Buy Mobile Card");
-            this.setTitle("Buy Mobile Card");
-            lblSelection.setText("Network:");
-            lblInput.setText("Amount:");
-            this.remove(txtInput);
-            cbInput = new javax.swing.JComboBox<>();
-            cbInput.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-            cbInput.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" "}));
+            lblTitle.setText("Top Up");
+            this.setTitle("Top Up Mobile Account");
+            lblSelection.setText("Amount:");
+            lblInput.setText("Phone number:");
             lblNotification.setText("");
+            cbSelection.removeItemAt(0);
+            cbSelection.addItem("10,000 VND");
+            cbSelection.addItem("20,000 VND");
+            cbSelection.addItem("50,000 VND");
+            cbSelection.addItem("100,000 VND");
+            cbSelection.addItem("200,000 VND");
+            cbSelection.addItem("500,000 VND");
         }
     }
 
@@ -61,6 +64,7 @@ public class frmPay extends javax.swing.JFrame {
         setTitle("Pay Tuition");
 
         lblTitle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitle.setText("<Title>");
 
         lblSelection.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
@@ -87,32 +91,35 @@ public class frmPay extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(107, Short.MAX_VALUE)
-                .addComponent(lblNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(106, 106, 106))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(177, 177, 177)
-                .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSelection)
                     .addComponent(lblInput))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitle)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtInput)
-                        .addComponent(cbSelection, 0, 259, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtInput)
+                    .addComponent(cbSelection, 0, 259, Short.MAX_VALUE))
                 .addGap(26, 26, 26))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(107, Short.MAX_VALUE)
+                .addComponent(lblNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(106, 106, 106))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(25, 25, 25)
                 .addComponent(lblTitle)
-                .addGap(32, 32, 32)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSelection)
                     .addComponent(cbSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
