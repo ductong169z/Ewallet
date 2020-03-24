@@ -245,16 +245,34 @@ public class frmUser extends javax.swing.JFrame {
 
         pnTransaction.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transaction", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
+        btnWithdraw.setContentAreaFilled(false);
         btnWithdraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnWithdrawActionPerformed(evt);
             }
         });
 
+        btnTransfer.setContentAreaFilled(false);
+
         btnDeposit.setBorder(null);
+        btnDeposit.setContentAreaFilled(false);
         btnDeposit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDepositActionPerformed(evt);
+            }
+        });
+
+        btnPaytuition.setContentAreaFilled(false);
+        btnPaytuition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaytuitionActionPerformed(evt);
+            }
+        });
+
+        btnBuyMobile.setContentAreaFilled(false);
+        btnBuyMobile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuyMobileActionPerformed(evt);
             }
         });
 
@@ -325,6 +343,11 @@ public class frmUser extends javax.swing.JFrame {
 
         pnAccountmanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
+        btnChangeInfo.setContentAreaFilled(false);
+
+        btnDeleteAccount.setContentAreaFilled(false);
+
+        btnTransactionHistory.setContentAreaFilled(false);
         btnTransactionHistory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTransactionHistoryActionPerformed(evt);
@@ -457,6 +480,16 @@ public class frmUser extends javax.swing.JFrame {
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnTransactionHistoryActionPerformed
+
+    private void btnPaytuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaytuitionActionPerformed
+        // TODO add your handling code here:
+        new frmPay(1).setVisible(true);
+    }//GEN-LAST:event_btnPaytuitionActionPerformed
+
+    private void btnBuyMobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyMobileActionPerformed
+        // TODO add your handling code here:
+        new frmPay(2).setVisible(true);
+    }//GEN-LAST:event_btnBuyMobileActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
