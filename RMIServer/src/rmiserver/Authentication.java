@@ -1,6 +1,11 @@
+
 /**
- *
- * @author Quan Duc Loc CE140037 SE1401
+ * 
+ * @author Wibuu Group, consists of 3 members:
+ * @author Nguyen Duc Tong
+ * @author Quan Duc Loc
+ * @author Tran Minh Thang
+ * 
  */
 package rmiserver;
 
@@ -18,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class implementation from interface IAuthentication
+ * Class implementation from interfaces IAuthentication, IUserFunc, IAdminFunc
  *
  */
 public class Authentication extends UnicastRemoteObject implements IAuthentication {
@@ -35,55 +40,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
         }
     }
 
-    /* Override and define abstract methods */
-    /**
-     * create user and store into database
-     *
-     * @param username
-     * @param password
-     * @param fullname
-     * @param gender
-     * @param email
-     * @param phone
-     * @param address
-     * @return 0 if operation successful, 1 if unsuccessful
-     * @throws RemoteException
-     */
-    @Override
-    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException {
-        boolean error = false; // check if there's any errors occured
-
-        // add user info to database
-        try {
-            // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123");
-            PreparedStatement st = conn.prepareStatement("Insert into user values(?, ?, ?, ?, ?, ?, ?)");
-
-            // set values in the statement
-            st.setString(1, username);
-            st.setString(2, password);
-            st.setString(3, fullname);
-            st.setString(4, address);
-            st.setString(5, phone);
-            st.setString(6, email);
-            st.setString(7, gender);
-
-            // execute update (insert)
-            int count = st.executeUpdate();
-            System.out.println(count);
-        } catch (SQLException ex) {
-            System.out.println("An SQL Error Occured!");
-            error = true; // if any errors occured
-        }
-
-        // return 0 if there are no errors (successful operation), else return 1 (unsuccessful)
-        if (!error) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
+    /* Override methods in IAuthentication interface */
     /**
      * validate user upon login process
      *
@@ -134,8 +91,8 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
                 getRole.setString(1, rs.getString("id"));
                 ResultSet rsRole = getRole.executeQuery();
                 if (rsRole.next()) {
-                    
-                    User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("address"), rs.getString("phone"), rs.getString("mail"), rs.getString("gender"), rsRole.getString("role_id"),rsRole.getString("total_money"));
+
+                    User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("address"), rs.getString("phone"), rs.getString("mail"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"));
                     return user;
                 } else {
                     System.out.println("meos cos gii");
@@ -150,9 +107,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
             System.out.println(ex.getMessage());
             error = true; // if any errors occured
             return null;
-
         }
 
     }
-
 }
