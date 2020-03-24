@@ -57,7 +57,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         try {
             // connect to database
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
-            
+
             /* Check if phone number already exists in database */
             PreparedStatement st = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
 
@@ -67,7 +67,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
             String hashPassword = ""; // store MD5 hashed version of password
-            
+
             /* code to hash password using MD5 algorithm */
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
@@ -87,8 +87,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
             /* Add new user to database */
-            st = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender)"
-                    + " values(?, ?, ?, ?, ?, ?, ?)");
+            st = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender, status)"
+                    + " values(?, ?, ?, ?, ?, ?, ?, ?)");
 
             // set values in the statement
             st.setString(1, username);
@@ -98,11 +98,13 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             st.setString(5, phone);
             st.setString(6, email);
             st.setString(7, gender);
+            st.setInt(8, 1);
 
             st.executeUpdate();
 
             /* Get user ID from database to add data to other tables */
-            st = conn.prepareStatement("SELECT id FROM users WHERE phone = " + phone);
+            st = conn.prepareStatement("SELECT id FROM users WHERE phone = ?");
+            st.setString(1, phone);
 
             rs = st.executeQuery();
             rs.next();
@@ -110,12 +112,15 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             int userID = rs.getInt(1); // store the user ID of the user (who has just been added to database above)
 
             // execute SQL statements to complete creating new user
-            st = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(" + userID + ", 2)");
+            st = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , 2)");
+            st.setInt(1, userID);
             st.executeUpdate();
-            st = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(" + userID + ", " + 0 + ")");
+            st = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
+            st.setInt(1, userID);
+            st.setInt(2, 0);
             st.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("An SQL Error Occured!");
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -128,24 +133,61 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     }
 
     @Override
-    public int deposit() throws RemoteException {
+    public User deposit(User oldUserInfo, int depositAmount) throws RemoteException {
         boolean error = false; // check if there's any errors occured
+        User newUserInfo = oldUserInfo;
 
         // add user info to database
         try {
             // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123");
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM setting");
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            int maxDepositLimit = rs.getInt(1); // maximum deposit amount in 1 day
+            int totalDeposit = -1; // total deposit amount in current day
+            String currentTime = java.time.LocalDate.now().toString();
+
+            /* get the total deposit amount in current day */
+            st = conn.prepareStatement("SELECT SUM(deposit_money) FROM user_deposit WHERE user_id = ? AND created_at LIKE '?'");
+
+            rs = st.executeQuery();
+
+            st.setInt(1, newUserInfo.getId());
+            st.setString(2, currentTime);
+
+            rs.next();
+            totalDeposit = rs.getInt(1);
+
+            if (depositAmount > maxDepositLimit || totalDeposit + depositAmount > maxDepositLimit) {
+                oldUserInfo.setDeposit_lim(totalDeposit);
+                return oldUserInfo;
+            } else {
+                st = conn.prepareStatement("INSERT INTO user_deposit(user_id, deposit_money, created_at, type) VALUES(?, ?, ?, ?)");
+                st.setInt(1, newUserInfo.getId());
+                st.setInt(2, depositAmount);
+                st.setString(3, currentTime);
+                st.setInt(4, 0);
+                st.executeUpdate();
+
+                st = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
+                st.setInt(1, depositAmount + newUserInfo.getMoney());
+                st.setInt(2, newUserInfo.getId());
+                st.executeUpdate();
+            }
 
         } catch (SQLException ex) {
-            System.out.println("An SQL Error Occured!");
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
         // return 0 if there are no errors (successful operation), else return 1 (unsuccessful)
         if (!error) {
-            return 0;
+            newUserInfo.setMoney(depositAmount + newUserInfo.getMoney());
+            return newUserInfo;
         } else {
-            return 1;
+            return oldUserInfo;
         }
     }
 

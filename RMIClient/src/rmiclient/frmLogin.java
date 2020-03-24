@@ -1,11 +1,10 @@
-
 /**
- * 
+ *
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- * 
+ *
  */
 package rmiclient;
 
@@ -200,7 +199,9 @@ public class frmLogin extends javax.swing.JFrame {
             try {
                 result = iAuth.validateUser(username, password);
                 if (result != null) {
-                    if (result.getRole_id() == 2) {
+                    if (result.getFullname() == null) {
+                        JOptionPane.showMessageDialog(this, "Cannot connect to Database\nSQL Exception Occured!", "Login failed", JOptionPane.ERROR_MESSAGE);
+                    } else if (result.getRole_id() == 2) {
                         JOptionPane.showMessageDialog(this, "You are now logged in as a User!", "Login Successfully", JOptionPane.INFORMATION_MESSAGE);
                         new frmUser(result).setVisible(true);
                         this.setVisible(false);
@@ -210,7 +211,7 @@ public class frmLogin extends javax.swing.JFrame {
                         this.setVisible(false);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Username or Password is incorrect or Cannot connect to Database", "Login failed", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Username or Password is incorrect", "Login failed", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Login failed", JOptionPane.ERROR_MESSAGE);

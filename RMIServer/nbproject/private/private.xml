@@ -5,7 +5,8 @@
         <group>
             <file>file:/C:/Workbench/Coding/GitHub/Ewallet/RMIServer/src/rmiserver/RMIServer.java</file>
             <file>file:/C:/Workbench/Coding/GitHub/Ewallet/RMIServer/src/rmiserver/UserFunc.java</file>
-            <file>file:/C:/Workbench/Coding/GitHub/Ewallet/RMIServer/src/rmiserver/AdminFunc.java</file>
+            <file>file:/C:/Workbench/Coding/GitHub/Ewallet/RMIServer/src/rmiserver/IUserFunc.java</file>
+            <file>file:/C:/Workbench/Coding/GitHub/Ewallet/RMIServer/src/rmiserver/User.java</file>
         </group>
     </open-files>
 </project-private>

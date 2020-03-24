@@ -5,6 +5,14 @@
  */
 package rmiclient;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import rmiserver.IUserFunc;
 import rmiserver.User;
 
 /**
@@ -14,9 +22,12 @@ import rmiserver.User;
 public class frmDepositWithdraw extends javax.swing.JFrame {
 
     String action;
+    User userInfo;
+    IUserFunc iUser;
 
     /**
      * Creates new form frmDepositWithdraw
+     *
      * @param action
      * @param userInfo
      */
@@ -24,6 +35,7 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
         initComponents();
 
         this.action = action;
+        this.userInfo = userInfo;
 
         txtPhoneNumber.setText(userInfo.getPhone());
         txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
@@ -36,6 +48,17 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
             this.setTitle("Withdraw Transaction");
             lblAmount.setText("Withdraw Amount");
             btnConfirm.setText("Confirm Withdraw");
+        }
+
+        try {
+            /* Connects to server */
+            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
+        } catch (NotBoundException ex) {
+            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.setLocationRelativeTo(null);
@@ -128,7 +151,52 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        // TODO add your handling code here:
+        switch (action) {
+            case "deposit":
+
+                String txtAmountString = txtAmount.getText();
+                int txtAmountInt = -1;
+                boolean error = false;
+                User result = null;
+
+                if (txtAmountString == null || txtAmountString.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    try {
+                        txtAmountInt = Integer.parseInt(txtAmountString);
+                    } catch (NumberFormatException ex) {
+                        error = true;
+                    }
+
+                    if (error) {
+                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (!error && (txtAmountInt < 1000 || txtAmountInt > userInfo.getDeposit_lim())) {
+                        JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + userInfo.getDeposit_lim() + " (inclusive)", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        try {
+                            result = iUser.deposit(userInfo, txtAmountInt);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        int deposit_lim = userInfo.getDeposit_lim();
+
+                        if (result.getDeposit_lim() != deposit_lim && result.getMoney() != userInfo.getMoney()) {
+                            JOptionPane.showMessageDialog(this, "Deposit successfully! New Account Balance is " + result.getMoney(), "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
+                            userInfo = result;
+                        } else if (result.getDeposit_lim() != deposit_lim && result.getMoney() == userInfo.getMoney()) {
+                            JOptionPane.showMessageDialog(this, "Deposit failed!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Total deposit amount exceeds limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                }
+                break;
+
+            case "withdraw":
+
+                break;
+        }
     }//GEN-LAST:event_btnConfirmActionPerformed
 
 

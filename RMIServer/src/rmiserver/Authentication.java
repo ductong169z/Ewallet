@@ -1,11 +1,10 @@
-
 /**
- * 
+ *
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- * 
+ *
  */
 package rmiserver;
 
@@ -87,11 +86,16 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
 
             // if there is a user found, return 0 (successful operation)
             if (rs.next()) {
-                PreparedStatement getRole = conn.prepareStatement("SELECT * FROM user_role JOIN user_money ON user_role.user_id = user_money.id WHERE user_role.user_id = ? ");
+                PreparedStatement getRole = conn.prepareStatement("SELECT * FROM user_role JOIN user_money ON user_role.user_id = user_money.user_id WHERE user_role.user_id = ? ");
                 getRole.setString(1, rs.getString("id"));
                 ResultSet rsRole = getRole.executeQuery();
+
+                PreparedStatement getLim = conn.prepareStatement("SELECT * FROM setting");
+                ResultSet rsLim = getLim.executeQuery();
+
                 if (rsRole.next()) {
-                    User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("phone"), rs.getString("mail"), rs.getString("address"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"));
+                    rsLim.next();
+                    User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("phone"), rs.getString("mail"), rs.getString("address"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"), rsLim.getString("deposit_lim"), rsLim.getString("withdraw_lim"), rsLim.getString("trans_lim"));
                     return user;
                 } else {
                     return null;
@@ -104,7 +108,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             error = true; // if any errors occured
-            return null;
+            return new User();
         }
 
     }
