@@ -11,6 +11,8 @@ package rmiserver;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
+
 
 public interface IUserFunc extends Remote {
 
@@ -29,4 +31,6 @@ public interface IUserFunc extends Remote {
     public int payTuition() throws RemoteException;
 
     public int viewTransactionHistory() throws RemoteException;
+    
+    public Map<String, String> getSchool() throws RemoteException;
 }

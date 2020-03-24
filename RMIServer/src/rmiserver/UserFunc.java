@@ -18,6 +18,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,7 +48,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param email
      * @param phone
      * @param address
-     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number is duplicated
+     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number
+     * is duplicated
      * @throws RemoteException
      */
     @Override
@@ -57,7 +60,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         try {
             // connect to database
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
-            
+
             /* Check if phone number already exists in database */
             PreparedStatement st = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
 
@@ -67,7 +70,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
             String hashPassword = ""; // store MD5 hashed version of password
-            
+
             /* code to hash password using MD5 algorithm */
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
@@ -177,6 +180,22 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     @Override
     public int viewTransactionHistory() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Map<String, String> getSchool() throws RemoteException {
+        Map<String, String> schoolname = new HashMap<>();
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "sa@123");
+            PreparedStatement st = conn.prepareStatement("select id, name from universities");
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                schoolname.put(rs.getString("id"), rs.getString("name"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return schoolname;
     }
 
 }
