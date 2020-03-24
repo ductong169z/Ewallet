@@ -23,13 +23,16 @@ import java.util.logging.Logger;
 
 public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
+    Connection conn;
+    
     // constructor
-    public UserFunc() throws RemoteException {
+    public UserFunc(Connection conn) throws RemoteException {
         super();
 
         // register the JDBC driver
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            this.conn = conn;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
         }
