@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
     Connection conn;
-    
+
     // constructor
     public UserFunc(Connection conn) throws RemoteException {
         super();
@@ -62,10 +62,10 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
 
             /* Check if phone number already exists in database */
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
+            PreparedStatement stCheckPhone = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+            ResultSet rsCheckPhone = stCheckPhone.executeQuery();
+            if (rsCheckPhone.next()) {
                 return 2; // indicate that phone number already bound to another account in database
             }
 
@@ -90,38 +90,39 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
             /* Add new user to database */
-            st = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender, status)"
+            PreparedStatement stCreateUser = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender, status)"
                     + " values(?, ?, ?, ?, ?, ?, ?, ?)");
 
             // set values in the statement
-            st.setString(1, username);
-            st.setString(2, hashPassword);
-            st.setString(3, fullname);
-            st.setString(4, address);
-            st.setString(5, phone);
-            st.setString(6, email);
-            st.setString(7, gender);
-            st.setInt(8, 1);
+            stCreateUser.setString(1, username);
+            stCreateUser.setString(2, hashPassword);
+            stCreateUser.setString(3, fullname);
+            stCreateUser.setString(4, address);
+            stCreateUser.setString(5, phone);
+            stCreateUser.setString(6, email);
+            stCreateUser.setString(7, gender);
+            stCreateUser.setInt(8, 1);
 
-            st.executeUpdate();
+            stCreateUser.executeUpdate();
 
             /* Get user ID from database to add data to other tables */
-            st = conn.prepareStatement("SELECT id FROM users WHERE phone = ?");
-            st.setString(1, phone);
+            PreparedStatement stGetUserID = conn.prepareStatement("SELECT id FROM users WHERE phone = ?");
+            stGetUserID.setString(1, phone);
 
-            rs = st.executeQuery();
-            rs.next();
+            ResultSet rsUserID = stGetUserID.executeQuery();
+            rsUserID.next();
 
-            int userID = rs.getInt(1); // store the user ID of the user (who has just been added to database above)
+            int userID = rsUserID.getInt("id"); // store the user ID of the user (who has just been added to database above)
 
             // execute SQL statements to complete creating new user
-            st = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , 2)");
-            st.setInt(1, userID);
-            st.executeUpdate();
-            st = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
-            st.setInt(1, userID);
-            st.setInt(2, 0);
-            st.executeUpdate();
+            PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , 2)");
+            stSetRoleID.setInt(1, userID);
+            stSetRoleID.executeUpdate();
+
+            PreparedStatement stSetMoney = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
+            stSetMoney.setInt(1, userID);
+            stSetMoney.setInt(2, 0);
+            stSetMoney.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
@@ -144,40 +145,43 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         try {
             // connect to database
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM setting");
-            ResultSet rs = st.executeQuery();
-            rs.next();
+            PreparedStatement stGetLim = conn.prepareStatement("SELECT * FROM setting");
+            ResultSet rsGetLim = stGetLim.executeQuery();
+            rsGetLim.next();
 
-            int maxDepositLimit = rs.getInt(1); // maximum deposit amount in 1 day
+            int maxDepositLimit = rsGetLim.getInt("deposit_lim"); // maximum deposit amount in 1 day
             int totalDeposit = -1; // total deposit amount in current day
-            String currentTime = java.time.LocalDate.now().toString();
+            String currentTime = java.time.LocalDate.now().toString(); // current time when user perform deposit
 
             /* get the total deposit amount in current day */
-            st = conn.prepareStatement("SELECT SUM(deposit_money) FROM user_deposit WHERE user_id = ? AND created_at LIKE '?'");
+            PreparedStatement stGetTotal = conn.prepareStatement("SELECT SUM(money) FROM user_deposit WHERE user_id = ? AND created_at = ?");
 
-            rs = st.executeQuery();
+            stGetTotal.setInt(1, newUserInfo.getId());
+            stGetTotal.setString(2, currentTime);
 
-            st.setInt(1, newUserInfo.getId());
-            st.setString(2, currentTime);
+            ResultSet rsGetTotal = stGetTotal.executeQuery();
 
-            rs.next();
-            totalDeposit = rs.getInt(1);
+            if (rsGetTotal.next()) {
+                totalDeposit = rsGetTotal.getInt(1);
+            } else {
+                totalDeposit = 0;
+            }
 
-            if (depositAmount > maxDepositLimit || totalDeposit + depositAmount > maxDepositLimit) {
-                oldUserInfo.setDeposit_lim(totalDeposit);
+            if (totalDeposit + depositAmount > maxDepositLimit) {
+                oldUserInfo.setDeposit_lim(maxDepositLimit - totalDeposit);
                 return oldUserInfo;
             } else {
-                st = conn.prepareStatement("INSERT INTO user_deposit(user_id, deposit_money, created_at, type) VALUES(?, ?, ?, ?)");
-                st.setInt(1, newUserInfo.getId());
-                st.setInt(2, depositAmount);
-                st.setString(3, currentTime);
-                st.setInt(4, 0);
-                st.executeUpdate();
+                PreparedStatement stCreateDeposit = conn.prepareStatement("INSERT INTO user_deposit(user_id, money, created_at, type) VALUES(?, ?, ?, ?)");
+                stCreateDeposit.setInt(1, newUserInfo.getId());
+                stCreateDeposit.setInt(2, depositAmount);
+                stCreateDeposit.setString(3, currentTime);
+                stCreateDeposit.setInt(4, 0);
+                stCreateDeposit.executeUpdate();
 
-                st = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
-                st.setInt(1, depositAmount + newUserInfo.getMoney());
-                st.setInt(2, newUserInfo.getId());
-                st.executeUpdate();
+                PreparedStatement stUpdateMoney = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
+                stUpdateMoney.setInt(1, depositAmount + newUserInfo.getMoney());
+                stUpdateMoney.setInt(2, newUserInfo.getId());
+                stUpdateMoney.executeUpdate();
             }
 
         } catch (SQLException ex) {

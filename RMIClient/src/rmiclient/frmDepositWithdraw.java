@@ -179,15 +179,15 @@ public class frmDepositWithdraw extends javax.swing.JFrame {
                             Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
-                        int deposit_lim = userInfo.getDeposit_lim();
-
-                        if (result.getDeposit_lim() != deposit_lim && result.getMoney() != userInfo.getMoney()) {
-                            JOptionPane.showMessageDialog(this, "Deposit successfully! New Account Balance is " + result.getMoney(), "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
+                        if (result.getDeposit_lim() == userInfo.getDeposit_lim()&& result.getMoney() != userInfo.getMoney()) {
+                            JOptionPane.showMessageDialog(this, "Deposit successfully! New Account Balance is " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
                             userInfo = result;
-                        } else if (result.getDeposit_lim() != deposit_lim && result.getMoney() == userInfo.getMoney()) {
-                            JOptionPane.showMessageDialog(this, "Deposit failed!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            txtBalance.setText(result.getMoney() + " VND");
+                            txtAmount.setText("");
+                        } else if (result.getDeposit_lim() == userInfo.getDeposit_lim() && result.getMoney() == userInfo.getMoney()) {
+                            JOptionPane.showMessageDialog(this, "Deposit failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         } else {
-                            JOptionPane.showMessageDialog(this, "Total deposit amount exceeds limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(this, "Total deposit amount exceeds limit of " + userInfo.getDeposit_lim() + "\nYou should deposit at maximum " + result.getDeposit_lim(), "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
                 }
