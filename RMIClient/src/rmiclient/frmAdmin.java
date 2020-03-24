@@ -32,8 +32,9 @@ public class frmAdmin extends javax.swing.JFrame {
      * Creates new form frmAdmin
      */
     public frmAdmin() {
+        initComponents();
+
         try {
-            initComponents();
             /* Add the icons to the buttons */
 
             // Add icon for the Create New User Button
@@ -79,10 +80,11 @@ public class frmAdmin extends javax.swing.JFrame {
 
     // constructor
     public frmAdmin(User adminInfo) {
+        initComponents();
         this.adminInfo = adminInfo;
+        this.setLocationRelativeTo(null); // center the form
 
         try {
-            initComponents();
             /* Add the icons to the buttons */
 
             // Add icon for the Create New User Button
@@ -120,14 +122,13 @@ public class frmAdmin extends javax.swing.JFrame {
             Image resizeRTransfer = rTransfer.getScaledInstance(btnTransferReport.getHeight(), btnTransferReport.getWidth(), Image.SCALE_SMOOTH);
             ImageIcon rTransferIcon = new ImageIcon(resizeRTransfer);
             btnTransferReport.setIcon(rTransferIcon);
-            this.setLocationRelativeTo(null); // center the form
 
             /* Connects to server */
             iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
-            
+
             /* Set Admin name in Welcome text */
             lblWelcome.setText("Welcome " + adminInfo.getFullname() + " !!!");
-            
+
         } catch (NotBoundException ex) {
             Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -136,7 +137,7 @@ public class frmAdmin extends javax.swing.JFrame {
             Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
     /**
