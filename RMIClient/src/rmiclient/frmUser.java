@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -478,8 +479,12 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
-        // TODO add your handling code here:
-        new frmReport(4).setVisible(true);
+        try {
+            // TODO add your handling code here:
+            new frmReport(4).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnTransactionHistoryActionPerformed
 
     private void btnPaytuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaytuitionActionPerformed

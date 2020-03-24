@@ -92,8 +92,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
                 getRole.setString(1, rs.getString("id"));
                 ResultSet rsRole = getRole.executeQuery();
                 if (rsRole.next()) {
-
-                    User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("address"), rs.getString("phone"), rs.getString("mail"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"));
+                    User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("phone"), rs.getString("mail"), rs.getString("address"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"));
                     return user;
                 } else {
                     return null;
@@ -123,7 +122,8 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
         } catch (SQLException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
         }
-                return false;
+        return false;
 
     }
+
 }
