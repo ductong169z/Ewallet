@@ -265,29 +265,11 @@ public class frmRegister extends javax.swing.JFrame {
             String phone = txtPhone.getText();
             String gender = rdoMale.isSelected() ? "Male" : "Female";
             String address = txtAddress.getText();
-            String hashPassword = "";
             int result = -1; // store the result of operation (0 if successful, 1 if unsuccessful, 2 if phone number already bound to another account in database)
-
-            /* code to hash password using MD5 algorithm */
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-
-                byte[] messageDigest = md.digest(password.getBytes());
-
-                BigInteger no = new BigInteger(1, messageDigest);
-
-                // Convert message digest into hex value
-                hashPassword = no.toString(16);
-                while (hashPassword.length() < 32) {
-                    hashPassword = "0" + hashPassword;
-                }
-            } catch (NoSuchAlgorithmException e) {
-                JOptionPane.showMessageDialog(this, "Hashing password error!", "Registration failed", JOptionPane.ERROR_MESSAGE);
-            }
 
             // call method createUser on server side to execute
             try {
-                result = iUser.createUser(username, hashPassword, fullname, gender, email, phone, address);
+                result = iUser.createUser(username, password, fullname, gender, email, phone, address);
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
@@ -305,7 +287,7 @@ public class frmRegister extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Creating new account succesfully!", "Registration successfully", JOptionPane.INFORMATION_MESSAGE);
                 // if operation is unsuccessful on server side
             } else if (result == 1) {
-                JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception or Hashing Error Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
                 // if phone number already bound to another account in database
             } else if (result == 2) {
                 JOptionPane.showMessageDialog(this, "This phone number already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
