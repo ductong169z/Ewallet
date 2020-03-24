@@ -96,6 +96,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
                     User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("address"), rs.getString("phone"), rs.getString("mail"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"));
                     return user;
                 } else {
+                    System.out.println("meos cos gii");
                     return null;
                 }
                 // if there is no user found, return 2 (successful operation but, login failed)
@@ -108,22 +109,6 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
             error = true; // if any errors occured
             return null;
         }
-
-    }
-
-    @Override
-    public boolean checkStatus(String user_id) {
-        try {
-            PreparedStatement st = conn.prepareStatement("Select status from users where id = ? AND status =1 ");
-            st.setString(1, user_id);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
-        }
-                return false;
 
     }
 }
