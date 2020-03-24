@@ -108,6 +108,9 @@ public class frmUser extends javax.swing.JFrame {
 
     public frmUser(User userInfo) {
         initComponents();
+
+        this.userInfo = userInfo;
+
         this.setLocationRelativeTo(null); // center the frame
         try {
             /* Add the icons to the buttons */
@@ -470,11 +473,11 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameActionPerformed
 
     private void btnWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawActionPerformed
-        // TODO add your handling code here:
+        new frmDepositWithdraw("withdraw", userInfo).setVisible(true);
     }//GEN-LAST:event_btnWithdrawActionPerformed
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
-        
+        new frmDepositWithdraw("deposit", userInfo).setVisible(true);
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
