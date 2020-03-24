@@ -257,14 +257,17 @@ public class frmAdmin extends javax.swing.JFrame {
 
         pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
-        btnResetPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResetPasswordActionPerformed(evt);
-            }
-        });
+        btnCreateNewUser.setContentAreaFilled(false);
+
+        btnResetPassword.setContentAreaFilled(false);
 
         btnSuspendUser.setBorder(null);
         btnSuspendUser.setContentAreaFilled(false);
+        btnSuspendUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuspendUserActionPerformed(evt);
+            }
+        });
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Create New User");
@@ -323,16 +326,14 @@ public class frmAdmin extends javax.swing.JFrame {
         panelAdminLayout.setHorizontalGroup(
             panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAdminLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelAdminLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(pnReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pnUsermanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 1, Short.MAX_VALUE))
-                    .addGroup(panelAdminLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(panelAdminLayout.createSequentialGroup()
                 .addGap(222, 222, 222)
@@ -436,6 +437,25 @@ public class frmAdmin extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnResetPasswordActionPerformed
+
+    private void btnSuspendUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuspendUserActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+
+            String phone = JOptionPane.showInputDialog(this, "Input phone number here !", "Suspened user", JOptionPane.INFORMATION_MESSAGE);
+
+            User user = iAdmin.getUser(phone);
+            if (user != null) {
+                int cfirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to suspend " + user.getFullname(), "", JOptionPane.OK_CANCEL_OPTION);
+                if (cfirm == 0) {
+                    
+                }
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSuspendUserActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
