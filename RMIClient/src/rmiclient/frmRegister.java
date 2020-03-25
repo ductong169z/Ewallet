@@ -256,13 +256,13 @@ public class frmRegister extends javax.swing.JFrame {
             /* If there are no fields having null value or being empty and both password fields match */
         } else {
             /* Temp variables to store values from the fields user inputted */
-            String username = txtUsername.getText();
+            String username = txtUsername.getText().trim();
             String password = String.valueOf(txtPasswordConfirm.getPassword());
-            String fullname = txtFullname.getText();
-            String email = txtEmail.getText();
-            String phone = txtPhone.getText();
+            String fullname = txtFullname.getText().trim();
+            String email = txtEmail.getText().trim();
+            String phone = txtPhone.getText().trim();
             String gender = rdoMale.isSelected() ? "Male" : "Female";
-            String address = txtAddress.getText();
+            String address = txtAddress.getText().trim();
             int result = -1; // store the result of operation (0 if successful, 1 if unsuccessful, 2 if phone number already bound to another account in database)
 
             // call method createUser on server side to execute
