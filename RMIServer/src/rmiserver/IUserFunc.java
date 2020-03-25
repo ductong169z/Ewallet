@@ -19,7 +19,11 @@ public interface IUserFunc extends Remote {
     public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException;
 
     public User deposit(User oldUserInfo, int depositAmount) throws RemoteException;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> parent of 770f5e3... Revert "Commit"
     public int withdraw() throws RemoteException;
 
     public int transfer() throws RemoteException;
