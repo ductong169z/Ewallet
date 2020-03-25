@@ -109,10 +109,10 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
     }
 
     @Override
-    public boolean suspendUser(String id) {
+    public boolean suspendUser(int id) {
         try {
             PreparedStatement st = conn.prepareStatement("UPDATE users SET status = 0 WHERE id=?");
-            st.setString(1, id);
+            st.setInt(1, id);
             int rs = st.executeUpdate();
             if (rs > 0) {
                 return true;
