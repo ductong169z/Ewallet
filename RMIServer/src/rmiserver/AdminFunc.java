@@ -74,7 +74,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
             BigInteger no = new BigInteger(1, messageDigest);
 
-            // Convert message digest into hex value
+            // Convert message digest into hex value 
             hashPassword = no.toString(16);
             while (hashPassword.length() < 32) {
                 hashPassword = "0" + hashPassword;
@@ -99,55 +99,5 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
     }
 
-    @Override
-    public boolean suspendUser(int id) {
-        try {
-            PreparedStatement st = conn.prepareStatement("UPDATE users SET status = 0 WHERE id=?");
-            st.setInt(1, id);
-            int rs = st.executeUpdate();
-            if (rs > 0) {
-                return true;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-
-    }
-
-    /**
-     *
-     * @param type
-     * @return
-     */
-    @Override
-    public ReportList getReportAll(String type) {
-        try {
-            ReportList rp;
-            int itype = 0;
-            String money;
-            String stm;
-            if (type.equals("user_withdraw")) {
-                stm = "SELECT * FROM user_withdraw WHERE type= 1 ORDER BY created_at DESC";
-
-            } else if (type.equals("user_deposit")) {
-                stm = "SELECT * FROM user_deposit WHERE type= 0 ORDER BY created_at DESC";
-            } else {
-                stm = "";
-            }
-            PreparedStatement st = conn.prepareStatement(stm);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                rp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), "", "", rs.getString("description"));
-                return rp;
-
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
     /* Override methods in IAdminFunc interface */
 }

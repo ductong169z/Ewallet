@@ -15,10 +15,5 @@ public interface IAdminFunc extends Remote {
 
     public User getUser(String phone) throws RemoteException;
 
-    public boolean changePassword(String id, String password) throws RemoteException;
-
-    public boolean suspendUser(int id) throws RemoteException;
-
-    public ReportList getReportAll(String method) throws RemoteException;
-
+    public boolean changePassword(String id, String password)throws RemoteException;
 }
