@@ -19,7 +19,7 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtBalance1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtCurrentBalance" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtAmount" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtPhoneNumber" alignment="0" pref="287" max="32767" attributes="0"/>
                           </Group>
@@ -40,7 +40,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblCurrentBalance" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtBalance1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCurrentBalance" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -87,7 +87,7 @@
             <Property name="text" type="java.lang.String" value="Deposit Amount"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtBalance1">
+        <Component class="javax.swing.JTextField" name="txtCurrentBalance">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

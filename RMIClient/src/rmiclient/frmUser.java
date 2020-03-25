@@ -31,6 +31,8 @@ public class frmUser extends javax.swing.JFrame {
     String action;
     int maxDepositLim;
     int maxWithdrawLim;
+    boolean atMaxWithdraw; // determines if user reached max withdraw lim
+    boolean atMaxDeposit; // determines if user reached max deposit lim
 
     /**
      * Creates new form frmUser
@@ -100,22 +102,25 @@ public class frmUser extends javax.swing.JFrame {
 //              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
 //            this.setIconImage(icon);
         } catch (NotBoundException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public frmUser(User userInfo) {
         initComponents();
 
-        this.userInfo = userInfo;
-        this.maxDepositLim = userInfo.getDeposit_lim();
-        this.maxWithdrawLim = userInfo.getWithdraw_lim();
+        /* initialize variables */
+        this.userInfo = userInfo; // set userInfo
+        this.maxDepositLim = userInfo.getDeposit_lim(); // set max deposit lim
+        this.maxWithdrawLim = userInfo.getWithdraw_lim(); // set max withdraw lim
+        this.atMaxWithdraw = false;
+        this.atMaxDeposit = false;
 
         this.setLocationRelativeTo(null); // center the frame
         try {
@@ -176,20 +181,21 @@ public class frmUser extends javax.swing.JFrame {
             txtName.setText(userInfo.getFullname());
             txtBalance.setText(userInfo.getMoney() + " VND");
 
+            /* Setup the texts on Deposit and Withdraw Dialog */
             txtPhoneNumber.setText(userInfo.getPhone());
-            txtBalance1.setText(String.valueOf(userInfo.getMoney()) + " VND");
+            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
 //            set icon for the frame
 //              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
 //            this.setIconImage(icon);
         } catch (NotBoundException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -206,7 +212,7 @@ public class frmUser extends javax.swing.JFrame {
         lblCurrentBalance = new javax.swing.JLabel();
         txtPhoneNumber = new javax.swing.JTextField();
         lblAmount = new javax.swing.JLabel();
-        txtBalance1 = new javax.swing.JTextField();
+        txtCurrentBalance = new javax.swing.JTextField();
         txtAmount = new javax.swing.JTextField();
         btnConfirm = new javax.swing.JButton();
         panelUser = new javax.swing.JPanel();
@@ -246,8 +252,8 @@ public class frmUser extends javax.swing.JFrame {
         lblAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblAmount.setText("Deposit Amount");
 
-        txtBalance1.setEditable(false);
-        txtBalance1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtCurrentBalance.setEditable(false);
+        txtCurrentBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         txtAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -274,7 +280,7 @@ public class frmUser extends javax.swing.JFrame {
                             .addComponent(lblPhoneNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtBalance1)
+                            .addComponent(txtCurrentBalance)
                             .addComponent(txtAmount)
                             .addComponent(txtPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -289,7 +295,7 @@ public class frmUser extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCurrentBalance)
-                    .addComponent(txtBalance1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCurrentBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAmount)
@@ -555,43 +561,56 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameActionPerformed
 
     private void btnWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawActionPerformed
-        if (userInfo.getMoney() < 1000) {
+        // check if user reached max withdraw limit
+        if (atMaxWithdraw) {
+            JOptionPane.showMessageDialog(this, "You have reached maximum withdraw limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            dialogDepositWithdraw.dispose();
+            // check if user balance is less than 1000
+        } else if (userInfo.getMoney() < 1000) {
             JOptionPane.showMessageDialog(this, "You must have at least 1000 VND to withdraw", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            /* set the values on dialog */
             txtName.setText(userInfo.getFullname());
             txtBalance.setText(userInfo.getMoney() + " VND");
 
             txtPhoneNumber.setText(userInfo.getPhone());
-            txtBalance1.setText(String.valueOf(userInfo.getMoney()) + " VND");
+            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             dialogDepositWithdraw.setTitle("Withdraw Transaction");
             lblAmount.setText("Withdraw Amount");
             btnConfirm.setText("Confirm Withdraw");
 
-            dialogDepositWithdraw.pack();
+            dialogDepositWithdraw.pack(); // display dialog and its subcomponents in preferred size
 
-            dialogDepositWithdraw.setVisible(true);
-            dialogDepositWithdraw.setLocationRelativeTo(null);
-            this.action = "withdraw";
+            dialogDepositWithdraw.setVisible(true); // show up the dialog
+            dialogDepositWithdraw.setLocationRelativeTo(null); // center the dialog
+            this.action = "withdraw"; // set action
         }
     }//GEN-LAST:event_btnWithdrawActionPerformed
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
-        txtName.setText(userInfo.getFullname());
-        txtBalance.setText(userInfo.getMoney() + " VND");
+        // check if user reached max deposit limit
+        if (atMaxDeposit) {
+            JOptionPane.showMessageDialog(this, "You have reached maximum deposit limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            dialogDepositWithdraw.dispose();
+        } else {
+            /* set the values on dialog */
+            txtName.setText(userInfo.getFullname());
+            txtBalance.setText(userInfo.getMoney() + " VND");
 
-        txtPhoneNumber.setText(userInfo.getPhone());
-        txtBalance1.setText(String.valueOf(userInfo.getMoney()) + " VND");
+            txtPhoneNumber.setText(userInfo.getPhone());
+            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
-        dialogDepositWithdraw.setTitle("Deposit Transaction");
-        lblAmount.setText("Deposit Amount");
-        btnConfirm.setText("Confirm Deposit");
+            dialogDepositWithdraw.setTitle("Deposit Transaction");
+            lblAmount.setText("Deposit Amount");
+            btnConfirm.setText("Confirm Deposit");
 
-        dialogDepositWithdraw.pack();
+            dialogDepositWithdraw.pack();// display dialog and its subcomponents in preferred size
 
-        dialogDepositWithdraw.setVisible(true);
-        dialogDepositWithdraw.setLocationRelativeTo(null);
-        this.action = "deposit";
+            dialogDepositWithdraw.setVisible(true); // show up the dialog
+            dialogDepositWithdraw.setLocationRelativeTo(null); // center the dialog
+            this.action = "deposit"; // set action
+        }
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
@@ -610,8 +629,8 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuyMobileActionPerformed
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        String txtAmountString; // deposit amount in String
-        int txtAmountInt; // deposit amount in integer
+        String txtAmountString; // deposit/withdraw amount in String
+        int txtAmountInt; // deposit/withdraw amount in integer
         boolean error; // check if user input is wrong
         User result; // store the result (new User info from Server)
 
@@ -631,7 +650,7 @@ public class frmUser extends javax.swing.JFrame {
 
                 /* Check if user not enter anything or just spaces */
                 if (txtAmountString == null || txtAmountString.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field. \n(Not bigger than 2147483647)", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     // try number conversion from text (String) to integer
                     try {
@@ -642,7 +661,7 @@ public class frmUser extends javax.swing.JFrame {
 
                     // if there's an error occured
                     if (error) {
-                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field.", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Deposit Amount\" field. \n(Not bigger than 2147483647)", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
                         // check if user enter wrong deposit amount (must be at least 1000 VND, and at most deposit limit)
                     } else if (txtAmountInt < 1000 || txtAmountInt > maxDepositLim) {
                         JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + maxDepositLim + " (inclusive).", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
@@ -651,20 +670,24 @@ public class frmUser extends javax.swing.JFrame {
                         try {
                             result = iUser.deposit(userInfo, txtAmountInt);
                         } catch (RemoteException ex) {
-                            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                         // if user already reached maximum deposit limit
                         if (result == null) {
                             JOptionPane.showMessageDialog(this, "You have already reached maximum deposit limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
-                            this.dispose();
+                            dialogDepositWithdraw.dispose(); // hides the dialog
+                            atMaxDeposit = true;
                             // if deposit is successful
                         } else if (result.getMoney() != userInfo.getMoney()) {
                             JOptionPane.showMessageDialog(this, "Deposit successfully! \nNew Account Balance: " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
+
                             userInfo = result; // update User info
+
                             /* set new balance */
                             txtBalance.setText(result.getMoney() + " VND");
-                            txtBalance1.setText(result.getMoney() + " VND");
+                            txtCurrentBalance.setText(result.getMoney() + " VND");
+
                             txtAmount.setText(""); // empty the deposit amount inputted
                             // if deposit failed
                         } else if (result.getDeposit_lim() == userInfo.getDeposit_lim()) {
@@ -688,7 +711,7 @@ public class frmUser extends javax.swing.JFrame {
 
                 /* Check if user not enter anything or just spaces */
                 if (txtAmountString == null || txtAmountString.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Please enter a number in \"Withdraw Amount\" field", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Please enter a number in \"Withdraw Amount\" field. \n(Not bigger than 2147483647)", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     // try number conversion from text (String) to integer
                     try {
@@ -699,31 +722,36 @@ public class frmUser extends javax.swing.JFrame {
 
                     // if there's an error occured
                     if (error) {
-                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Withdraw Amount\" field.", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                        // check if user enter wrong withdraw amount (must be at least 1000 VND, and at most withdraw limit)
+                        JOptionPane.showMessageDialog(this, "Please enter a number in \"Withdraw Amount\" field. \n(Not bigger than 2147483647)", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        // check if user enter wrong withdraw amount (less than 1000 VND, and more than maxim withdraw limit) - in case user money less than max withdraw limit
                     } else if (maxWithdrawLim > userInfo.getMoney() && (txtAmountInt < 1000 || txtAmountInt > maxWithdrawLim)) {
                         JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + userInfo.getMoney() + " (inclusive).", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        // check if user enter wrong withdraw amount (less than 1000 VND, and more than maxim withdraw limit) - in case user money is equal or more than max withdraw limit
                     } else if (maxWithdrawLim <= userInfo.getMoney() && txtAmountInt < 1000 || txtAmountInt > maxWithdrawLim) {
                         JOptionPane.showMessageDialog(this, "Please enter a value between 1000 and " + maxWithdrawLim + " (inclusive).", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        // if user input at frame is correct
                     } else {
                         // call method in server to execute
                         try {
                             result = iUser.withdraw(userInfo, txtAmountInt);
                         } catch (RemoteException ex) {
-                            Logger.getLogger(frmDepositWithdraw.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                         // if user already reached maximum withdraw limit
                         if (result == null) {
                             JOptionPane.showMessageDialog(this, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
-                            this.dispose();
+                            dialogDepositWithdraw.dispose(); // hides the dialog
+                            atMaxWithdraw = true;
                             // if withdrawal is successful
                         } else if (result.getMoney() != userInfo.getMoney()) {
                             JOptionPane.showMessageDialog(this, "Withdraw successfully! \nNew Account Balance: " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
                             userInfo = result; // update User info
+
                             /* set new balance */
                             txtBalance.setText(result.getMoney() + " VND");
-                            txtBalance1.setText(result.getMoney() + " VND");
+                            txtCurrentBalance.setText(result.getMoney() + " VND");
+
                             txtAmount.setText(""); // empty the withdraw amount inputted
                             // if withdrawal failed
                         } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
@@ -776,7 +804,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JPanel pnTransaction;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtBalance;
-    private javax.swing.JTextField txtBalance1;
+    private javax.swing.JTextField txtCurrentBalance;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhoneNumber;
     // End of variables declaration//GEN-END:variables
