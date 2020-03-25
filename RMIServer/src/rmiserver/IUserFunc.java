@@ -28,8 +28,6 @@ public interface IUserFunc extends Remote {
 
     public int deleteAccount() throws RemoteException;
 
-    public int payTuition() throws RemoteException;
-
     public int viewTransactionHistory() throws RemoteException;
     
     public Map<String, String> getSchool() throws RemoteException;
