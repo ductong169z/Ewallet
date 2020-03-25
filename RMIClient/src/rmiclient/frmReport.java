@@ -1,39 +1,86 @@
-
 /**
- * 
+ *
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- * 
+ *
  */
 package rmiclient;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import rmiserver.IAdminFunc;
+import rmiserver.ReportList;
+
 public class frmReport extends javax.swing.JFrame {
 
-    int option; // Report option
-                // 1: Deposit report
-                // 2: Withdrawal report
-                // 3: Transfer report
-                // 4: Transaction history
+    IAdminFunc iAdmin;
+
+    int option; // ReportList option
+    // 1: Deposit report
+    // 2: Withdrawal report
+    // 3: Transfer report
+    // 4: Transaction history
+
     /**
-     * Creates new form Report
+     * Creates new form ReportList
      */
-    public frmReport(int option) {
-        initComponents();
-        this.option = option;
-        if(option == 1){
-            this.setTitle("Deposit Report");
-            lblTitle.setText("Deposit Report");
-        } else if(option == 2){
-            this.setTitle("Withdrawal Report");
-            lblTitle.setText("Withdrawal Report");
-        } else if(option == 3){
-            this.setTitle("Transfer Report");
-            lblTitle.setText("Transfer Report");
-        } else if(option == 4){
-            this.setTitle("Transaction History");
-            lblTitle.setText("Transaction History");
+    public frmReport(int option) throws SQLException {
+        try {
+            initComponents();
+            iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
+            ReportList report;
+            DefaultTableModel model;
+            this.option = option;
+            switch (option) {
+                case 1:
+                    this.setTitle("Deposit Report");
+                    lblTitle.setText("Deposit Report");
+                    report = iAdmin.getReportAll("user_deposit");
+                    model = (DefaultTableModel) tbReport.getModel();
+                    model.setRowCount(0);
+
+                    Object objList[] = {report.getId(), report.getMoney(), report.getCreated_at(), report.getDescription()};
+                    model.addRow(objList);
+
+                    break;
+                case 2:
+                    this.setTitle("Withdrawal Report");
+                    lblTitle.setText("Withdrawal Report");
+                    report = iAdmin.getReportAll("user_withdraw");
+                    model = (DefaultTableModel) tbReport.getModel();
+                    model.setRowCount(0);
+                    Object objList1[] = {report.getId(), report.getMoney(), report.getCreated_at(), report.getDescription()};
+                    model.addRow(objList1);
+                    break;
+                case 3:
+                    this.setTitle("Transfer Report");
+                    lblTitle.setText("Transfer Report");
+                    break;
+                case 4:
+                    this.setTitle("Transaction History");
+                    lblTitle.setText("Transaction History");
+                    break;
+                default:
+                    break;
+            }
+        } catch (NotBoundException ex) {
+            Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -49,24 +96,36 @@ public class frmReport extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbReport = new javax.swing.JTable();
         lblTitle = new javax.swing.JLabel();
         btnExport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbReport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
-
+                "ID", "Amount", "Time", "Description"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbReport);
 
         lblTitle.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -124,7 +183,7 @@ public class frmReport extends javax.swing.JFrame {
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JTable tbReport;
     // End of variables declaration//GEN-END:variables
 }
