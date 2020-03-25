@@ -142,7 +142,6 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
             } else if (type.equals("user_deposit")) {
                 stm = "SELECT * FROM user_deposit WHERE type= 0 ORDER BY created_at DESC";
-                System.out.println(stm);
             } else {
                 stm = "";
             }
