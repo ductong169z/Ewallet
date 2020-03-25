@@ -22,10 +22,6 @@ public interface IUserFunc extends Remote {
 
     public int withdraw() throws RemoteException;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 6b62d43... Merge branch 'master' into Thang
     public int transfer() throws RemoteException;
 
     public int changeInfo() throws RemoteException;
