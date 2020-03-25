@@ -448,9 +448,21 @@ public class frmAdmin extends javax.swing.JFrame {
 
             User user = iAdmin.getUser(phone);
             if (user != null) {
-                int cfirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to suspend " + user.getFullname(), "", JOptionPane.OK_CANCEL_OPTION);
-                if (cfirm == 0) {
-                    
+                if (user.getRole_id() != 1) {
+                    int cfirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to suspend " + user.getFullname(), "", JOptionPane.OK_CANCEL_OPTION);
+                    if (cfirm == 0) {
+                        boolean status = iAdmin.suspendUser(user.getId());
+                        if (status) {
+                            JOptionPane.showMessageDialog(this, user.getFullname() + " has been suspended  ! !", "Suspened user", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Has undefined error !", "Error", JOptionPane.ERROR_MESSAGE);
+
+                        }
+
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cannot suspend admin !", "Error", JOptionPane.ERROR_MESSAGE);
+
                 }
             }
         } catch (RemoteException ex) {
