@@ -1,11 +1,10 @@
-
 /**
- * 
+ *
  * @author Wibuu Group, consists of 3 members:
  * @author Nguyen Duc Tong
  * @author Quan Duc Loc
  * @author Tran Minh Thang
- * 
+ *
  */
 package rmiclient;
 
@@ -235,7 +234,7 @@ public class frmRegister extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        /* Check if there are any fields having null values or being empty, or the 2 password fields don't match */
+        /* Check if there are any fields having null values or being empty, or the 2 password fields don't match, or phone number is not 10-digit */
         if (txtUsername.getText() == null || txtUsername.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The username must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
@@ -250,6 +249,8 @@ public class frmRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "The email field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtPhone.getText() == null || txtPhone.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (txtPhone.getText().length() != 10) {
+            JOptionPane.showMessageDialog(this, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtAddress.getText() == null || txtAddress.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The address field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
             /* If there are no fields having null value or being empty and both password fields match */
