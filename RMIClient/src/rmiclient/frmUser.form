@@ -667,34 +667,29 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JDialog" name="dialogConfirmChange">
-      <Properties>
-        <Property name="title" type="java.lang.String" value="Confirm changing info"/>
-      </Properties>
+    <Container class="javax.swing.JDialog" name="dialogConfirm">
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="btnProceed" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtHintPassword" alignment="0" min="-2" pref="456" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblPassword" max="32767" attributes="0"/>
-                                  <Component id="lblPasswordConfirm" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtPassword" alignment="1" min="-2" pref="300" max="-2" attributes="0"/>
-                                  <Component id="txtPasswordConfirm" alignment="1" min="-2" pref="300" max="-2" attributes="0"/>
-                              </Group>
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="txtHintConfirm" alignment="0" min="-2" pref="475" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblPassword" pref="138" max="32767" attributes="0"/>
+                              <Component id="lblPasswordConfirm" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtPasswordConfirm" max="32767" attributes="0"/>
+                              <Component id="txtPassword" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <Component id="btnProceed" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="35" max="32767" attributes="0"/>
+                  <EmptySpace pref="40" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -702,7 +697,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                  <Component id="txtHintPassword" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtHintConfirm" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblPassword" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -713,9 +708,9 @@
                       <Component id="lblPasswordConfirm" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtPasswordConfirm" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                  <EmptySpace pref="40" max="32767" attributes="0"/>
                   <Component id="btnProceed" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="44" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -751,7 +746,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtHintPassword">
+        <Component class="javax.swing.JTextField" name="txtHintConfirm">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -1146,6 +1141,9 @@
               <Properties>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteAccountActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnTransactionHistory">
               <Properties>

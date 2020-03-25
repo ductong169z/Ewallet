@@ -29,7 +29,7 @@ public class frmUser extends javax.swing.JFrame {
 
     IUserFunc iUser;
     User userInfo; // store logged in user info
-    String action; // store action of user on form (whether deposit or withdraw)
+    String action; // store action of user on form (whether deposit, withdraw, change info or delete account)
     String recPhone; // store recipient phone number
     int maxDepositLim;
     int maxWithdrawLim;
@@ -261,12 +261,12 @@ public class frmUser extends javax.swing.JFrame {
         txtFullname = new javax.swing.JTextField();
         btnOK = new javax.swing.JButton();
         txtHint = new javax.swing.JTextField();
-        dialogConfirmChange = new javax.swing.JDialog();
+        dialogConfirm = new javax.swing.JDialog();
         txtPasswordConfirm = new javax.swing.JPasswordField();
         lblPasswordConfirm = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
-        txtHintPassword = new javax.swing.JTextField();
+        txtHintConfirm = new javax.swing.JTextField();
         btnProceed = new javax.swing.JButton();
         genderGroup = new javax.swing.ButtonGroup();
         panelUser = new javax.swing.JPanel();
@@ -674,8 +674,6 @@ public class frmUser extends javax.swing.JFrame {
                 .addGap(45, 45, 45))
         );
 
-        dialogConfirmChange.setTitle("Confirm changing info");
-
         txtPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         lblPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -686,10 +684,10 @@ public class frmUser extends javax.swing.JFrame {
 
         txtPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        txtHintPassword.setEditable(false);
-        txtHintPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtHintPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtHintPassword.setText("Please enter your password to confirm changing info");
+        txtHintConfirm.setEditable(false);
+        txtHintConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtHintConfirm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtHintConfirm.setText("Please enter your password to confirm changing info");
 
         btnProceed.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnProceed.setText("Proceed");
@@ -700,42 +698,41 @@ public class frmUser extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout dialogConfirmChangeLayout = new javax.swing.GroupLayout(dialogConfirmChange.getContentPane());
-        dialogConfirmChange.getContentPane().setLayout(dialogConfirmChangeLayout);
-        dialogConfirmChangeLayout.setHorizontalGroup(
-            dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dialogConfirmChangeLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnProceed)
-                    .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtHintPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(dialogConfirmChangeLayout.createSequentialGroup()
-                            .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblPasswordConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGap(18, 18, 18)
-                            .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtPasswordConfirm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-        dialogConfirmChangeLayout.setVerticalGroup(
-            dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dialogConfirmChangeLayout.createSequentialGroup()
+        javax.swing.GroupLayout dialogConfirmLayout = new javax.swing.GroupLayout(dialogConfirm.getContentPane());
+        dialogConfirm.getContentPane().setLayout(dialogConfirmLayout);
+        dialogConfirmLayout.setHorizontalGroup(
+            dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogConfirmLayout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(txtHintPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtHintConfirm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dialogConfirmLayout.createSequentialGroup()
+                        .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(lblPasswordConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPasswordConfirm)
+                            .addComponent(txtPassword)))
+                    .addComponent(btnProceed))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+        dialogConfirmLayout.setVerticalGroup(
+            dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogConfirmLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(txtHintConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPassword)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPasswordConfirm)
                     .addComponent(txtPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(btnProceed)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -880,6 +877,11 @@ public class frmUser extends javax.swing.JFrame {
         });
 
         btnDeleteAccount.setContentAreaFilled(false);
+        btnDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteAccountActionPerformed(evt);
+            }
+        });
 
         btnTransactionHistory.setContentAreaFilled(false);
         btnTransactionHistory.addActionListener(new java.awt.event.ActionListener() {
@@ -1364,10 +1366,10 @@ public class frmUser extends javax.swing.JFrame {
             newInfo.setGender(rdoMale.isSelected() ? "Male" : "Female");
             newInfo.setAddress(txtAddress.getText().trim());
 
-            dialogConfirmChange.pack(); // display dialog and its subcomponents in preferred size
+            dialogConfirm.pack(); // display dialog and its subcomponents in preferred size
 
-            dialogConfirmChange.setVisible(true); // show up the dialog
-            dialogConfirmChange.setLocationRelativeTo(null); // center the dialog
+            dialogConfirm.setVisible(true); // show up the dialog
+            dialogConfirm.setLocationRelativeTo(null); // center the dialog
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
@@ -1384,56 +1386,112 @@ public class frmUser extends javax.swing.JFrame {
             rdoFemale.setSelected(true);
         }
 
-        dialogChangeInfo.pack();// display dialog and its subcomponents in preferred size
+        /* update dialog properties */
+        dialogConfirm.setTitle("Confirm Info Change");
+        txtHintConfirm.setText("Please enter your password to confirm changing info");
+        this.action = "changeinfo"; // update action
 
+        dialogChangeInfo.pack();// display dialog and its subcomponents in preferred size
         dialogChangeInfo.setVisible(true); // show up the dialog
         dialogChangeInfo.setLocationRelativeTo(null); // center the dialog
     }//GEN-LAST:event_btnChangeInfoActionPerformed
 
     private void btnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceedActionPerformed
-        /* Check if password and password confirmation are matched and not null or empty */
-        if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
-            JOptionPane.showMessageDialog(dialogConfirmChange, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
-            JOptionPane.showMessageDialog(dialogConfirmChange, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
-            JOptionPane.showMessageDialog(dialogConfirmChange, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            User result = null; // store return user from server
+        switch (action) {
+            case "changeinfo":
+                /* Check if password and password confirmation are matched and not null or empty */
+                if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    User result = null; // store return user from server
 
-            // call method on server to execute
-            try {
-                result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
-            } catch (RemoteException ex) {
-                Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                    // call method on server to execute
+                    try {
+                        result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-            // if password is incorrect
-            if (result == null) {
-                JOptionPane.showMessageDialog(dialogConfirmChange, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                // if there is SQL Error
-            } else if (result.getPhone() == null) {
-                JOptionPane.showMessageDialog(dialogConfirmChange, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
-            } else if (result.getPhone().equals("-1")) {
-                JOptionPane.showMessageDialog(dialogConfirmChange, "The inputted phone number already exist in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                dialogConfirmChange.dispose();
-            } else if (result.getUsername().equalsIgnoreCase("Error")) {
-                JOptionPane.showMessageDialog(dialogConfirmChange, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(dialogConfirmChange, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
+                    // if password is incorrect
+                    if (result == null) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        // if there is SQL Error
+                    } else if (result.getPhone() == null) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
+                    } else if (result.getPhone().equals("-1")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted phone number already exist in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        dialogConfirm.dispose();
+                    } else if (result.getUsername().equalsIgnoreCase("Error")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(dialogConfirm, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
 
-                userInfo = result; // update user info on client side
-                txtName.setText(userInfo.getFullname()); // update user name on form
-                /* Dispose the two dialog used for changing info */
-                dialogConfirmChange.dispose();
-                dialogChangeInfo.dispose();
-            }
+                        userInfo = result; // update user info on client side
+                        txtName.setText(userInfo.getFullname()); // update user name on form
+                        /* Dispose the two dialog used for changing info */
+                        dialogConfirm.dispose();
+                        dialogChangeInfo.dispose();
+                    }
+                }
+
+                /* clear the password fields */
+                txtPassword.setText("");
+                txtPasswordConfirm.setText("");
+                break;
+
+            case "delete":
+                /* Check if password and password confirmation are matched and not null or empty */
+                if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    int userChoice = JOptionPane.showConfirmDialog(dialogConfirm, "Do you really want to delete your account?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                    if (userChoice == JOptionPane.YES_OPTION) {
+                        int result = -1; // store result of operation
+
+                        // call deleteAccount method from server to execute
+                        try {
+                            result = iUser.deleteAccount(userInfo, String.valueOf(txtPassword.getPassword()));
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        // dependent on result, print out messages
+                        if (result == 0) {
+                            JOptionPane.showMessageDialog(dialogConfirm, "Thank you for using our service!", "Delete User Successfully!", JOptionPane.INFORMATION_MESSAGE);
+                            System.exit(0);
+                        } else if (result == 1) {
+                            JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        } else if (result == 2) {
+                            JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(dialogConfirm, "The inputted password is incorrect! \nDelete Account Aborted!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        dialogConfirm.dispose(); // closes the dialog
+                    }
+
+                    break;
+                }
         }
-
-        /* clear the password fields */
-        txtPassword.setText("");
-        txtPasswordConfirm.setText("");
     }//GEN-LAST:event_btnProceedActionPerformed
+
+    private void btnDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAccountActionPerformed
+        dialogConfirm.setTitle("Delete Account Confirmation");
+        txtHintConfirm.setText("Please enter your password to confirm deleting account");
+        this.action = "delete";
+
+        dialogConfirm.pack(); // display dialog and its subcomponents in preferred size
+        dialogConfirm.setVisible(true); // show up the dialog
+        dialogConfirm.setLocationRelativeTo(null); // center the dialog
+    }//GEN-LAST:event_btnDeleteAccountActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1451,7 +1509,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JButton btnTransfer;
     private javax.swing.JButton btnWithdraw;
     private javax.swing.JDialog dialogChangeInfo;
-    private javax.swing.JDialog dialogConfirmChange;
+    private javax.swing.JDialog dialogConfirm;
     private javax.swing.JDialog dialogDepositWithdraw;
     private javax.swing.JDialog dialogTransPhone;
     private javax.swing.JDialog dialogTransfer;
@@ -1501,7 +1559,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtHint;
-    private javax.swing.JTextField txtHintPassword;
+    private javax.swing.JTextField txtHintConfirm;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JPasswordField txtPasswordConfirm;

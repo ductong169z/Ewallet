@@ -26,7 +26,7 @@ public interface IUserFunc extends Remote {
 
     public User changeInfo(User oldInfo, String username, String password, String fullname, String phone, String email, String address, String gender) throws RemoteException;
 
-    public int deleteAccount() throws RemoteException;
+    public int deleteAccount(User userInfo, String password) throws RemoteException;
 
     public int payTuition() throws RemoteException;
 
