@@ -33,7 +33,7 @@ public class RMIServer {
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "sa@123");
             // bind 3 classes to 3 ports with equal name
             Naming.bind("rmi://localhost:69/Authentication", new Authentication(conn)); // for authenticating login sessions
-            Naming.bind("rmi://localhost:70/UserFunctions", new UserFunc()); // for user functions
+            Naming.bind("rmi://localhost:70/UserFunctions", new UserFunc(conn)); // for user functions
             Naming.bind("rmi://localhost:71/AdminFunctions", new AdminFunc(conn)); // for admin functions
 
             System.out.println("Server Started Successfully! ...");
