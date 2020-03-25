@@ -1300,6 +1300,7 @@ public class frmUser extends javax.swing.JFrame {
             User recUser = null; // store user returned from database
             recPhone = txtRecPhoneNum.getText(); // set recipient phone
 
+            // get user with inputted phone number on server
             try {
                 recUser = iUser.getUser(recPhone);
             } catch (RemoteException ex) {
@@ -1398,26 +1399,32 @@ public class frmUser extends javax.swing.JFrame {
         } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
             JOptionPane.showMessageDialog(dialogConfirmChange, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            User result = null;
+            User result = null; // store return user from server
 
+            // call method on server to execute
             try {
                 result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
             } catch (RemoteException ex) {
                 Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+            // if password is incorrect
             if (result == null) {
                 JOptionPane.showMessageDialog(dialogConfirmChange, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                dialogConfirmChange.dispose();
+                // if there is SQL Error
             } else if (result.getPhone() == null) {
                 JOptionPane.showMessageDialog(dialogConfirmChange, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
             } else if (result.getPhone().equals("-1")) {
                 JOptionPane.showMessageDialog(dialogConfirmChange, "The inputted phone number already exist in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                dialogConfirmChange.dispose();
+            } else if (result.getUsername().equalsIgnoreCase("Error")) {
+                JOptionPane.showMessageDialog(dialogConfirmChange, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(dialogConfirmChange, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
 
                 userInfo = result; // update user info on client side
-                txtName.setText(userInfo.getFullname());
+                txtName.setText(userInfo.getFullname()); // update user name on form
+                /* Dispose the two dialog used for changing info */
                 dialogConfirmChange.dispose();
                 dialogChangeInfo.dispose();
             }
