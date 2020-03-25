@@ -63,7 +63,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
 
             BigInteger no = new BigInteger(1, messageDigest);
 
-            // Convert message digest into hex value
+            // Convert message digest into hex value 
             hashPassword = no.toString(16);
             while (hashPassword.length() < 32) {
                 hashPassword = "0" + hashPassword;
@@ -76,7 +76,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
         try {
             // connect to database
 
-            // statement to retrieve all users with such inputted username and password
+            // statement to retrieve all users with such inputted username and password 
             PreparedStatement st = conn.prepareStatement("Select * from users where username = ? and password = ?");
 
             // set the values in the statement
@@ -126,8 +126,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
         } catch (SQLException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+                return false;
 
     }
-
 }
