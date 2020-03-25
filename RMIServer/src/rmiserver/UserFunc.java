@@ -14,7 +14,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
 public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
     Connection conn;
-    
+
     // constructor
     public UserFunc(Connection conn) throws RemoteException {
         super();
@@ -58,14 +57,12 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
         // add user info to database
         try {
-            // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
 
             /* Check if phone number already exists in database */
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
+            PreparedStatement stCheckPhone = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+            ResultSet rsCheckPhone = stCheckPhone.executeQuery();
+            if (rsCheckPhone.next()) {
                 return 2; // indicate that phone number already bound to another account in database
             }
 
@@ -90,38 +87,39 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
             /* Add new user to database */
-            st = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender, status)"
+            PreparedStatement stCreateUser = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender, status)"
                     + " values(?, ?, ?, ?, ?, ?, ?, ?)");
 
             // set values in the statement
-            st.setString(1, username);
-            st.setString(2, hashPassword);
-            st.setString(3, fullname);
-            st.setString(4, address);
-            st.setString(5, phone);
-            st.setString(6, email);
-            st.setString(7, gender);
-            st.setInt(8, 1);
+            stCreateUser.setString(1, username);
+            stCreateUser.setString(2, hashPassword);
+            stCreateUser.setString(3, fullname);
+            stCreateUser.setString(4, address);
+            stCreateUser.setString(5, phone);
+            stCreateUser.setString(6, email);
+            stCreateUser.setString(7, gender);
+            stCreateUser.setInt(8, 1);
 
-            st.executeUpdate();
+            stCreateUser.executeUpdate();
 
             /* Get user ID from database to add data to other tables */
-            st = conn.prepareStatement("SELECT id FROM users WHERE phone = ?");
-            st.setString(1, phone);
+            PreparedStatement stGetUserID = conn.prepareStatement("SELECT id FROM users WHERE phone = ?");
+            stGetUserID.setString(1, phone);
 
-            rs = st.executeQuery();
-            rs.next();
+            ResultSet rsUserID = stGetUserID.executeQuery();
+            rsUserID.next();
 
-            int userID = rs.getInt(1); // store the user ID of the user (who has just been added to database above)
+            int userID = rsUserID.getInt("id"); // store the user ID of the user (who has just been added to database above)
 
             // execute SQL statements to complete creating new user
-            st = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , 2)");
-            st.setInt(1, userID);
-            st.executeUpdate();
-            st = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
-            st.setInt(1, userID);
-            st.setInt(2, 0);
-            st.executeUpdate();
+            PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , 2)");
+            stSetRoleID.setInt(1, userID);
+            stSetRoleID.executeUpdate();
+
+            PreparedStatement stSetMoney = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
+            stSetMoney.setInt(1, userID);
+            stSetMoney.setInt(2, 0);
+            stSetMoney.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
@@ -136,48 +134,93 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     }
 
     @Override
-    public User deposit(User oldUserInfo, int depositAmount) throws RemoteException {
-        boolean error = false; // check if there's any errors occured
-        User newUserInfo = oldUserInfo;
-
-        // add user info to database
+    public User getUser(String phone) throws RemoteException {
         try {
-            // connect to database
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "123456");
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM setting");
+            /* Get user with passed phone number */
+            PreparedStatement st = conn.prepareStatement("Select * from users where phone = ?");
+            st.setString(1, phone);
             ResultSet rs = st.executeQuery();
-            rs.next();
 
-            int maxDepositLimit = rs.getInt(1); // maximum deposit amount in 1 day
+            // if such user exists
+            if (rs.next()) {
+                /* Get user role ID from database */
+                PreparedStatement getRole = conn.prepareStatement("SELECT * FROM user_role JOIN user_money ON user_role.user_id = user_money.user_id WHERE user_role.user_id = ? ");
+                getRole.setInt(1, rs.getInt("id"));
+                ResultSet rsRole = getRole.executeQuery();
+
+                // if user role also exists
+                if (rsRole.next()) {
+                    /* Get transaction limits from database */
+                    PreparedStatement getLim = conn.prepareStatement("SELECT * FROM setting");
+                    ResultSet rsLim = getLim.executeQuery();
+                    rsLim.next();
+
+                    return new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("phone"), rs.getString("mail"), rs.getString("address"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"), rsLim.getString("deposit_lim"), rsLim.getString("withdraw_lim"), rsLim.getString("trans_lim"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("SQL ex");
+            return new User(); // indicate SQL error occured
+        }
+        System.out.println("haha");
+        return null; // user does not exist
+    }
+
+    @Override
+    public User deposit(User oldInfo, int depositAmount) throws RemoteException {
+        boolean error = false; // check if there's any errors occured
+        User newInfo = oldInfo; // store user info after modified/updated
+
+        // try perform deposit transaction
+        try {
+            /* Get deposit limit from database */
+            PreparedStatement stGetLim = conn.prepareStatement("SELECT * FROM setting");
+            ResultSet rsGetLim = stGetLim.executeQuery();
+            rsGetLim.next();
+
+            int maxDepositLim = rsGetLim.getInt("deposit_lim"); // maximum deposit amount in 1 day
             int totalDeposit = -1; // total deposit amount in current day
-            String currentTime = java.time.LocalDate.now().toString();
+            String currentTime = java.time.LocalDate.now().toString(); // current time when user perform deposit
 
-            /* get the total deposit amount in current day */
-            st = conn.prepareStatement("SELECT SUM(deposit_money) FROM user_deposit WHERE user_id = ? AND created_at LIKE '?'");
+            /* Get the total deposit amount in current day */
+            PreparedStatement stGetTotal = conn.prepareStatement("SELECT SUM(money) FROM user_deposit WHERE user_id = ? AND created_at = ?");
 
-            rs = st.executeQuery();
+            stGetTotal.setInt(1, newInfo.getId());
+            stGetTotal.setString(2, currentTime);
 
-            st.setInt(1, newUserInfo.getId());
-            st.setString(2, currentTime);
+            ResultSet rsGetTotal = stGetTotal.executeQuery();
 
-            rs.next();
-            totalDeposit = rs.getInt(1);
-
-            if (depositAmount > maxDepositLimit || totalDeposit + depositAmount > maxDepositLimit) {
-                oldUserInfo.setDeposit_lim(totalDeposit);
-                return oldUserInfo;
+            // if there are already some transactions of deposit performed earlier
+            if (rsGetTotal.next()) {
+                totalDeposit = rsGetTotal.getInt(1);
             } else {
-                st = conn.prepareStatement("INSERT INTO user_deposit(user_id, deposit_money, created_at, type) VALUES(?, ?, ?, ?)");
-                st.setInt(1, newUserInfo.getId());
-                st.setInt(2, depositAmount);
-                st.setString(3, currentTime);
-                st.setInt(4, 0);
-                st.executeUpdate();
+                totalDeposit = 0;
+            }
 
-                st = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
-                st.setInt(1, depositAmount + newUserInfo.getMoney());
-                st.setInt(2, newUserInfo.getId());
-                st.executeUpdate();
+            // if total deposit already at limit
+            if (totalDeposit == maxDepositLim) {
+                return null;
+            }
+
+            // check if reached max deposit limit
+            if (totalDeposit + depositAmount > maxDepositLim) {
+                oldInfo.setDeposit_lim(maxDepositLim - totalDeposit); // set new deposit limit
+                return oldInfo;
+            } else {
+                /* Update deposit history in database */
+                PreparedStatement stCreateDeposit = conn.prepareStatement("INSERT INTO user_deposit(user_id, money, created_at, type) VALUES(?, ?, ?, ?)");
+                stCreateDeposit.setInt(1, newInfo.getId());
+                stCreateDeposit.setInt(2, depositAmount);
+                stCreateDeposit.setString(3, currentTime);
+                stCreateDeposit.setInt(4, 0);
+                stCreateDeposit.executeUpdate();
+
+                /* Update user money in database */
+                PreparedStatement stUpdateMoney = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
+                stUpdateMoney.setInt(1, depositAmount + newInfo.getMoney());
+                stUpdateMoney.setInt(2, newInfo.getId());
+                stUpdateMoney.executeUpdate();
             }
 
         } catch (SQLException ex) {
@@ -185,23 +228,171 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             error = true; // if any errors occured
         }
 
-        // return 0 if there are no errors (successful operation), else return 1 (unsuccessful)
+        // return new user info if successful, else return old one
         if (!error) {
-            newUserInfo.setMoney(depositAmount + newUserInfo.getMoney());
-            return newUserInfo;
+            newInfo.setMoney(depositAmount + newInfo.getMoney()); // set new user balance
+            return newInfo;
         } else {
-            return oldUserInfo;
+            return oldInfo;
         }
     }
 
     @Override
-    public int withdraw() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User withdraw(User oldInfo, int withdrawAmount) throws RemoteException {
+        boolean error = false; // check if there's any errors occured
+        User newInfo = oldInfo; // store user info after modified/updated
+
+        // try perform withdraw transaction
+        try {
+            /* Get max withdraw limit in database */
+            PreparedStatement stGetLim = conn.prepareStatement("SELECT * FROM setting");
+            ResultSet rsGetLim = stGetLim.executeQuery();
+            rsGetLim.next();
+
+            int maxWithdrawLim = rsGetLim.getInt("withdraw_lim"); // maximum withdraw amount in 1 day
+            int totalWithdraw = -1; // total withdraw amount in current day
+            String currentTime = java.time.LocalDate.now().toString(); // current time when user perform withdraw
+
+            /* Get the total withdraw amount in current day */
+            PreparedStatement stGetTotal = conn.prepareStatement("SELECT SUM(money) FROM user_withdraw WHERE user_id = ? AND created_at = ?");
+
+            stGetTotal.setInt(1, newInfo.getId());
+            stGetTotal.setString(2, currentTime);
+
+            ResultSet rsGetTotal = stGetTotal.executeQuery();
+
+            // if there are already some transactions of withdrawal performed earlier
+            if (rsGetTotal.next()) {
+                totalWithdraw = rsGetTotal.getInt(1);
+            } else {
+                totalWithdraw = 0;
+            }
+
+            // if total withdraw already at limit
+            if (totalWithdraw == maxWithdrawLim) {
+                return null;
+            }
+
+            // check if withdraw is larger than current money
+            if (withdrawAmount > oldInfo.getMoney()) {
+                oldInfo.setDeposit_lim(-1); // indicates withdraw is larger than current money
+                oldInfo.setWithdraw_lim(oldInfo.getMoney()); // update max withdraw limit
+                return oldInfo;
+                // if withdraw when performed, will exceed the limit
+            } else if (totalWithdraw + withdrawAmount > maxWithdrawLim) {
+                oldInfo.setWithdraw_lim(maxWithdrawLim - totalWithdraw); // update max withdraw limit
+                return oldInfo;
+            } else {
+                /* Update withdraw history in database */
+                PreparedStatement stCreateWithDraw = conn.prepareStatement("INSERT INTO user_withdraw(user_id, money, created_at, type) VALUES(?, ?, ?, ?)");
+                stCreateWithDraw.setInt(1, newInfo.getId());
+                stCreateWithDraw.setInt(2, withdrawAmount);
+                stCreateWithDraw.setString(3, currentTime);
+                stCreateWithDraw.setInt(4, 1);
+                stCreateWithDraw.executeUpdate();
+
+                /* Update user money in database */
+                PreparedStatement stUpdateMoney = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
+                stUpdateMoney.setInt(1, newInfo.getMoney() - withdrawAmount);
+                stUpdateMoney.setInt(2, newInfo.getId());
+                stUpdateMoney.executeUpdate();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            error = true; // if any errors occured
+        }
+
+        // return new user info if successful, else return old one
+        if (!error) {
+            newInfo.setMoney(newInfo.getMoney() - withdrawAmount); // set new user balance
+            return newInfo;
+        } else {
+            return oldInfo;
+        }
     }
 
     @Override
-    public int transfer() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User transfer(User oldInfo, String recPhone, int transferAmount) throws RemoteException {
+        boolean error = false; // check if there's any errors occured
+        User newInfo = oldInfo; // store user info after modified/updated
+        User recInfo = getUser(recPhone); // store recipient info
+
+        // try perform transfer transaction
+        try {
+            /* Get max transfer limit in database */
+            PreparedStatement stGetLim = conn.prepareStatement("SELECT * FROM setting");
+            ResultSet rsGetLim = stGetLim.executeQuery();
+            rsGetLim.next();
+
+            int maxTransLim = rsGetLim.getInt("trans_lim"); // maximum transfer amount in 1 day
+            int totalTrans = -1; // total transfer amount in current day
+            String currentTime = java.time.LocalDate.now().toString(); // current time when user perform transfer
+
+            /* Get the total transfer amount in current day */
+            PreparedStatement stGetTotal = conn.prepareStatement("SELECT SUM(money) FROM user_transfer WHERE send_id = ? AND created_at = ?");
+
+            stGetTotal.setInt(1, newInfo.getId());
+            stGetTotal.setString(2, currentTime);
+
+            ResultSet rsGetTotal = stGetTotal.executeQuery();
+
+            // if there are already some transfer transactions performed earlier
+            if (rsGetTotal.next()) {
+                totalTrans = rsGetTotal.getInt(1);
+            } else {
+                totalTrans = 0;
+            }
+
+            // if total transfer already at limit
+            if (totalTrans == maxTransLim) {
+                return null;
+            }
+
+            // check if transfer amount is larger than current money
+            if (transferAmount > oldInfo.getMoney()) {
+                oldInfo.setDeposit_lim(-1); // indicates transfer amount is larger than current money
+                oldInfo.setTrans_lim(oldInfo.getMoney()); // update max transfer limit
+                return oldInfo;
+                // if transfer when performed, will exceed the limit
+            } else if (totalTrans + transferAmount > maxTransLim) {
+                oldInfo.setTrans_lim(maxTransLim - totalTrans); // update max transfer limit
+                return oldInfo;
+            } else {
+                /* Update transfer history in database */
+                PreparedStatement stCreateTransfer = conn.prepareStatement("INSERT INTO user_transfer(send_id, receive_id, money, created_at, type) VALUES(?, ?, ?, ?, ?)");
+                stCreateTransfer.setInt(1, newInfo.getId());
+                stCreateTransfer.setInt(2, recInfo.getId());
+                stCreateTransfer.setInt(3, transferAmount);
+                stCreateTransfer.setString(4, currentTime);
+                stCreateTransfer.setInt(5, 2);
+                stCreateTransfer.executeUpdate();
+
+                /* Update sender money in database */
+                PreparedStatement stSenderUpdate = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
+                stSenderUpdate.setInt(1, newInfo.getMoney() - transferAmount);
+                stSenderUpdate.setInt(2, newInfo.getId());
+                stSenderUpdate.executeUpdate();
+                
+                /* Update recipient money in database */
+                PreparedStatement stRecUpdate = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
+                stRecUpdate.setInt(1, recInfo.getMoney() + transferAmount);
+                stRecUpdate.setInt(2, recInfo.getId());
+                stRecUpdate.executeUpdate();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            error = true; // if any errors occured
+        }
+
+        // return new user info if successful, else return old one
+        if (!error) {
+            newInfo.setMoney(newInfo.getMoney() - transferAmount); // set new user balance
+            return newInfo;
+        } else {
+            return oldInfo;
+        }
     }
 
     @Override

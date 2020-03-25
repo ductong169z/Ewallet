@@ -40,26 +40,34 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
     @Override
     public User getUser(String phone) {
         try {
+            /* Get user with passed phone number */
             PreparedStatement st = conn.prepareStatement("Select * from users where phone = ?");
             st.setString(1, phone);
             ResultSet rs = st.executeQuery();
 
+            // if such user exists
             if (rs.next()) {
-                PreparedStatement getRole = conn.prepareStatement("SELECT * FROM user_role JOIN user_money ON user_role.user_id = user_money.id WHERE user_role.user_id = ? ");
+                /* Get user role ID from database */
+                PreparedStatement getRole = conn.prepareStatement("SELECT * FROM user_role JOIN user_money ON user_role.user_id = user_money.user_id WHERE user_role.user_id = ? ");
                 getRole.setString(1, rs.getString("id"));
                 ResultSet rsRole = getRole.executeQuery();
+
+                // if user role also exists
                 if (rsRole.next()) {
+                    /* Get transaction limits from database */
                     PreparedStatement getLim = conn.prepareStatement("SELECT * FROM setting");
                     ResultSet rsLim = getLim.executeQuery();
+                    rsLim.next();
 
-                    User user = new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("phone"), rs.getString("mail"), rs.getString("address"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"), rsLim.getString("deposit_lim"), rsLim.getString("withdraw_lim"), rsLim.getString("trans_lim"));
-                    return user;
+                    return new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("phone"), rs.getString("mail"), rs.getString("address"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"), rsLim.getString("deposit_lim"), rsLim.getString("withdraw_lim"), rsLim.getString("trans_lim"));
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
+            return new User(); // indicate SQL error occured
         }
-        return null;
+
+        return null; // user does not exist
     }
 
     @Override
