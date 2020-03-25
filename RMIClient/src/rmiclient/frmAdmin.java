@@ -16,7 +16,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -376,31 +375,18 @@ public class frmAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDepositReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositReportActionPerformed
-        try {
-            // TODO add your handling code here:
-
-            new frmReport(1).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // TODO add your handling code here:
+        new frmReport(1).setVisible(true);
     }//GEN-LAST:event_btnDepositReportActionPerformed
 
     private void btnWithdrawReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawReportActionPerformed
-        try {
-            // TODO add your handling code here:
-            new frmReport(2).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // TODO add your handling code here:
+        new frmReport(2).setVisible(true);
     }//GEN-LAST:event_btnWithdrawReportActionPerformed
 
     private void btnTransferReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferReportActionPerformed
-        try {
-            // TODO add your handling code here:
-            new frmReport(3).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // TODO add your handling code here:
+        new frmReport(3).setVisible(true);
     }//GEN-LAST:event_btnTransferReportActionPerformed
 
     private void btnCreatenewuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreatenewuserActionPerformed
@@ -462,21 +448,9 @@ public class frmAdmin extends javax.swing.JFrame {
 
             User user = iAdmin.getUser(phone);
             if (user != null) {
-                if (user.getRole_id() != 1) {
-                    int cfirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to suspend " + user.getFullname(), "", JOptionPane.OK_CANCEL_OPTION);
-                    if (cfirm == 0) {
-                        boolean status = iAdmin.suspendUser(user.getId() + "");
-                        if (status) {
-                            JOptionPane.showMessageDialog(this, user.getFullname() + " has been suspended  ! !", "Suspened user", JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Has undefined error !", "Error", JOptionPane.ERROR_MESSAGE);
-
-                        }
-
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Cannot suspend admin !", "Error", JOptionPane.ERROR_MESSAGE);
-
+                int cfirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to suspend " + user.getFullname(), "", JOptionPane.OK_CANCEL_OPTION);
+                if (cfirm == 0) {
+                    
                 }
             }
         } catch (RemoteException ex) {

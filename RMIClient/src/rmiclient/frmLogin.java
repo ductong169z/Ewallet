@@ -186,7 +186,9 @@ public class frmLogin extends javax.swing.JFrame {
                             this.setVisible(false);
                         } else {
                             JOptionPane.showMessageDialog(this, "Your account has been suspended !", "Login failed", JOptionPane.ERROR_MESSAGE);
+
                         }
+
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Username or Password is incorrect", "Login failed", JOptionPane.ERROR_MESSAGE);

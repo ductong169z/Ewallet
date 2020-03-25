@@ -17,14 +17,12 @@ import java.util.Map;
 public interface IUserFunc extends Remote {
 
     public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException;
-    
-    public User getUser(String phone) throws RemoteException;
-    
-    public User deposit(User oldInfo, int depositAmount) throws RemoteException;
 
-    public User withdraw(User oldInfo, int withdrawAmount) throws RemoteException;
+    public User deposit(User oldUserInfo, int depositAmount) throws RemoteException;
 
-    public User transfer(User oldInfo, String recPhone, int transferAmount) throws RemoteException;
+    public int withdraw() throws RemoteException;
+
+    public int transfer() throws RemoteException;
 
     public int changeInfo() throws RemoteException;
 
