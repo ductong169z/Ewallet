@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
 
 public interface IUserFunc extends Remote {
 
-    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException;
+    public int createUser(String username, String password, String fullname, String phone, String email, String address, String gender) throws RemoteException;
     
     public User getUser(String phone) throws RemoteException;
     
@@ -24,7 +24,7 @@ public interface IUserFunc extends Remote {
 
     public User transfer(User oldInfo, String recPhone, int transferAmount) throws RemoteException;
 
-    public int changeInfo() throws RemoteException;
+    public User changeInfo(User oldInfo, String username, String password, String fullname, String phone, String email, String address, String gender) throws RemoteException;
 
     public int deleteAccount() throws RemoteException;
 

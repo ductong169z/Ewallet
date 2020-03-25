@@ -37,6 +37,7 @@ public class frmUser extends javax.swing.JFrame {
     boolean atMaxWithdraw; // determines if user reached max withdraw limit
     boolean atMaxDeposit; // determines if user reached max deposit limit
     boolean atMaxTrans; // determines if user reached max transfer limit
+    User newInfo;
 
     /**
      * Creates new form frmUser
@@ -121,6 +122,7 @@ public class frmUser extends javax.swing.JFrame {
 
         /* initialize variables */
         this.userInfo = userInfo; // set userInfo
+        this.newInfo = new User(); // initialize newInfo object for changing user info
         this.maxDepositLim = userInfo.getDeposit_lim(); // set max deposit limit
         this.maxWithdrawLim = userInfo.getWithdraw_lim(); // set max withdraw limit
         this.maxTransLim = userInfo.getTrans_lim(); // set max transfer limit
@@ -243,6 +245,30 @@ public class frmUser extends javax.swing.JFrame {
         lblRecPhoneNum = new javax.swing.JLabel();
         txtRecPhoneNum = new javax.swing.JTextField();
         btnConfirmRecPhone = new javax.swing.JButton();
+        dialogChangeInfo = new javax.swing.JDialog();
+        txtUsername = new javax.swing.JTextField();
+        lblUsername = new javax.swing.JLabel();
+        lblFullname = new javax.swing.JLabel();
+        lblGender = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        lblPhone = new javax.swing.JLabel();
+        lblAddress = new javax.swing.JLabel();
+        txtAddress = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        rdoFemale = new javax.swing.JRadioButton();
+        rdoMale = new javax.swing.JRadioButton();
+        txtFullname = new javax.swing.JTextField();
+        btnOK = new javax.swing.JButton();
+        txtHint = new javax.swing.JTextField();
+        dialogConfirmChange = new javax.swing.JDialog();
+        txtPasswordConfirm = new javax.swing.JPasswordField();
+        lblPasswordConfirm = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JPasswordField();
+        txtHintPassword = new javax.swing.JTextField();
+        btnProceed = new javax.swing.JButton();
+        genderGroup = new javax.swing.ButtonGroup();
         panelUser = new javax.swing.JPanel();
         lblMenu = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
@@ -287,6 +313,7 @@ public class frmUser extends javax.swing.JFrame {
 
         btnConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnConfirm.setText("Confirm Deposit");
+        btnConfirm.setRequestFocusEnabled(false);
         btnConfirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmActionPerformed(evt);
@@ -368,6 +395,7 @@ public class frmUser extends javax.swing.JFrame {
 
         btnConfirmTransfer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnConfirmTransfer.setText("Confirm Transfer");
+        btnConfirmTransfer.setRequestFocusEnabled(false);
         btnConfirmTransfer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmTransferActionPerformed(evt);
@@ -489,6 +517,7 @@ public class frmUser extends javax.swing.JFrame {
 
         btnConfirmRecPhone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnConfirmRecPhone.setText("Confirm");
+        btnConfirmRecPhone.setRequestFocusEnabled(false);
         btnConfirmRecPhone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmRecPhoneActionPerformed(evt);
@@ -519,6 +548,194 @@ public class frmUser extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(btnConfirmRecPhone)
                 .addGap(30, 30, 30))
+        );
+
+        dialogChangeInfo.setTitle("Change Info");
+
+        txtUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lblUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblUsername.setText("Username:");
+
+        lblFullname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblFullname.setText("Fullname:");
+
+        lblGender.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblGender.setText("Gender:");
+
+        lblEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblEmail.setText("Email:");
+
+        lblPhone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPhone.setText("Phone:");
+
+        lblAddress.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblAddress.setText("Address:");
+
+        txtAddress.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtPhone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        genderGroup.add(rdoFemale);
+        rdoFemale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        rdoFemale.setText("Female");
+
+        genderGroup.add(rdoMale);
+        rdoMale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        rdoMale.setText("Male");
+
+        txtFullname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnOK.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnOK.setText("OK");
+        btnOK.setRequestFocusEnabled(false);
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
+
+        txtHint.setEditable(false);
+        txtHint.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtHint.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtHint.setText("Note: Leave a field as is if you don't want to change it!");
+
+        javax.swing.GroupLayout dialogChangeInfoLayout = new javax.swing.GroupLayout(dialogChangeInfo.getContentPane());
+        dialogChangeInfo.getContentPane().setLayout(dialogChangeInfoLayout);
+        dialogChangeInfoLayout.setHorizontalGroup(
+            dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogChangeInfoLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dialogChangeInfoLayout.createSequentialGroup()
+                        .addComponent(lblFullname, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(dialogChangeInfoLayout.createSequentialGroup()
+                        .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblGender, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFullname, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtUsername)
+                            .addGroup(dialogChangeInfoLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(rdoMale, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdoFemale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtAddress, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(txtHint, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogChangeInfoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
+        );
+        dialogChangeInfoLayout.setVerticalGroup(
+            dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogChangeInfoLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(txtHint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUsername)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFullname)
+                    .addComponent(txtFullname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoMale)
+                    .addComponent(rdoFemale)
+                    .addComponent(lblGender))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEmail))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPhone))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangeInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAddress))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addComponent(btnOK)
+                .addGap(45, 45, 45))
+        );
+
+        dialogConfirmChange.setTitle("Confirm changing info");
+
+        txtPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lblPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPasswordConfirm.setText("Confirmation:");
+
+        lblPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPassword.setText("Enter Password:");
+
+        txtPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtHintPassword.setEditable(false);
+        txtHintPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtHintPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtHintPassword.setText("Please enter your password to confirm changing info");
+
+        btnProceed.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnProceed.setText("Proceed");
+        btnProceed.setRequestFocusEnabled(false);
+        btnProceed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProceedActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dialogConfirmChangeLayout = new javax.swing.GroupLayout(dialogConfirmChange.getContentPane());
+        dialogConfirmChange.getContentPane().setLayout(dialogConfirmChangeLayout);
+        dialogConfirmChangeLayout.setHorizontalGroup(
+            dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogConfirmChangeLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnProceed)
+                    .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtHintPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(dialogConfirmChangeLayout.createSequentialGroup()
+                            .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblPasswordConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(18, 18, 18)
+                            .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPasswordConfirm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        dialogConfirmChangeLayout.setVerticalGroup(
+            dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogConfirmChangeLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(txtHintPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPassword)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogConfirmChangeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPasswordConfirm)
+                    .addComponent(txtPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47)
+                .addComponent(btnProceed)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -656,6 +873,11 @@ public class frmUser extends javax.swing.JFrame {
         pnAccountmanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
         btnChangeInfo.setContentAreaFilled(false);
+        btnChangeInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeInfoActionPerformed(evt);
+            }
+        });
 
         btnDeleteAccount.setContentAreaFilled(false);
 
@@ -1052,7 +1274,7 @@ public class frmUser extends javax.swing.JFrame {
                     txtTransAmount.setText(""); // empty the transfer amount inputted
                     // if transfer failed
                 } else if (result.getTrans_lim() == userInfo.getTrans_lim()) {
-                    JOptionPane.showMessageDialog(dialogTransfer, "Transfer failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(dialogTransfer, "Transfer failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.ERROR_MESSAGE);
                     // if the transfer amount exceeds current balance
                 } else if (result.getDeposit_lim() == -1) {
                     JOptionPane.showMessageDialog(dialogTransfer, "Transfer amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only transfer at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
@@ -1085,9 +1307,9 @@ public class frmUser extends javax.swing.JFrame {
             }
 
             if (recUser == null) {
-                JOptionPane.showMessageDialog(dialogTransPhone, "The inputted phone number doesn't exist in database!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(dialogTransPhone, "The inputted phone number doesn't exist in database!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
             } else if (recUser.getFullname() == null) {
-                JOptionPane.showMessageDialog(dialogTransPhone, "SQL Exception Occured on server side!", "Server-side Error!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(dialogTransPhone, "SQL Exception Occured on server side!", "Transaction Failed!", JOptionPane.ERROR_MESSAGE);
             } else {
                 /* set the information on dialog */
                 txtSendName.setText(userInfo.getFullname());
@@ -1119,6 +1341,93 @@ public class frmUser extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTransferActionPerformed
 
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        /* Check if there are any fields having null values or being empty, or the 2 password fields don't match, or phone number is not 10-digit */
+        if (txtUsername.getText() == null || txtUsername.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangeInfo, "The username must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (txtFullname.getText() == null || txtFullname.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangeInfo, "The full name field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (txtEmail.getText() == null || txtEmail.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangeInfo, "The email field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (txtPhone.getText() == null || txtPhone.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangeInfo, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (txtPhone.getText().length() != 10) {
+            JOptionPane.showMessageDialog(dialogChangeInfo, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+            /* If there are no fields having null value or being empty and both password fields match */
+        } else {
+            /* Temp variables to store values from the fields user inputted */
+            newInfo.setUsername(txtUsername.getText().trim());
+            newInfo.setFullname(txtFullname.getText().trim());
+            newInfo.setMail(txtEmail.getText().trim());
+            newInfo.setPhone(txtPhone.getText().trim());
+            newInfo.setGender(rdoMale.isSelected() ? "Male" : "Female");
+            newInfo.setAddress(txtAddress.getText().trim());
+
+            dialogConfirmChange.pack(); // display dialog and its subcomponents in preferred size
+
+            dialogConfirmChange.setVisible(true); // show up the dialog
+            dialogConfirmChange.setLocationRelativeTo(null); // center the dialog
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnChangeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeInfoActionPerformed
+        /* Set old info to the dialog */
+        txtUsername.setText(userInfo.getUsername());
+        txtFullname.setText(userInfo.getFullname());
+        txtEmail.setText(userInfo.getMail());
+        txtPhone.setText(userInfo.getPhone());
+        txtAddress.setText(userInfo.getAddress());
+        if (userInfo.getGender().equals("Male")) {
+            rdoMale.setSelected(true);
+        } else {
+            rdoFemale.setSelected(true);
+        }
+
+        dialogChangeInfo.pack();// display dialog and its subcomponents in preferred size
+
+        dialogChangeInfo.setVisible(true); // show up the dialog
+        dialogChangeInfo.setLocationRelativeTo(null); // center the dialog
+    }//GEN-LAST:event_btnChangeInfoActionPerformed
+
+    private void btnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceedActionPerformed
+        /* Check if password and password confirmation are matched and not null or empty */
+        if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogConfirmChange, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogConfirmChange, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
+            JOptionPane.showMessageDialog(dialogConfirmChange, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            User result = null;
+
+            try {
+                result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
+            } catch (RemoteException ex) {
+                Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (result == null) {
+                JOptionPane.showMessageDialog(dialogConfirmChange, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                dialogConfirmChange.dispose();
+            } else if (result.getPhone() == null) {
+                JOptionPane.showMessageDialog(dialogConfirmChange, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
+            } else if (result.getPhone().equals("-1")) {
+                JOptionPane.showMessageDialog(dialogConfirmChange, "The inputted phone number already exist in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(dialogConfirmChange, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
+
+                userInfo = result; // update user info on client side
+                txtName.setText(userInfo.getFullname());
+                dialogConfirmChange.dispose();
+                dialogChangeInfo.dispose();
+            }
+        }
+
+        /* clear the password fields */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
+    }//GEN-LAST:event_btnProceedActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuyMobile;
@@ -1128,13 +1437,18 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JButton btnConfirmTransfer;
     private javax.swing.JButton btnDeleteAccount;
     private javax.swing.JButton btnDeposit;
+    private javax.swing.JButton btnOK;
     private javax.swing.JButton btnPaytuition;
+    private javax.swing.JButton btnProceed;
     private javax.swing.JButton btnTransactionHistory;
     private javax.swing.JButton btnTransfer;
     private javax.swing.JButton btnWithdraw;
+    private javax.swing.JDialog dialogChangeInfo;
+    private javax.swing.JDialog dialogConfirmChange;
     private javax.swing.JDialog dialogDepositWithdraw;
     private javax.swing.JDialog dialogTransPhone;
     private javax.swing.JDialog dialogTransfer;
+    private javax.swing.ButtonGroup genderGroup;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1143,11 +1457,18 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblAmount;
     private javax.swing.JLabel lblBalance;
     private javax.swing.JLabel lblCurrentBalance;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblFullname;
+    private javax.swing.JLabel lblGender;
     private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblPasswordConfirm;
+    private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblPhoneNumber;
     private javax.swing.JLabel lblRecName;
     private javax.swing.JLabel lblRecPhone;
@@ -1156,6 +1477,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblSendName;
     private javax.swing.JLabel lblSendPhone;
     private javax.swing.JLabel lblTransAmount;
+    private javax.swing.JLabel lblUsername;
     private javax.swing.JLabel lblVND;
     private javax.swing.JLabel lblVND1;
     private javax.swing.JLabel lblVND2;
@@ -1163,10 +1485,20 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JPanel panelUser;
     private javax.swing.JPanel pnAccountmanagement;
     private javax.swing.JPanel pnTransaction;
+    private javax.swing.JRadioButton rdoFemale;
+    private javax.swing.JRadioButton rdoMale;
+    private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtBalance;
     private javax.swing.JTextField txtCurrentBalance;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFullname;
+    private javax.swing.JTextField txtHint;
+    private javax.swing.JTextField txtHintPassword;
     private javax.swing.JTextField txtName;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JPasswordField txtPasswordConfirm;
+    private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtPhoneNumber;
     private javax.swing.JTextField txtRecName;
     private javax.swing.JTextField txtRecPhone;
@@ -1175,5 +1507,6 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtSendName;
     private javax.swing.JTextField txtSendPhone;
     private javax.swing.JTextField txtTransAmount;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
