@@ -34,7 +34,8 @@ public class frmUser extends javax.swing.JFrame {
     Map<String, String> schools = new HashMap<>();
     String id_student;
     String id_uni;
-    int tuitionfee;
+    int fee;
+    String phoneNum;
 
     /**
      * Creates new form frmUser
@@ -210,6 +211,7 @@ public class frmUser extends javax.swing.JFrame {
         cbSelection = new javax.swing.JComboBox<>();
         lblInput = new javax.swing.JLabel();
         txtInput = new javax.swing.JTextField();
+        lblNotification1 = new javax.swing.JLabel();
         panelUser = new javax.swing.JPanel();
         lblMenu = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
@@ -280,33 +282,42 @@ public class frmUser extends javax.swing.JFrame {
             }
         });
 
+        lblNotification1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblNotification1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblNotification1.setText("<notification>");
+
         javax.swing.GroupLayout dPayLayout = new javax.swing.GroupLayout(dPay.getContentPane());
         dPay.getContentPane().setLayout(dPayLayout);
         dPayLayout.setHorizontalGroup(
             dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dPayLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSelection)
-                    .addComponent(lblInput))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtInput)
-                    .addComponent(cbSelection, 0, 259, Short.MAX_VALUE))
-                .addGap(26, 26, 26))
             .addGroup(dPayLayout.createSequentialGroup()
                 .addGap(128, 128, 128)
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dPayLayout.createSequentialGroup()
-                .addContainerGap(116, Short.MAX_VALUE)
                 .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(dPayLayout.createSequentialGroup()
-                        .addComponent(btnCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPay))
-                    .addComponent(lblNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(106, 106, 106))
+                        .addContainerGap(92, Short.MAX_VALUE)
+                        .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dPayLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(btnCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPay)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblNotification, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblNotification1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(dPayLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSelection)
+                            .addComponent(lblInput))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtInput)
+                            .addComponent(cbSelection, 0, 259, Short.MAX_VALUE))))
+                .addGap(40, 40, 40))
         );
         dPayLayout.setVerticalGroup(
             dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,13 +332,15 @@ public class frmUser extends javax.swing.JFrame {
                 .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblInput)
                     .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(13, 13, 13)
                 .addComponent(lblNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPay)
                     .addComponent(btnCheck))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -604,7 +617,10 @@ public class frmUser extends javax.swing.JFrame {
             lblTitle.setText("Pay Tuition");
             lblSelection.setText("School:");
             lblInput.setText("Student ID:");
-            lblNotification.setText("");
+            lblNotification.setText("Name: ");
+            lblNotification1.setText("Tuition fee:");
+            txtInput.setText("");
+            btnPay.setEnabled(false);
             schools = iUser.getSchool();
             for (String value : schools.values()) {
                 cbSelection.addItem(value);
@@ -624,13 +640,16 @@ public class frmUser extends javax.swing.JFrame {
         lblTitle.setText("Top Up");
         lblSelection.setText("Amount:");
         lblInput.setText("Phone number:");
-        lblNotification.setText("");
-        cbSelection.addItem("10,000 VND");
-        cbSelection.addItem("20,000 VND");
-        cbSelection.addItem("50,000 VND");
-        cbSelection.addItem("100,000 VND");
-        cbSelection.addItem("200,000 VND");
-        cbSelection.addItem("500,000 VND");
+        lblNotification.setText("Phone number: ");
+        lblNotification1.setText("Amount: ");
+        txtInput.setText("");
+        btnPay.setEnabled(false);
+        cbSelection.addItem("10000 VND");
+        cbSelection.addItem("20000 VND");
+        cbSelection.addItem("50000 VND");
+        cbSelection.addItem("100000 VND");
+        cbSelection.addItem("200000 VND");
+        cbSelection.addItem("500000 VND");
         dPay.pack();
         payOption = 2;
         dPay.setVisible(true);
@@ -640,18 +659,21 @@ public class frmUser extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (payOption == 1) {
 
-            if (userInfo.getMoney() < tuitionfee) {
-                JOptionPane.showMessageDialog(this, "You Dont Have Enough Money");
+            if (userInfo.getMoney() < fee) {
+                JOptionPane.showMessageDialog(dPay, "You Dont Have Enough Money");
+                dPay.setVisible(false);
             } else {
                 try {
                     boolean check = iUser.payTuition(id_uni, id_student);
                     if (check == true) {
-                        JOptionPane.showMessageDialog(this, "Paid Successfully");
+                        JOptionPane.showMessageDialog(dPay, "Paid Successfully");
+                        dPay.setVisible(false);
                     } else {
-                        JOptionPane.showMessageDialog(this, "Some Error Occur !!! Please Try Again !!!");
+                        JOptionPane.showMessageDialog(dPay, "Some Error Occur !!! Please Try Again !!!");
+                        dPay.setVisible(false);
                     }
                 } catch (RemoteException ex) {
-                    Logger.getLogger(frmPay.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -667,24 +689,40 @@ public class frmUser extends javax.swing.JFrame {
                 int schoolId = (int) cbSelection.getSelectedIndex() + 1;
                 String tuitionInfo = iUser.getTuition(String.valueOf(schoolId), txtInput.getText().toUpperCase());
                 if (!tuitionInfo.equals("")) {
-                    lblNotification.setText(tuitionInfo);
                     id_uni = String.valueOf(schoolId);
                     id_student = txtInput.getText().toUpperCase();
                     String[] info = tuitionInfo.split(": ");
-                    tuitionfee = Integer.parseInt(info[1]);
-                    if (tuitionfee != 0) {
+                    lblNotification.setText("Name: " + info[0]);
+                    lblNotification1.setText("Tuition fee: " + info[1] + " VND");
+                    fee = Integer.parseInt(info[1]);
+                    if (fee != 0) {
                         btnPay.setEnabled(true);
                     } else {
-                        JOptionPane.showMessageDialog(this, "This student has paid ");
+                        JOptionPane.showMessageDialog(dPay, "This student has paid tuition fee");
+                        dPay.setVisible(false);
                     }
                 } else {
-                    lblNotification.setText("Student Not Found");
+                    JOptionPane.showMessageDialog(dPay, "Student Not Found");
                 }
             } catch (RemoteException ex) {
-                Logger.getLogger(frmPay.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (payOption == 2) {
-
+            phoneNum = txtInput.getText();
+            if (phoneNum.matches("(\\+84)[1-9][0-9]{8}") || phoneNum.matches("[0][1-9][0-9]{8}")) {
+                String ts = (String) cbSelection.getSelectedItem();
+                String[] temp = ts.split(" ");
+                fee = Integer.parseInt(temp[0]);
+                if (userInfo.getMoney() >= fee) {
+                    lblNotification.setText("Phone number: " + phoneNum);
+                    lblNotification1.setText("Amount: " + fee + " VND");
+                    btnPay.setEnabled(true);
+                } else{
+                    JOptionPane.showMessageDialog(dPay, "You dont have enough money");
+                }
+            }else{
+                JOptionPane.showMessageDialog(dPay, "Please Input Right Format of Phone Number!!!!");
+            }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
 
@@ -719,6 +757,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblNotification;
+    private javax.swing.JLabel lblNotification1;
     private javax.swing.JLabel lblSelection;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel panelUser;
