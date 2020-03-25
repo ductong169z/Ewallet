@@ -487,12 +487,12 @@ public class frmUser extends javax.swing.JFrame {
 
     private void btnPaytuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaytuitionActionPerformed
         // TODO add your handling code here:
-        new frmPay(1).setVisible(true);
+        new frmPay(1, userInfo).setVisible(true);
     }//GEN-LAST:event_btnPaytuitionActionPerformed
 
     private void btnBuyMobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyMobileActionPerformed
         // TODO add your handling code here:
-        new frmPay(2).setVisible(true);
+        new frmPay(2, userInfo).setVisible(true);
     }//GEN-LAST:event_btnBuyMobileActionPerformed
 
 

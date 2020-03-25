@@ -245,16 +245,14 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
     @Override
     public String getTuition(String schoolId, String studentId) throws RemoteException {
-        String tuitionInfo = null;
+        String tuitionInfo = "";
         try {
             Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "sa@123");
-            PreparedStatement st = conn.prepareStatement("select name, tuition from tuition where tuition.id_student like ? and tuition.id_uni = ? ");
+            PreparedStatement st = conn.prepareStatement("select tuition.name, tuition.tuition from dbo.tuition where tuition.id_student like ? and tuition.id_uni = ? ");
             st.setString(1, studentId);
-            st.setString(2, "\'"+ schoolId +"\'");
-            System.out.println(st.toString());
+            st.setString(2, schoolId );
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                System.out.println(rs.getString("name") + rs.getString("tuition"));
                tuitionInfo = rs.getString("name") + ": " + rs.getString("tuition");
             }
         } catch (SQLException ex) {
@@ -262,6 +260,25 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         }
 
         return tuitionInfo;
+    }
+
+    @Override
+    public boolean payTuition(String schoolId, String studentId) throws RemoteException {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Ewallet", "sa", "sa@123");
+            PreparedStatement st = conn.prepareStatement("update dbo.tuition set tuition.tuition = 0 where tuition.id_student like ? and tuition.id_uni = ? ");
+            st.setString(1, studentId);
+            st.setString(2, schoolId );
+            int count = st.executeUpdate();
+            if(count > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

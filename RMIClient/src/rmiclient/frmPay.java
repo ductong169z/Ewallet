@@ -16,7 +16,9 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import rmiserver.IUserFunc;
+import rmiserver.User;
 
 /**
  *
@@ -27,13 +29,17 @@ public class frmPay extends javax.swing.JFrame {
     IUserFunc iuser;
     int payOption; // pay option 1 is tuition fee, 2 is mobile card
     Map<String, String> schools = new HashMap<>();
+    String id_student;
+    String id_uni;
+    User userInfo;
 
     /**
      * Creates new form frmPaytuition
      */
-    public frmPay(int payOption) {
+    public frmPay(int payOption, User user) {
         try {
             this.payOption = payOption;
+            this.userInfo = user;
             initComponents();
             iuser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
             if (payOption == 1) {
@@ -107,10 +113,10 @@ public class frmPay extends javax.swing.JFrame {
 
         txtInput.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtInput.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txtInputInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -121,6 +127,11 @@ public class frmPay extends javax.swing.JFrame {
         btnPay.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnPay.setText("Confirm");
         btnPay.setEnabled(false);
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayActionPerformed(evt);
+            }
+        });
 
         btnCheck.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnCheck.setText("Check");
@@ -171,13 +182,13 @@ public class frmPay extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblInput)
                     .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addComponent(lblNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPay)
                     .addComponent(btnCheck))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();
@@ -193,10 +204,15 @@ public class frmPay extends javax.swing.JFrame {
         if (payOption == 1) {
             try {
                 int schoolId = (int) cbSelection.getSelectedIndex() + 1;
-                System.out.println(schoolId);
-                String tuitionInfo = iuser.getTuition(String.valueOf(schoolId), txtInput.getText());
-                System.out.println(tuitionInfo);
-                lblNotification.setText(tuitionInfo);
+                String tuitionInfo = iuser.getTuition(String.valueOf(schoolId), txtInput.getText().toUpperCase());
+                if (!tuitionInfo.equals("")) {
+                    lblNotification.setText(tuitionInfo);
+                    id_uni = String.valueOf(schoolId);
+                    id_student = txtInput.getText().toUpperCase();
+                    btnPay.setEnabled(true);
+                } else {
+                    lblNotification.setText("Student Not Found");
+                }
             } catch (RemoteException ex) {
                 Logger.getLogger(frmPay.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -204,6 +220,31 @@ public class frmPay extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_btnCheckActionPerformed
+
+    private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+        // TODO add your handling code here:
+        if (payOption == 1) {
+            String[] info = lblNotification.getText().split(": ");
+            int tuitionfee = Integer.getInteger(info[1]);
+            if (userInfo.getMoney() < tuitionfee) {
+                JOptionPane.showMessageDialog(this, "You Dont Have Enough Money");
+            } else {
+                try {
+                    boolean check = iuser.payTuition(id_uni, id_student);
+                    if(check == true){
+                        JOptionPane.showMessageDialog(this, "Paid Successfully");
+                    } else{
+                        JOptionPane.showMessageDialog(this, "Some Error Occur !!! Please Try Again !!!");
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(frmPay.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        } else if (payOption == 2) {
+
+        }
+    }//GEN-LAST:event_btnPayActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
