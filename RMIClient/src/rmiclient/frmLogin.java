@@ -59,9 +59,11 @@ public class frmLogin extends javax.swing.JFrame {
         txtUsernameLog = new javax.swing.JTextField();
         txtPasswordLog = new javax.swing.JPasswordField();
         btnOKLog = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Authentication Form");
+        setResizable(false);
 
         panelLogin.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         panelLogin.setPreferredSize(new java.awt.Dimension(575, 540));
@@ -84,6 +86,12 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 255));
+        jButton1.setText("Don't have an account? Press `here` to register!");
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+
         javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
         panelLogin.setLayout(panelLoginLayout);
         panelLoginLayout.setHorizontalGroup(
@@ -100,14 +108,17 @@ public class frmLogin extends javax.swing.JFrame {
                             .addComponent(txtPasswordLog)
                             .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelLoginLayout.createSequentialGroup()
-                        .addGap(213, 213, 213)
+                        .addGap(53, 53, 53)
+                        .addComponent(jButton1))
+                    .addGroup(panelLoginLayout.createSequentialGroup()
+                        .addGap(191, 191, 191)
                         .addComponent(btnOKLog, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsernameLog)
                     .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -117,7 +128,9 @@ public class frmLogin extends javax.swing.JFrame {
                     .addComponent(txtPasswordLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addComponent(btnOKLog)
-                .addGap(69, 69, 69))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(28, 28, 28))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -126,7 +139,7 @@ public class frmLogin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
+                .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -250,6 +263,7 @@ public class frmLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOKLog;
     private javax.swing.ButtonGroup grpGender;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblPasswordLog;
     private javax.swing.JLabel lblUsernameLog;
     private javax.swing.JPanel panelLogin;
