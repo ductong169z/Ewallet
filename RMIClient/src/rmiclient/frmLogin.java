@@ -28,17 +28,11 @@ public class frmLogin extends javax.swing.JFrame {
     public frmLogin() {
         initComponents();
 
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null); // center the form
         try {
             // look up the registry created in RMI Server
             iAuth = (IAuthentication) Naming.lookup("rmi://localhost:69/Authentication");
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -158,9 +152,7 @@ public class frmLogin extends javax.swing.JFrame {
 
     /* OK Button in LOGIN FORM */
     private void btnOKLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKLogActionPerformed
-        boolean error = false; // check if there is any errors occured
-
-        // check if there are any fields having null values or being empty, or the 2 password fields don't match
+        /* Check if user credentials are inputted correctly */
         if (txtUsernameLog.getText() == null || txtUsernameLog.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The username must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (String.valueOf(txtPasswordLog.getPassword()) == null || String.valueOf(txtPasswordLog.getPassword()).trim().isEmpty()) {
@@ -196,25 +188,7 @@ public class frmLogin extends javax.swing.JFrame {
                 }
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Login failed", JOptionPane.ERROR_MESSAGE);
-                error = true; // mark that there's an error occured
             }
-
-            // if there are no errors occured, and operation successful on server side
-//            if (!error && result == 0) {
-//                // clear all input fields
-//                txtUsernameLog.setText("");
-//                txtPasswordLog.setText("");
-//                JOptionPane.showMessageDialog(this, "You are logged in!", "Login successfully", JOptionPane.INFORMATION_MESSAGE);
-//                // if login failed (but no errors)
-//            } else if (!error && result == 2) {
-//                JOptionPane.showMessageDialog(this, "Username or Password is incorrect!\n(CASE-SENSITIVE)", "Login failed", JOptionPane.WARNING_MESSAGE);
-//                // if operation unsuccessful on server side
-//            } else if (result == 1) {
-//                JOptionPane.showMessageDialog(this, "An error occured on server side!", "Login failed", JOptionPane.ERROR_MESSAGE);
-//                // if there's an error occured on client side
-//            } else {
-//                JOptionPane.showMessageDialog(this, "An error occured!", "Login failed", JOptionPane.ERROR_MESSAGE);
-//            }
         }
     }//GEN-LAST:event_btnOKLogActionPerformed
 

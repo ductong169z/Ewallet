@@ -24,18 +24,18 @@ import java.util.logging.Logger;
 
 public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
-    Connection conn;
+    Connection conn; // connection to database
 
-    // constructor
+    /* Constructor */
     public UserFunc(Connection conn) throws RemoteException {
         super();
 
         // register the JDBC driver
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            this.conn = conn;
+            this.conn = conn; // update connection to database
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -130,7 +130,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -206,7 +206,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -289,7 +289,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -476,10 +476,10 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 /* SQL Statements to delete user from 3 tables in database */
                 PreparedStatement stDeleteUser = conn.prepareStatement("DELETE FROM users WHERE id = ?");
                 stDeleteUser.setInt(1, userInfo.getId());
-                
+
                 PreparedStatement stDeleteUserRole = conn.prepareStatement("DELETE FROM user_role WHERE user_id = ?");
                 stDeleteUserRole.setInt(1, userInfo.getId());
-                
+
                 PreparedStatement stDeleteUserMoney = conn.prepareStatement("DELETE FROM user_money WHERE user_id = ?");
                 stDeleteUserMoney.setInt(1, userInfo.getId());
 
@@ -502,7 +502,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     public int viewTransactionHistory() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Map<String, String> getSchool() throws RemoteException {
         Map<String, String> schoolname = new HashMap<>();

@@ -271,7 +271,7 @@ public class frmRegister extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
 
-            // if operation is successful on server side
+            /* Perform action dependent on result */
             switch (result) {
                 case 0:
                     // clear all input fields
@@ -282,20 +282,22 @@ public class frmRegister extends javax.swing.JFrame {
                     txtEmail.setText("");
                     txtPhone.setText("");
                     txtAddress.setText("");
-                    JOptionPane.showMessageDialog(this, "Creating new account succesfully!", "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Creating new account succesfully!", "Registration successfully", JOptionPane.INFORMATION_MESSAGE);
                     // if operation is unsuccessful on server side
                     break;
                 case 1:
-                    JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception or Hashing Error Occured!", "Registration Failed", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception or Hashing Error Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
                     // if phone number already bound to another account in database
                     break;
                 case 2:
-                    JOptionPane.showMessageDialog(this, "Phone number \"" + phone + "\" already bound to another account!", "Registration Failed", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Phone number \"" + phone + "\" already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    // if username already bound to another account in database
                     break;
                 case 3:
-                    JOptionPane.showMessageDialog(this, "Username \"" + username + "\" already bound to another account!", "Registration Failed", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Username \"" + username + "\" already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
                     break;
-                default:
+                case 4:
+                    JOptionPane.showMessageDialog(this, "Encrypting Password Error!", "Registration failed", JOptionPane.ERROR_MESSAGE);
                     break;
             }
         }
