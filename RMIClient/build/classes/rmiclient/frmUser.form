@@ -10,11 +10,11 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="btnConfirm" alignment="1" min="-2" pref="190" max="-2" attributes="0"/>
+                      <Component id="btnConfirmDepWith" alignment="1" min="-2" pref="190" max="-2" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lblAmount" alignment="1" max="32767" attributes="0"/>
-                              <Component id="lblCurrentBalance" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblDepWithAmount" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblDepWithBalance" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblPhoneNumber" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -22,8 +22,8 @@
                               <Component id="txtPhoneNumber" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="txtCurrentBalance" alignment="0" pref="246" max="32767" attributes="0"/>
-                                      <Component id="txtAmount" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtDepWithBalance" alignment="0" pref="246" max="32767" attributes="0"/>
+                                      <Component id="txtDepWithAmount" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -48,18 +48,18 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblCurrentBalance" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCurrentBalance" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblDepWithBalance" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDepWithBalance" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblVND3" alignment="3" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblAmount" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtAmount" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblDepWithAmount" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDepWithAmount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblVND1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="btnConfirm" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnConfirmDepWith" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -74,7 +74,7 @@
             <Property name="text" type="java.lang.String" value="Your Phone Number"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblCurrentBalance">
+        <Component class="javax.swing.JLabel" name="lblDepWithBalance">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -90,7 +90,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblAmount">
+        <Component class="javax.swing.JLabel" name="lblDepWithAmount">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -98,7 +98,7 @@
             <Property name="text" type="java.lang.String" value="Deposit Amount"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtCurrentBalance">
+        <Component class="javax.swing.JTextField" name="txtDepWithBalance">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -106,14 +106,14 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtAmount">
+        <Component class="javax.swing.JTextField" name="txtDepWithAmount">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btnConfirm">
+        <Component class="javax.swing.JButton" name="btnConfirmDepWith">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -121,7 +121,7 @@
             <Property name="text" type="java.lang.String" value="Confirm Deposit"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConfirmActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConfirmDepWithActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblVND1">
@@ -520,18 +520,12 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblNotification">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="16" style="0"/>
-            </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="&lt;notification&gt;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnPay">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="16" style="0"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Confirm"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -541,9 +535,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCheck">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="16" style="0"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Check"/>
           </Properties>
           <Events>
@@ -569,9 +560,6 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="cbSelection">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="16" style="0"/>
-            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">
                 <StringItem index="0" value=" "/>
@@ -591,20 +579,12 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtInput">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="16" style="0"/>
-            </Property>
-          </Properties>
           <Events>
             <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="txtInputInputMethodTextChanged"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblNotification1">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="16" style="0"/>
-            </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="&lt;notification&gt;"/>
           </Properties>
@@ -758,13 +738,13 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblBalance" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblName" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
+                              <Component id="lblMenuBalance" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblMenuName" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtName" pref="267" max="32767" attributes="0"/>
-                              <Component id="txtBalance" max="32767" attributes="0"/>
+                              <Component id="txtMenuName" pref="267" max="32767" attributes="0"/>
+                              <Component id="txtMenuBalance" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -789,13 +769,13 @@
                   <Component id="lblMenu" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblName" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="txtName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblMenuName" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
+                      <Component id="txtMenuName" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblBalance" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtBalance" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblMenuBalance" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtMenuBalance" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -816,7 +796,7 @@
             <Property name="text" type="java.lang.String" value="MENU"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblName">
+        <Component class="javax.swing.JLabel" name="lblMenuName">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -824,7 +804,7 @@
             <Property name="text" type="java.lang.String" value="Name:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblBalance">
+        <Component class="javax.swing.JLabel" name="lblMenuBalance">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
@@ -832,7 +812,7 @@
             <Property name="text" type="java.lang.String" value="Balance:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtName">
+        <Component class="javax.swing.JTextField" name="txtMenuName">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -844,10 +824,10 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNameActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMenuNameActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtBalance">
+        <Component class="javax.swing.JTextField" name="txtMenuBalance">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

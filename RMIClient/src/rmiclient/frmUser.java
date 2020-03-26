@@ -107,8 +107,8 @@ public class frmUser extends javax.swing.JFrame {
             iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
 
             /* Display user's full name and balance */
-            txtName.setText(userInfo.getFullname());
-            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+            txtMenuName.setText(userInfo.getFullname());
+            txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
 //            set icon for the frame
 //              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
@@ -192,12 +192,12 @@ public class frmUser extends javax.swing.JFrame {
             iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
 
             /* Display user's full name and balance */
-            txtName.setText(userInfo.getFullname());
-            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+            txtMenuName.setText(userInfo.getFullname());
+            txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             /* Setup the texts on Deposit and Withdraw Dialog */
             txtPhoneNumber.setText(userInfo.getPhone());
-            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+            txtDepWithBalance.setText(String.valueOf(userInfo.getMoney()));
 
 //            set icon for the frame
 //              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
@@ -224,12 +224,12 @@ public class frmUser extends javax.swing.JFrame {
 
         dialogDepositWithdraw = new javax.swing.JDialog();
         lblPhoneNumber = new javax.swing.JLabel();
-        lblCurrentBalance = new javax.swing.JLabel();
+        lblDepWithBalance = new javax.swing.JLabel();
         txtPhoneNumber = new javax.swing.JTextField();
-        lblAmount = new javax.swing.JLabel();
-        txtCurrentBalance = new javax.swing.JTextField();
-        txtAmount = new javax.swing.JTextField();
-        btnConfirm = new javax.swing.JButton();
+        lblDepWithAmount = new javax.swing.JLabel();
+        txtDepWithBalance = new javax.swing.JTextField();
+        txtDepWithAmount = new javax.swing.JTextField();
+        btnConfirmDepWith = new javax.swing.JButton();
         lblVND1 = new javax.swing.JLabel();
         lblVND3 = new javax.swing.JLabel();
         dialogTransfer = new javax.swing.JDialog();
@@ -270,10 +270,10 @@ public class frmUser extends javax.swing.JFrame {
         btnExport = new javax.swing.JButton();
         panelUser = new javax.swing.JPanel();
         lblMenu = new javax.swing.JLabel();
-        lblName = new javax.swing.JLabel();
-        lblBalance = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
-        txtBalance = new javax.swing.JTextField();
+        lblMenuName = new javax.swing.JLabel();
+        lblMenuBalance = new javax.swing.JLabel();
+        txtMenuName = new javax.swing.JTextField();
+        txtMenuBalance = new javax.swing.JTextField();
         pnTransaction = new javax.swing.JPanel();
         btnWithdraw = new javax.swing.JButton();
         btnTransfer = new javax.swing.JButton();
@@ -296,25 +296,25 @@ public class frmUser extends javax.swing.JFrame {
         lblPhoneNumber.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPhoneNumber.setText("Your Phone Number");
 
-        lblCurrentBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblCurrentBalance.setText("Current Balance");
+        lblDepWithBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblDepWithBalance.setText("Current Balance");
 
         txtPhoneNumber.setEditable(false);
         txtPhoneNumber.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lblAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblAmount.setText("Deposit Amount");
+        lblDepWithAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblDepWithAmount.setText("Deposit Amount");
 
-        txtCurrentBalance.setEditable(false);
-        txtCurrentBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtDepWithBalance.setEditable(false);
+        txtDepWithBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        txtAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtDepWithAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        btnConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnConfirm.setText("Confirm Deposit");
-        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirmDepWith.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnConfirmDepWith.setText("Confirm Deposit");
+        btnConfirmDepWith.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConfirmActionPerformed(evt);
+                btnConfirmDepWithActionPerformed(evt);
             }
         });
 
@@ -331,19 +331,19 @@ public class frmUser extends javax.swing.JFrame {
             .addGroup(dialogDepositWithdrawLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConfirmDepWith, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(dialogDepositWithdrawLayout.createSequentialGroup()
                         .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblCurrentBalance, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDepWithAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDepWithBalance, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblPhoneNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtPhoneNumber)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogDepositWithdrawLayout.createSequentialGroup()
                                 .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtCurrentBalance, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
-                                    .addComponent(txtAmount, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(txtDepWithBalance, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                                    .addComponent(txtDepWithAmount, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblVND1)
@@ -359,16 +359,16 @@ public class frmUser extends javax.swing.JFrame {
                     .addComponent(lblPhoneNumber))
                 .addGap(18, 18, 18)
                 .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCurrentBalance)
-                    .addComponent(txtCurrentBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDepWithBalance)
+                    .addComponent(txtDepWithBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblVND3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(dialogDepositWithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblAmount)
-                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDepWithAmount)
+                    .addComponent(txtDepWithAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblVND1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(44, 44, 44)
-                .addComponent(btnConfirm)
+                .addComponent(btnConfirmDepWith)
                 .addGap(42, 42, 42))
         );
 
@@ -548,11 +548,9 @@ public class frmUser extends javax.swing.JFrame {
 
         dPay.setResizable(false);
 
-        lblNotification.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblNotification.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblNotification.setText("<notification>");
 
-        btnPay.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnPay.setText("Confirm");
         btnPay.setEnabled(false);
         btnPay.addActionListener(new java.awt.event.ActionListener() {
@@ -561,7 +559,6 @@ public class frmUser extends javax.swing.JFrame {
             }
         });
 
-        btnCheck.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnCheck.setText("Check");
         btnCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -576,22 +573,19 @@ public class frmUser extends javax.swing.JFrame {
         lblSelection.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lblSelection.setText("<Selection>:");
 
-        cbSelection.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         cbSelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
 
         lblInput.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lblInput.setText("<Input>:");
 
-        txtInput.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtInput.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txtInputInputMethodTextChanged(evt);
             }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
         });
 
-        lblNotification1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblNotification1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblNotification1.setText("<notification>");
 
@@ -729,26 +723,26 @@ public class frmUser extends javax.swing.JFrame {
         lblMenu.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
         lblMenu.setText("MENU");
 
-        lblName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblName.setText("Name:");
+        lblMenuName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblMenuName.setText("Name:");
 
-        lblBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblBalance.setText("Balance:");
+        lblMenuBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblMenuBalance.setText("Balance:");
 
-        txtName.setEditable(false);
-        txtName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtName.setText("<Display Name>");
-        txtName.setBorder(null);
-        txtName.addActionListener(new java.awt.event.ActionListener() {
+        txtMenuName.setEditable(false);
+        txtMenuName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtMenuName.setText("<Display Name>");
+        txtMenuName.setBorder(null);
+        txtMenuName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNameActionPerformed(evt);
+                txtMenuNameActionPerformed(evt);
             }
         });
 
-        txtBalance.setEditable(false);
-        txtBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtBalance.setText("<Display Balance>");
-        txtBalance.setBorder(null);
+        txtMenuBalance.setEditable(false);
+        txtMenuBalance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtMenuBalance.setText("<Display Balance>");
+        txtMenuBalance.setBorder(null);
 
         pnTransaction.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transaction", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
@@ -921,12 +915,12 @@ public class frmUser extends javax.swing.JFrame {
                     .addGroup(panelUserLayout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBalance)
-                            .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblMenuBalance)
+                            .addComponent(lblMenuName, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(txtBalance)))
+                            .addComponent(txtMenuName, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                            .addComponent(txtMenuBalance)))
                     .addGroup(panelUserLayout.createSequentialGroup()
                         .addGap(283, 283, 283)
                         .addComponent(lblMenu))
@@ -944,12 +938,12 @@ public class frmUser extends javax.swing.JFrame {
                 .addComponent(lblMenu)
                 .addGap(18, 18, 18)
                 .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblMenuName, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMenuName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBalance)
-                    .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblMenuBalance)
+                    .addComponent(txtMenuBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnAccountmanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -977,9 +971,9 @@ public class frmUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
+    private void txtMenuNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMenuNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNameActionPerformed
+    }//GEN-LAST:event_txtMenuNameActionPerformed
 
     private void btnWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawActionPerformed
         // check if user reached max withdraw limit
@@ -990,15 +984,15 @@ public class frmUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You must have at least 1000 VND to withdraw", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             /* set the values on dialog */
-            txtName.setText(userInfo.getFullname());
-            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+            txtMenuName.setText(userInfo.getFullname());
+            txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             txtPhoneNumber.setText(userInfo.getPhone());
-            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+            txtDepWithBalance.setText(String.valueOf(userInfo.getMoney()));
 
             dialogDepositWithdraw.setTitle("Withdraw Transaction");
-            lblAmount.setText("Withdraw Amount");
-            btnConfirm.setText("Confirm Withdraw");
+            lblDepWithAmount.setText("Withdraw Amount");
+            btnConfirmDepWith.setText("Confirm Withdraw");
 
             dialogDepositWithdraw.pack(); // display dialog and its subcomponents in preferred size
 
@@ -1014,15 +1008,15 @@ public class frmUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You have reached maximum deposit limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
         } else {
             /* set the values on dialog */
-            txtName.setText(userInfo.getFullname());
-            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+            txtMenuName.setText(userInfo.getFullname());
+            txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             txtPhoneNumber.setText(userInfo.getPhone());
-            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+            txtDepWithBalance.setText(String.valueOf(userInfo.getMoney()));
 
             dialogDepositWithdraw.setTitle("Deposit Transaction");
-            lblAmount.setText("Deposit Amount");
-            btnConfirm.setText("Confirm Deposit");
+            lblDepWithAmount.setText("Deposit Amount");
+            btnConfirmDepWith.setText("Confirm Deposit");
 
             dialogDepositWithdraw.pack();// display dialog and its subcomponents in preferred size
 
@@ -1086,7 +1080,7 @@ public class frmUser extends javax.swing.JFrame {
         dPay.setVisible(true);
     }//GEN-LAST:event_btnBuyMobileActionPerformed
 
-    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+    private void btnConfirmDepWithActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmDepWithActionPerformed
         String txtAmountString; // deposit/withdraw amount in String
         int txtAmountInt; // deposit/withdraw amount in integer
         boolean error; // check if user input is wrong
@@ -1101,7 +1095,7 @@ public class frmUser extends javax.swing.JFrame {
             case "deposit":
 
                 /* initialize variables */
-                txtAmountString = txtAmount.getText(); // string from amount field
+                txtAmountString = txtDepWithAmount.getText(); // string from amount field
                 txtAmountInt = -1; // store amount of deposit/withdraw in integer
                 error = false; // check if there is any error (by default there's no error)
                 result = null; // store User object returned by server (by default the result is null)
@@ -1144,10 +1138,10 @@ public class frmUser extends javax.swing.JFrame {
                             userInfo = result; // update User info
 
                             /* set new balance */
-                            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-                            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+                            txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                            txtDepWithBalance.setText(String.valueOf(userInfo.getMoney()));
 
-                            txtAmount.setText(""); // empty the deposit amount inputted
+                            txtDepWithAmount.setText(""); // empty the deposit amount inputted
                             // if deposit failed
                         } else if (result.getDeposit_lim() == userInfo.getDeposit_lim()) {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "Deposit failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
@@ -1163,7 +1157,7 @@ public class frmUser extends javax.swing.JFrame {
             case "withdraw":
 
                 /* initialize variables */
-                txtAmountString = txtAmount.getText(); // string from amount field
+                txtAmountString = txtDepWithAmount.getText(); // string from amount field
                 txtAmountInt = -1; // store amount of deposit/withdraw in integer
                 error = false; // check if there is any error (by default there's no error)
                 result = null; // store User object returned by server (by default the result is null)
@@ -1208,10 +1202,10 @@ public class frmUser extends javax.swing.JFrame {
                             userInfo = result; // update User info
 
                             /* set new balance */
-                            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-                            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+                            txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                            txtDepWithBalance.setText(String.valueOf(userInfo.getMoney()));
 
-                            txtAmount.setText(""); // empty the withdraw amount inputted
+                            txtDepWithAmount.setText(""); // empty the withdraw amount inputted
                             // if withdrawal failed
                         } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
@@ -1228,8 +1222,8 @@ public class frmUser extends javax.swing.JFrame {
                 }
                 break;
         }
-        txtAmount.setText("");
-    }//GEN-LAST:event_btnConfirmActionPerformed
+        txtDepWithAmount.setText("");
+    }//GEN-LAST:event_btnConfirmDepWithActionPerformed
 
     private void btnConfirmTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTransferActionPerformed
         /* initialize variables */
@@ -1281,7 +1275,7 @@ public class frmUser extends javax.swing.JFrame {
                     userInfo = result; // update User info
 
                     /* set new balance */
-                    txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                    txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
                     txtSendBalance.setText(String.valueOf(userInfo.getMoney()));
 
                     txtTransAmount.setText(""); // empty the transfer amount inputted
@@ -1380,8 +1374,8 @@ public class frmUser extends javax.swing.JFrame {
                             userInfo = result; // update User info
 
                             /* set new balance */
-                            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-                            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+                            txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                            txtDepWithBalance.setText(String.valueOf(userInfo.getMoney()));
                         } else {
                             JOptionPane.showMessageDialog(dPay, "Some Error Occur!!! \nPlease Try Again!!!");
                         }
@@ -1421,8 +1415,8 @@ public class frmUser extends javax.swing.JFrame {
                         userInfo = result; // update User info
 
                         /* set new balance */
-                        txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-                        txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+                        txtMenuBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                        txtDepWithBalance.setText(String.valueOf(userInfo.getMoney()));
 
                         // if withdrawal failed
                     } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
@@ -1501,7 +1495,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JButton btnBuyMobile;
     private javax.swing.JButton btnChangeInfo;
     private javax.swing.JButton btnCheck;
-    private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnConfirmDepWith;
     private javax.swing.JButton btnConfirmRecPhone;
     private javax.swing.JButton btnConfirmTransfer;
     private javax.swing.JButton btnDeleteAccount;
@@ -1528,12 +1522,12 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblAmount;
-    private javax.swing.JLabel lblBalance;
-    private javax.swing.JLabel lblCurrentBalance;
+    private javax.swing.JLabel lblDepWithAmount;
+    private javax.swing.JLabel lblDepWithBalance;
     private javax.swing.JLabel lblInput;
     private javax.swing.JLabel lblMenu;
-    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblMenuBalance;
+    private javax.swing.JLabel lblMenuName;
     private javax.swing.JLabel lblNotification;
     private javax.swing.JLabel lblNotification1;
     private javax.swing.JLabel lblPhoneNumber;
@@ -1555,11 +1549,11 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JPanel pnAccountmanagement;
     private javax.swing.JPanel pnTransaction;
     private javax.swing.JTable tbReport;
-    private javax.swing.JTextField txtAmount;
-    private javax.swing.JTextField txtBalance;
-    private javax.swing.JTextField txtCurrentBalance;
+    private javax.swing.JTextField txtDepWithAmount;
+    private javax.swing.JTextField txtDepWithBalance;
     private javax.swing.JTextField txtInput;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtMenuBalance;
+    private javax.swing.JTextField txtMenuName;
     private javax.swing.JTextField txtPhoneNumber;
     private javax.swing.JTextField txtRecName;
     private javax.swing.JTextField txtRecPhone;
