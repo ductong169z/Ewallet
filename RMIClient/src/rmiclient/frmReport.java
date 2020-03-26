@@ -35,12 +35,16 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import rmiserver.IAdminFunc;
+import rmiserver.IUserFunc;
 import rmiserver.ReportList;
+import rmiserver.User;
 
 public class frmReport extends javax.swing.JFrame {
 
     IAdminFunc iAdmin;
+    IUserFunc iUser;
     DefaultTableModel model;
+    User userInfo;
     int option; // ReportList option
     // 1: Deposit report
     // 2: Withdrawal report
@@ -50,10 +54,12 @@ public class frmReport extends javax.swing.JFrame {
     /**
      * Creates new form ReportList
      */
-    public frmReport(int option) throws SQLException {
+    public frmReport(int option, User userInfo) throws SQLException {
         try {
             initComponents();
+            this.userInfo = userInfo; 
             iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
+            iUser =(IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
             ArrayList<ReportList> report;
             model = (DefaultTableModel) tbReport.getModel();
             this.option = option;
@@ -101,6 +107,19 @@ public class frmReport extends javax.swing.JFrame {
                 case 4:
                     this.setTitle("Transaction History");
                     lblTitle.setText("Transaction History");
+                    report = iUser.viewTransactionHistory(String.valueOf(userInfo.getId()));
+                    model = new DefaultTableModel();
+                    model.addColumn("ID");
+                    model.addColumn("User_Id");
+                    model.addColumn("Date");
+                    model.addColumn("Amount");
+                    model.addColumn("Type");
+                    model.addColumn("Description");
+                    for (ReportList rp : report){
+                        Object objList[] = {rp.getId(), rp.getUser_id(), rp.getCreated_at(), rp.getMoney(), rp.getType().equals("1")?"Withdrawal":"Deposit", rp.getDescription()};
+                        model.addRow(objList);
+                    }
+                    tbReport.setModel(model);
                     break;
                 default:
                     break;

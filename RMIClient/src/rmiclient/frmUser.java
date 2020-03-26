@@ -1216,7 +1216,7 @@ public class frmUser extends javax.swing.JFrame {
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
         try {
-            new frmReport(4).setVisible(true);
+            new frmReport(4, userInfo).setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         }

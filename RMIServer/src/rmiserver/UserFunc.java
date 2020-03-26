@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -44,7 +45,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * Get a User's complete info using his/her phone number
      *
      * @param phone
-     * @return user with data (user found), user without data (SQL Exception), null (user not found)
+     * @return user with data (user found), user without data (SQL Exception),
+     * null (user not found)
      * @throws RemoteException
      */
     @Override
@@ -84,8 +86,9 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      *
      * @param oldInfo
      * @param depositAmount
-     * @return new user info (Successful), old info (SQL Exception), null (Maximum deposit limit reached), old info with new limit (If current deposit will
-     * reach max limit)
+     * @return new user info (Successful), old info (SQL Exception), null
+     * (Maximum deposit limit reached), old info with new limit (If current
+     * deposit will reach max limit)
      * @throws RemoteException
      */
     @Override
@@ -160,8 +163,9 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param oldInfo
      * @param withdrawAmount
      * @param description
-     * @return new user info (Successful), old info (SQL Exception), null (Maximum withdraw limit reached), old info with new limit (if current withdraw will
-     * reach max limit or exceed user balance)
+     * @return new user info (Successful), old info (SQL Exception), null
+     * (Maximum withdraw limit reached), old info with new limit (if current
+     * withdraw will reach max limit or exceed user balance)
      * @throws RemoteException
      */
     @Override
@@ -241,8 +245,9 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param oldInfo
      * @param recPhone
      * @param transferAmount
-     * @return new user info (Successful), old info (SQL Exception), null (Maximum transfer limit reached), old info with new limit (If current transfer will
-     * reach max limit or exceed user balance)
+     * @return new user info (Successful), old info (SQL Exception), null
+     * (Maximum transfer limit reached), old info with new limit (If current
+     * transfer will reach max limit or exceed user balance)
      * @throws RemoteException
      */
     @Override
@@ -334,8 +339,9 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param mail
      * @param address
      * @param gender
-     * @return new user (Successful), user with no data (SQL Exception), null (Password incorrect), old user with "-1" user name or "-1" phone (in case where
-     * username/phone already exists)
+     * @return new user (Successful), user with no data (SQL Exception), null
+     * (Password incorrect), old user with "-1" user name or "-1" phone (in case
+     * where username/phone already exists)
      * @throws RemoteException
      */
     @Override
@@ -419,7 +425,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param userInfo
      * @param oldPassword
      * @param newPassword
-     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt password error), 3 (Old password is incorrect)
+     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt password error), 3
+     * (Old password is incorrect)
      * @throws RemoteException
      */
     @Override
@@ -496,7 +503,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      *
      * @param userInfo
      * @param password
-     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt Password Error), 3 (Password is incorrect)
+     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt Password Error), 3
+     * (Password is incorrect)
      * @throws RemoteException
      */
     @Override
@@ -556,11 +564,6 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     }
 
     @Override
-    public int viewTransactionHistory() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Map<String, String> getSchool() throws RemoteException {
         Map<String, String> schoolname = new HashMap<>();
         try {
@@ -609,5 +612,32 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<ReportList> viewTransactionHistory(String id_user) throws RemoteException {
+        ArrayList<ReportList> reports = new ArrayList<>();
+        try {
+            PreparedStatement st = conn.prepareStatement("select top 10 *\n"
+                    + "from (\n"
+                    + "select * from user_deposit\n"
+                    + "where user_id = ?\n"
+                    + "UNION\n"
+                    + "SELECT * from user_withdraw\n"
+                    + "WHERE user_id = ?\n"
+                    + ") as e ORDER BY created_at DESC");
+            st.setString(1, id_user);
+            st.setString(2, id_user);
+            
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                ReportList rp = new ReportList(rs.getString("id"),rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"));
+                reports.add(rp);
+            }
+            return reports;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
