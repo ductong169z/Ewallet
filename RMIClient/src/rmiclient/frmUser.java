@@ -1737,10 +1737,10 @@ public class frmUser extends javax.swing.JFrame {
                     } else if (result.getPhone() == null) {
                         JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
                     } else if (result.getPhone().equals("-1")) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted phone number " + txtPhone.getText() + " already exists in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted phone number \"" + txtPhone.getText() + "\" already exists in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
                         dialogConfirm.dispose();
                     } else if (result.getUsername().equals("-1")) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted username " + txtUsername.getText() + " already exists in database! \nPlease input another username!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted username \"" + txtUsername.getText() + "\" already exists in database! \nPlease input another username!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
                         dialogConfirm.dispose();
                     } else if (result.getUsername().equalsIgnoreCase("Error")) {
                         JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);

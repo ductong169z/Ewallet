@@ -31,13 +31,7 @@ public class frmRegister extends javax.swing.JFrame {
         try {
             // look up the registry created in RMI Server
             iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -235,7 +229,7 @@ public class frmRegister extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        /* Check if there are any fields having null values or being empty, or the 2 password fields don't match, or phone number is not 10-digit */
+        /* Check if all fields are correctly inputted */
         if (txtUsername.getText() == null || txtUsername.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The username must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
@@ -252,7 +246,7 @@ public class frmRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtPhone.getText().length() != 10) {
             JOptionPane.showMessageDialog(this, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            /* If there are no fields having null value or being empty and both password fields match */
+            /* In case user input is correct */
         } else {
             /* Temp variables to store values from the fields user inputted */
             String username = txtUsername.getText().trim();

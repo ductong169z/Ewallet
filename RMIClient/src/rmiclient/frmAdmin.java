@@ -264,6 +264,7 @@ public class frmAdmin extends javax.swing.JFrame {
 
         btnDepositReport.setBorder(null);
         btnDepositReport.setContentAreaFilled(false);
+        btnDepositReport.setFocusPainted(false);
         btnDepositReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDepositReportActionPerformed(evt);
@@ -518,7 +519,6 @@ public class frmAdmin extends javax.swing.JFrame {
                     if (!password.isEmpty()) {
                         boolean status = iAdmin.changePassword(String.valueOf(user.getId()), password);
                         if (status) {
-
                             JOptionPane.showMessageDialog(this, "Reset password successfully ! !", "Reset password", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(this, "Has undefined error !", "Error", JOptionPane.ERROR_MESSAGE);
@@ -526,7 +526,7 @@ public class frmAdmin extends javax.swing.JFrame {
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(this, "User not fund !", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "User not found !", "Error", JOptionPane.ERROR_MESSAGE);
 
                 }
             } catch (RemoteException ex) {
@@ -540,7 +540,7 @@ public class frmAdmin extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
 
-            String phone = JOptionPane.showInputDialog(this, "Input phone number here !", "Suspened user", JOptionPane.INFORMATION_MESSAGE);
+            String phone = JOptionPane.showInputDialog(this, "Input phone number here !", "Suspend user", JOptionPane.INFORMATION_MESSAGE);
 
             User user = iAdmin.getUser(phone);
             if (user != null) {
@@ -549,7 +549,7 @@ public class frmAdmin extends javax.swing.JFrame {
                     if (cfirm == 0) {
                         boolean status = iAdmin.suspendUser(user.getId());
                         if (status) {
-                            JOptionPane.showMessageDialog(this, user.getFullname() + " has been suspended  ! !", "Suspened user", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(this, user.getFullname() + " has been suspended  ! !", "Suspend user", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(this, "Has undefined error !", "Error", JOptionPane.ERROR_MESSAGE);
 

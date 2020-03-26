@@ -23,18 +23,18 @@ import java.util.logging.Logger;
 
 public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
-    Connection conn;
+    Connection conn; // connection to database
 
-    // constructor
+    /* Constructor */
     public AdminFunc(Connection conn) throws RemoteException {
         super();
 
-        // register the JDBC driver
+        // Register the JDBC Driver
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            this.conn = conn;
+            this.conn = conn; // setup the connection to database
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -51,14 +51,12 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
      * @param phone
      * @param address
      * @param role
-     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number is duplicated
+     * @return 0 (operation successful), 1 (SQL Exception occurred), 2 (phone number already exists), 3 (username already exists), 4 (encrypt password error)
      * @throws RemoteException
      */
     @Override
     public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address, int role) throws RemoteException {
-        boolean error = false; // check if there's any errors occured
-
-        // add user info to database
+        /* Add user info to database */
         try {
 
             /* Check if phone number already exists in database */
@@ -79,7 +77,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
             String hashPassword = ""; // store MD5 hashed version of password
 
-            /* code to hash password using MD5 algorithm */
+            /* Code to hash password using MD5 algorithm */
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
 
@@ -93,15 +91,15 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
                     hashPassword = "0" + hashPassword;
                 }
             } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
-                error = true;
+                Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
+                return 4; // indicate encrypt password error
             }
 
-            /* Add new user to database */
+            /* Execute SQL to add new user to database */
             PreparedStatement stCreateUser = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender, status)"
                     + " values(?, ?, ?, ?, ?, ?, ?, ?)");
 
-            // set values in the statement
+            /* Set values in SQL statement */
             stCreateUser.setString(1, username);
             stCreateUser.setString(2, hashPassword);
             stCreateUser.setString(3, fullname);
@@ -122,7 +120,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
             int userID = rsUserID.getInt("id"); // store the user ID of the user (who has just been added to database above)
 
-            // execute SQL statements to complete creating new user
+            /* Adding data to other 2 tables */
             PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , ?)");
             stSetRoleID.setInt(1, userID);
             stSetRoleID.setInt(2, role);
@@ -133,16 +131,11 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
             stSetMoney.setInt(1, userID);
             stSetMoney.setInt(2, 0);
             stSetMoney.executeUpdate();
+            
+            return 0; // operation successful
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
-            error = true; // if any errors occured
-        }
-
-        // return 0 if there are no errors (successful operation), else return 1 (unsuccessful)
-        if (!error) {
-            return 0;
-        } else {
-            return 1;
+            Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
+            return 1; // indicate SQL Exception
         }
     }
 
@@ -180,8 +173,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
     }
 
     @Override
-    public boolean changePassword(String id, String password
-    ) {
+    public boolean changePassword(String id, String password) {
         String hashPassword = ""; // store password that is MD5 hashed version of user's password (for validation)
 
         /* code to hash password using MD5 algorithm */
@@ -273,5 +265,4 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
         return null;
     }
-    /* Override methods in IAdminFunc interface */
 }

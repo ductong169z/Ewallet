@@ -56,6 +56,7 @@ public class frmReport extends javax.swing.JFrame {
             ArrayList<ReportList> report;
             model = (DefaultTableModel) tbReport.getModel();
             this.option = option;
+            this.setLocationRelativeTo(null);
             switch (option) {
                 case 1:
                     this.setTitle("Deposit Report");

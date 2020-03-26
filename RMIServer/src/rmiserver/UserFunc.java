@@ -30,17 +30,23 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     public UserFunc(Connection conn) throws RemoteException {
         super();
 
-        // register the JDBC driver
+        // Register the JDBC Driver
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            this.conn = conn; // update connection to database
+            this.conn = conn; // setup connection to database
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /* Override methods in IUserFunc interface */
-    
+    /**
+     * Get a User's complete info using his/her phone number
+     *
+     * @param phone
+     * @return user with data (user found), user without data (SQL Exception), null (user not found)
+     * @throws RemoteException
+     */
     @Override
     public User getUser(String phone) throws RemoteException {
         try {
@@ -73,9 +79,17 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         return null; // user does not exist
     }
 
+    /**
+     * Deposit transaction
+     *
+     * @param oldInfo
+     * @param depositAmount
+     * @return new user info (Successful), old info (SQL Exception), null (Maximum deposit limit reached), old info with new limit (If current deposit will
+     * reach max limit)
+     * @throws RemoteException
+     */
     @Override
     public User deposit(User oldInfo, int depositAmount) throws RemoteException {
-        boolean error = false; // check if there's any errors occured
         User newInfo = oldInfo; // store user info after modified/updated
 
         // try perform deposit transaction
@@ -127,25 +141,31 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stUpdateMoney.setInt(1, depositAmount + newInfo.getMoney());
                 stUpdateMoney.setInt(2, newInfo.getId());
                 stUpdateMoney.executeUpdate();
+
+                /* Update user info after successful deposit and return */
+                newInfo.setMoney(depositAmount + newInfo.getMoney()); // set new user balance
+                return newInfo;
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            error = true; // if any errors occured
+            return oldInfo; // return old user info in case SQL Exception occured
         }
 
-        // return new user info if successful, else return old one
-        if (!error) {
-            newInfo.setMoney(depositAmount + newInfo.getMoney()); // set new user balance
-            return newInfo;
-        } else {
-            return oldInfo;
-        }
     }
 
+    /**
+     * Withdraw transaction
+     *
+     * @param oldInfo
+     * @param withdrawAmount
+     * @param description
+     * @return new user info (Successful), old info (SQL Exception), null (Maximum withdraw limit reached), old info with new limit (if current withdraw will
+     * reach max limit or exceed user balance)
+     * @throws RemoteException
+     */
     @Override
     public User withdraw(User oldInfo, int withdrawAmount, String description) throws RemoteException {
-        boolean error = false; // check if there's any errors occured
         User newInfo = oldInfo; // store user info after modified/updated
 
         // try perform withdraw transaction
@@ -203,29 +223,34 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stUpdateMoney.setInt(1, newInfo.getMoney() - withdrawAmount);
                 stUpdateMoney.setInt(2, newInfo.getId());
                 stUpdateMoney.executeUpdate();
+
+                /* Update user info after successful withdrawal and return */
+                newInfo.setMoney(newInfo.getMoney() - withdrawAmount); // set new user balance
+                return newInfo;
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            error = true; // if any errors occured
-        }
-
-        // return new user info if successful, else return old one
-        if (!error) {
-            newInfo.setMoney(newInfo.getMoney() - withdrawAmount); // set new user balance
-            return newInfo;
-        } else {
-            return oldInfo;
+            return oldInfo; // indicate an SQL Exception Occured
         }
     }
 
+    /**
+     * Transfer transaction
+     *
+     * @param oldInfo
+     * @param recPhone
+     * @param transferAmount
+     * @return new user info (Successful), old info (SQL Exception), null (Maximum transfer limit reached), old info with new limit (If current transfer will
+     * reach max limit or exceed user balance)
+     * @throws RemoteException
+     */
     @Override
     public User transfer(User oldInfo, String recPhone, int transferAmount) throws RemoteException {
-        boolean error = false; // check if there's any errors occured
-        User newInfo = oldInfo; // store user info after modified/updated
+        User newInfo = oldInfo; // store sender info (to return if operation successful)
         User recInfo = getUser(recPhone); // store recipient info
 
-        // try perform transfer transaction
+        /* Perform transfer transaction */
         try {
             /* Get max transfer limit in database */
             PreparedStatement stGetLim = conn.prepareStatement("SELECT * FROM setting");
@@ -286,22 +311,33 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stRecUpdate.setInt(1, recInfo.getMoney() + transferAmount);
                 stRecUpdate.setInt(2, recInfo.getId());
                 stRecUpdate.executeUpdate();
+
+                /* Update user money after successful transfer */
+                newInfo.setMoney(newInfo.getMoney() - transferAmount); // set new user balance
+                return newInfo;
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            error = true; // if any errors occured
-        }
-
-        // return new user info if successful, else return old one
-        if (!error) {
-            newInfo.setMoney(newInfo.getMoney() - transferAmount); // set new user balance
-            return newInfo;
-        } else {
-            return oldInfo;
+            return oldInfo; // in case operation failed (SQL Exception)
         }
     }
 
+    /**
+     * Change user info (except password)
+     *
+     * @param oldInfo
+     * @param username
+     * @param password
+     * @param fullname
+     * @param phone
+     * @param mail
+     * @param address
+     * @param gender
+     * @return new user (Successful), user with no data (SQL Exception), null (Password incorrect), old user with "-1" user name or "-1" phone (in case where
+     * username/phone already exists)
+     * @throws RemoteException
+     */
     @Override
     public User changeInfo(User oldInfo, String username, String password, String fullname, String phone, String mail, String address, String gender) throws RemoteException {
         String hashPassword = ""; // store MD5 hashed version of password
@@ -323,7 +359,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
                 oldInfo.setUsername("Error");
-                return oldInfo;
+                return oldInfo; // send old info with username "Error" to indicate Encrypting Error
             }
 
             /* Check if password is correct */
@@ -344,13 +380,17 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             stCheckUsername.setInt(2, oldInfo.getId());
             ResultSet rsCheckUsername = stCheckUsername.executeQuery();
 
+            /* Perform actions dependent on result */
             if (rsCheckPhone.next()) {
+                /* Indicates that phone number already exists in database */
                 oldInfo.setPhone("-1");
                 return oldInfo;
             } else if (rsCheckUsername.next()) {
+                /* Indicates that username already exists in database */
                 oldInfo.setUsername("-1");
                 return oldInfo;
             } else if (rsCheckPass.next()) {
+                /* In case the new info is valid, update user info */
                 PreparedStatement stUpdateInfo = conn.prepareStatement("UPDATE users SET username = ?, fullname = ?, phone = ?, mail = ?, address = ?, gender = ? WHERE id = ?");
                 stUpdateInfo.setString(1, username);
                 stUpdateInfo.setString(2, fullname);
@@ -361,17 +401,27 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stUpdateInfo.setInt(7, oldInfo.getId());
                 stUpdateInfo.executeUpdate();
 
+                /* return new user info */
                 return new User(String.valueOf(oldInfo.getId()), username, fullname, phone, mail, address, gender, String.valueOf(oldInfo.getRole_id()), String.valueOf(oldInfo.getMoney()), String.valueOf(oldInfo.getDeposit_lim()), String.valueOf(oldInfo.getWithdraw_lim()), String.valueOf(oldInfo.getTrans_lim()));
             } else {
-                return null;
+                return null; // password is incorrect
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            return new User(); // indicate SQL error occured
+            return new User(); // SQL Exception occured
         }
 
     }
 
+    /**
+     * Change user password
+     *
+     * @param userInfo
+     * @param oldPassword
+     * @param newPassword
+     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt password error), 3 (Old password is incorrect)
+     * @throws RemoteException
+     */
     @Override
     public int changePassword(User userInfo, String oldPassword, String newPassword) throws RemoteException {
 
@@ -431,17 +481,24 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stUpdatePass.setString(3, hashOldPassword);
                 stUpdatePass.executeUpdate();
 
-                return 0; // successful
+                return 0; // successful operation
             } else {
                 return 3; // password is incorrect
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            return 1;
+            return 1; // SQL Exception occured
         }
     }
 
+    /**
+     *
+     * @param userInfo
+     * @param password
+     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt Password Error), 3 (Password is incorrect)
+     * @throws RemoteException
+     */
     @Override
     public int deleteAccount(User userInfo, String password) throws RemoteException {
         String hashPassword = ""; // store MD5 hashed version of password
@@ -462,7 +519,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 }
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-                return 2;
+                return 2; // Encrypting password error
             }
 
             /* Check if password is correct */
@@ -487,15 +544,15 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stDeleteUser.executeUpdate();
                 stDeleteUserRole.executeUpdate();
                 stDeleteUserMoney.executeUpdate();
+
+                return 0; // operation successful
             } else {
-                return 3;
+                return 3; // password is incorrect
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            return 1;
+            return 1; // SQL Exception occured
         }
-
-        return 0;
     }
 
     @Override
