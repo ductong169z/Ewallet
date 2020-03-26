@@ -11,6 +11,7 @@ package rmiserver;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 public interface IUserFunc extends Remote {
 
@@ -20,7 +21,7 @@ public interface IUserFunc extends Remote {
     
     public User deposit(User oldInfo, int depositAmount) throws RemoteException;
 
-    public User withdraw(User oldInfo, int withdrawAmount) throws RemoteException;
+    public User withdraw(User oldInfo, int withdrawAmount, String description) throws RemoteException;
 
     public User transfer(User oldInfo, String recPhone, int transferAmount) throws RemoteException;
 
@@ -28,7 +29,11 @@ public interface IUserFunc extends Remote {
 
     public int deleteAccount(User userInfo, String password) throws RemoteException;
 
-    public int payTuition() throws RemoteException;
+    public Map<String, String> getSchool() throws RemoteException;
+
+    public String getTuition(String schoolId, String studentId) throws RemoteException;
+
+    public boolean payTuition(String schoolId, String studentId) throws RemoteException;
 
     public int viewTransactionHistory() throws RemoteException;
 }

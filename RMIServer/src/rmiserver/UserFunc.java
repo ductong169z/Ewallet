@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -235,8 +237,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         }
     }
 
-    @Override
-    public User withdraw(User oldInfo, int withdrawAmount) throws RemoteException {
+@Override
+    public User withdraw(User oldInfo, int withdrawAmount, String description) throws RemoteException {
         boolean error = false; // check if there's any errors occured
         User newInfo = oldInfo; // store user info after modified/updated
 
@@ -282,11 +284,12 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 return oldInfo;
             } else {
                 /* Update withdraw history in database */
-                PreparedStatement stCreateWithDraw = conn.prepareStatement("INSERT INTO user_withdraw(user_id, money, created_at, type) VALUES(?, ?, ?, ?)");
+                PreparedStatement stCreateWithDraw = conn.prepareStatement("INSERT INTO user_withdraw(user_id, money, created_at, type, description) VALUES(?, ?, ?, ?, ?)");
                 stCreateWithDraw.setInt(1, newInfo.getId());
                 stCreateWithDraw.setInt(2, withdrawAmount);
                 stCreateWithDraw.setString(3, currentTime);
                 stCreateWithDraw.setInt(4, 1);
+                stCreateWithDraw.setString(5, description);
                 stCreateWithDraw.executeUpdate();
 
                 /* Update user money in database */
@@ -297,7 +300,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -509,8 +512,54 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     }
 
     @Override
-    public int payTuition() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Map<String, String> getSchool() throws RemoteException {
+        Map<String, String> schoolname = new HashMap<>();
+        try {
+            PreparedStatement st = conn.prepareStatement("select id, name from universities");
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                schoolname.put(rs.getString("id"), rs.getString("name"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return schoolname;
+    }
+
+    @Override
+    public String getTuition(String schoolId, String studentId) throws RemoteException {
+        String tuitionInfo = "";
+        try {
+            PreparedStatement st = conn.prepareStatement("select tuition.name, tuition.tuition from dbo.tuition where tuition.id_student like ? and tuition.id_uni = ? ");
+            st.setString(1, studentId);
+            st.setString(2, schoolId );
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+               tuitionInfo = rs.getString("name") + ": " + rs.getString("tuition");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return tuitionInfo;
+    }
+
+    @Override
+    public boolean payTuition(String schoolId, String studentId) throws RemoteException {
+        try {
+            PreparedStatement st = conn.prepareStatement("update dbo.tuition set tuition.tuition = 0 where tuition.id_student like ? and tuition.id_uni = ? ");
+            st.setString(1, studentId);
+            st.setString(2, schoolId );
+            int count = st.executeUpdate();
+            if(count > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override

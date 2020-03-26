@@ -17,6 +17,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -38,6 +40,12 @@ public class frmUser extends javax.swing.JFrame {
     boolean atMaxDeposit; // determines if user reached max deposit limit
     boolean atMaxTrans; // determines if user reached max transfer limit
     User newInfo; // store new user info (for change info function)
+    Map<String, String> schools = new HashMap<>();
+    String id_student;
+    String id_uni;
+    String phoneNum;
+    int payOption; // pay option 1 is tuition fee, 2 is mobile card
+    int fee;
 
     /**
      * Creates new form frmUser
@@ -1178,12 +1186,49 @@ public class frmUser extends javax.swing.JFrame {
 
     private void btnPaytuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaytuitionActionPerformed
         // TODO add your handling code here:
-        new frmPay(1).setVisible(true);
+        try {
+            cbSelection.removeAllItems();
+            lblTitle.setText("Pay Tuition");
+            lblSelection.setText("School:");
+            lblInput.setText("Student ID:");
+            lblNotification.setText("Name: ");
+            lblNotification1.setText("Tuition fee:");
+            txtInput.setText("");
+            btnPay.setEnabled(false);
+            schools = iUser.getSchool();
+            for (String value : schools.values()) {
+                cbSelection.addItem(value);
+            }
+            dPay.pack();
+            payOption = 1;
+            dPay.setVisible(true);
+            dPay.setLocationRelativeTo(null);
+
+        } catch (RemoteException ex) {
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnPaytuitionActionPerformed
 
     private void btnBuyMobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyMobileActionPerformed
         // TODO add your handling code here:
-        new frmPay(2).setVisible(true);
+        cbSelection.removeAllItems();
+        lblTitle.setText("Top Up");
+        lblSelection.setText("Amount:");
+        lblInput.setText("Phone number:");
+        lblNotification.setText("Phone number: ");
+        lblNotification1.setText("Amount: ");
+        txtInput.setText("");
+        btnPay.setEnabled(false);
+        cbSelection.addItem("10000 VND");
+        cbSelection.addItem("20000 VND");
+        cbSelection.addItem("50000 VND");
+        cbSelection.addItem("100000 VND");
+        cbSelection.addItem("200000 VND");
+        cbSelection.addItem("500000 VND");
+        dPay.pack();
+        payOption = 2;
+        dPay.setVisible(true);
+        dPay.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnBuyMobileActionPerformed
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
@@ -1292,7 +1337,7 @@ public class frmUser extends javax.swing.JFrame {
                     } else {
                         // call method in server to execute
                         try {
-                            result = iUser.withdraw(userInfo, txtAmountInt);
+                            result = iUser.withdraw(userInfo, txtAmountInt, "");
                         } catch (RemoteException ex) {
                             Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -1549,9 +1594,6 @@ public class frmUser extends javax.swing.JFrame {
                     }
                 }
 
-                /* clear the password fields */
-                txtPassword.setText("");
-                txtPasswordConfirm.setText("");
                 break;
 
             case "delete":
@@ -1592,6 +1634,9 @@ public class frmUser extends javax.swing.JFrame {
                     break;
                 }
         }
+        /* clear the password fields */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
     }//GEN-LAST:event_btnProceedActionPerformed
 
     private void btnDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAccountActionPerformed
