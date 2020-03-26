@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,9 +132,9 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
      * @return
      */
     @Override
-    public ReportList getReportAll(String type) {
+    public ArrayList<ReportList> getReportAll(String type) {
         try {
-            ReportList rp;
+            ArrayList<ReportList> rp = new ArrayList<>();
             int itype = 0;
             String money;
             String stm;
@@ -147,15 +148,21 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
             }
             PreparedStatement st = conn.prepareStatement(stm);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                rp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), "", "", rs.getString("description"));
-                return rp;
-
+            while (rs.next()) {
+                ReportList newrp;
+                if (type.equals("user_withdraw") || type.equals("user_deposit")) {
+                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"));
+                } else {
+                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), rs.getString("description") == null ? "" : rs.getString("description"));
+                }
+                rp.add(newrp);
             }
 
+            return rp;
         } catch (SQLException ex) {
             Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return null;
     }
     /* Override methods in IAdminFunc interface */

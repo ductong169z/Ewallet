@@ -10,6 +10,7 @@ package rmiserver;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface IAdminFunc extends Remote {
 
@@ -19,6 +20,6 @@ public interface IAdminFunc extends Remote {
 
     public boolean suspendUser(int id) throws RemoteException;
 
-    public ReportList getReportAll(String method) throws RemoteException;
+    public ArrayList<ReportList> getReportAll(String method) throws RemoteException;
 
 }
