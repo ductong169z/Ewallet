@@ -21,6 +21,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -37,7 +38,7 @@ import rmiserver.ReportList;
 public class frmReport extends javax.swing.JFrame {
 
     IAdminFunc iAdmin;
-
+    DefaultTableModel model;
     int option; // ReportList option
     // 1: Deposit report
     // 2: Withdrawal report
@@ -51,29 +52,27 @@ public class frmReport extends javax.swing.JFrame {
         try {
             initComponents();
             iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
-            ReportList report;
-            DefaultTableModel model;
+            ArrayList<ReportList> report;
+            model = (DefaultTableModel) tbReport.getModel();
             this.option = option;
             switch (option) {
                 case 1:
                     this.setTitle("Deposit Report");
                     lblTitle.setText("Deposit Report");
                     report = iAdmin.getReportAll("user_deposit");
-                    model = (DefaultTableModel) tbReport.getModel();
-                    model.setRowCount(0);
-
-                    Object objList[] = {report.getId(), report.getMoney(), report.getCreated_at(), report.getDescription()};
-                    model.addRow(objList);
-
+                    for (ReportList rp : report) {
+                        Object objList[] = {rp.getId(),rp.getUser_id(),"", rp.getMoney(), rp.getCreated_at(), rp.getDescription()};
+                        model.addRow(objList);
+                    }
                     break;
                 case 2:
                     this.setTitle("Withdrawal Report");
                     lblTitle.setText("Withdrawal Report");
                     report = iAdmin.getReportAll("user_withdraw");
-                    model = (DefaultTableModel) tbReport.getModel();
-                    model.setRowCount(0);
-                    Object objList1[] = {report.getId(), report.getMoney(), report.getCreated_at(), report.getDescription()};
-                    model.addRow(objList1);
+                    for (ReportList rp : report) {
+                        Object objList[] = {rp.getId(),rp.getUser_id(),"", rp.getMoney(), rp.getCreated_at(), rp.getDescription()};
+                        model.addRow(objList);
+                    }
                     break;
                 case 3:
                     this.setTitle("Transfer Report");
@@ -120,14 +119,14 @@ public class frmReport extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Amount", "Time", "Description"
+                "ID", "User ID", "Fullname", "Amount", "Time", "Description"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true
+                false, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -203,28 +202,31 @@ public class frmReport extends javax.swing.JFrame {
             try {
                 XSSFWorkbook excelExporter = new XSSFWorkbook();
                 XSSFSheet excelSheet = excelExporter.createSheet(lblTitle.getText());
-                for (int i = 0; i < tbReport.getRowCount(); i++) {
-                    XSSFRow excelRow = excelSheet.createRow(i);
-                    for (int j = 0; j < tbReport.getColumnCount(); j++) {
-                        XSSFCell excelCell = excelRow.createCell(j);
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    XSSFRow excelRow = excelSheet.createRow(0);
+                    XSSFCell excelCell = excelRow.createCell(i);
+                    String cell = model.getColumnName(i);
+                    excelCell.setCellValue(cell);
+                }
 
-                        excelCell.setCellValue(tbReport.getValueAt(i, j).toString());
+                for (int i = 1; i < model.getRowCount(); i++) {
+                    XSSFRow excelRow = excelSheet.createRow(i);
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        XSSFCell excelCell = excelRow.createCell(j);
+                        String cell = model.getValueAt(i-1, j).toString();
+                        excelCell.setCellValue(cell);
                     }
                 }
-                fileOut = new FileOutputStream(excelFileChooser.getSelectedFile()+".xlsx");
+                fileOut = new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx");
                 BufferedOutputStream fileBuffer = new BufferedOutputStream(fileOut);
                 excelExporter.write(fileBuffer);
                 JOptionPane.showMessageDialog(this, "Export Successfull");
+                fileBuffer.close();
+                fileOut.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    fileOut.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
 
         }
