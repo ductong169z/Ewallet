@@ -53,6 +53,8 @@ public class frmLogin extends javax.swing.JFrame {
         txtPasswordLog = new javax.swing.JPasswordField();
         btnOKLog = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
+        lblSignUp = new javax.swing.JLabel();
+        btnForgotPass = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Form");
@@ -79,13 +81,33 @@ public class frmLogin extends javax.swing.JFrame {
         });
 
         btnRegister.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRegister.setForeground(new java.awt.Color(102, 102, 255));
-        btnRegister.setText("Register Now!");
+        btnRegister.setForeground(new java.awt.Color(0, 80, 215));
+        btnRegister.setText("Sign Up Now!");
+        btnRegister.setBorder(null);
         btnRegister.setBorderPainted(false);
         btnRegister.setContentAreaFilled(false);
+        btnRegister.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        btnRegister.setPreferredSize(new java.awt.Dimension(240, 31));
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegisterActionPerformed(evt);
+            }
+        });
+
+        lblSignUp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblSignUp.setText("No Account Yet?");
+        lblSignUp.setPreferredSize(new java.awt.Dimension(132, 22));
+
+        btnForgotPass.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnForgotPass.setForeground(new java.awt.Color(0, 80, 215));
+        btnForgotPass.setText("Forgot Your Password?");
+        btnForgotPass.setBorder(null);
+        btnForgotPass.setBorderPainted(false);
+        btnForgotPass.setContentAreaFilled(false);
+        btnForgotPass.setPreferredSize(new java.awt.Dimension(240, 31));
+        btnForgotPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnForgotPassActionPerformed(evt);
             }
         });
 
@@ -96,7 +118,10 @@ public class frmLogin extends javax.swing.JFrame {
             .addGroup(panelLoginLayout.createSequentialGroup()
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLoginLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
+                        .addGap(187, 187, 187)
+                        .addComponent(btnOKLog, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelLoginLayout.createSequentialGroup()
+                        .addGap(56, 56, 56)
                         .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblPasswordLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -105,17 +130,19 @@ public class frmLogin extends javax.swing.JFrame {
                             .addComponent(txtPasswordLog)
                             .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelLoginLayout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelLoginLayout.createSequentialGroup()
-                        .addGap(181, 181, 181)
-                        .addComponent(btnOKLog, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                        .addGap(105, 105, 105)
+                        .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnForgotPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelLoginLayout.createSequentialGroup()
+                                .addComponent(lblSignUp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(45, 45, 45))
         );
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
-                .addContainerGap(70, Short.MAX_VALUE)
+            .addGroup(panelLoginLayout.createSequentialGroup()
+                .addGap(51, 51, 51)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsernameLog)
                     .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -125,9 +152,13 @@ public class frmLogin extends javax.swing.JFrame {
                     .addComponent(txtPasswordLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addComponent(btnOKLog)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRegister)
-                .addGap(43, 43, 43))
+                .addGap(18, 18, 18)
+                .addComponent(btnForgotPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSignUp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,8 +174,8 @@ public class frmLogin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -196,6 +227,10 @@ public class frmLogin extends javax.swing.JFrame {
         new frmRegister(2).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    private void btnForgotPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForgotPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnForgotPassActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -240,9 +275,11 @@ public class frmLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnForgotPass;
     private javax.swing.JButton btnOKLog;
     private javax.swing.JButton btnRegister;
     private javax.swing.JLabel lblPasswordLog;
+    private javax.swing.JLabel lblSignUp;
     private javax.swing.JLabel lblUsernameLog;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPasswordField txtPasswordLog;

@@ -117,7 +117,7 @@ public class Authentication extends UnicastRemoteObject implements IAuthenticati
     @Override
     public boolean checkStatus(String user_id) {
         try {
-            PreparedStatement st = conn.prepareStatement("Select status from users where id = ? AND status =1 ");
+            PreparedStatement st = conn.prepareStatement("Select status from users where id = ? AND status = 1 ");
             st.setString(1, user_id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
