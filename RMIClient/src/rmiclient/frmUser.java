@@ -1033,6 +1033,11 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
+        try {
+            new frmReport(4).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_btnTransactionHistoryActionPerformed
 
@@ -1377,7 +1382,7 @@ public class frmUser extends javax.swing.JFrame {
                             /* set new balance */
                             txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
                             txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
-                        }else{
+                        } else {
                             JOptionPane.showMessageDialog(dPay, "Some Error Occur!!! \nPlease Try Again!!!");
                         }
                         // if withdrawal failed

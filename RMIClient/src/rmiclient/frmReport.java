@@ -8,6 +8,10 @@
  */
 package rmiclient;
 
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -19,7 +23,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import rmiserver.IAdminFunc;
 import rmiserver.ReportList;
 
@@ -93,12 +104,14 @@ public class frmReport extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFileChooser1 = new javax.swing.JFileChooser();
+        excelFileChooser = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbReport = new javax.swing.JTable();
         lblTitle = new javax.swing.JLabel();
         btnExport = new javax.swing.JButton();
+
+        excelFileChooser.setDialogTitle("Save As");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -133,6 +146,11 @@ public class frmReport extends javax.swing.JFrame {
 
         btnExport.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         btnExport.setText("Export");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -174,13 +192,51 @@ public class frmReport extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xls", "xlsx", "xlsm");
+        excelFileChooser.setFileFilter(filter);
+        int choice = excelFileChooser.showSaveDialog(this);
+
+        if (choice == JFileChooser.APPROVE_OPTION) {
+            FileOutputStream fileOut = null;
+            try {
+                XSSFWorkbook excelExporter = new XSSFWorkbook();
+                XSSFSheet excelSheet = excelExporter.createSheet(lblTitle.getText());
+                for (int i = 0; i < tbReport.getRowCount(); i++) {
+                    XSSFRow excelRow = excelSheet.createRow(i);
+                    for (int j = 0; j < tbReport.getColumnCount(); j++) {
+                        XSSFCell excelCell = excelRow.createCell(j);
+
+                        excelCell.setCellValue(tbReport.getValueAt(i, j).toString());
+                    }
+                }
+                fileOut = new FileOutputStream(excelFileChooser.getSelectedFile()+".xlsx");
+                BufferedOutputStream fileBuffer = new BufferedOutputStream(fileOut);
+                excelExporter.write(fileBuffer);
+                JOptionPane.showMessageDialog(this, "Export Successfull");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    fileOut.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+    }//GEN-LAST:event_btnExportActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExport;
-    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JFileChooser excelFileChooser;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitle;

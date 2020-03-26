@@ -451,15 +451,27 @@ public class frmAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDepositReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositReportActionPerformed
-       
+        try {
+            new frmReport(1).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnDepositReportActionPerformed
 
     private void btnWithdrawReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawReportActionPerformed
-        
+        try {
+            new frmReport(2).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnWithdrawReportActionPerformed
 
     private void btnTransferReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferReportActionPerformed
-        
+        try {
+            new frmReport(3).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnTransferReportActionPerformed
 
     private void btnCreatenewuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreatenewuserActionPerformed
