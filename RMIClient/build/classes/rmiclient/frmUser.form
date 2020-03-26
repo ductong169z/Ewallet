@@ -784,9 +784,6 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="rdoFemale">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="genderGroup"/>
-            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
@@ -795,9 +792,6 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="rdoMale">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="genderGroup"/>
-            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
@@ -936,8 +930,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.ButtonGroup" name="genderGroup">
-    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -1299,17 +1291,11 @@
               <Properties>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChangeInfoActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnDeleteAccount">
               <Properties>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteAccountActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnTransactionHistory">
               <Properties>
