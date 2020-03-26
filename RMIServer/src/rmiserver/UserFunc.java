@@ -445,7 +445,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             /* Check if username already exists in database */
             PreparedStatement stCheckUsername = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND id != ?");
             stCheckUsername.setString(1, username);
-            stCheckPhone.setInt(2, oldInfo.getId());
+            stCheckUsername.setInt(2, oldInfo.getId());
             ResultSet rsCheckUsername = stCheckUsername.executeQuery();
 
             if (rsCheckPhone.next()) {
@@ -580,8 +580,10 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 /* SQL Statements to delete user from 3 tables in database */
                 PreparedStatement stDeleteUser = conn.prepareStatement("DELETE FROM users WHERE id = ?");
                 stDeleteUser.setInt(1, userInfo.getId());
+                
                 PreparedStatement stDeleteUserRole = conn.prepareStatement("DELETE FROM user_role WHERE user_id = ?");
                 stDeleteUserRole.setInt(1, userInfo.getId());
+                
                 PreparedStatement stDeleteUserMoney = conn.prepareStatement("DELETE FROM user_money WHERE user_id = ?");
                 stDeleteUserMoney.setInt(1, userInfo.getId());
 

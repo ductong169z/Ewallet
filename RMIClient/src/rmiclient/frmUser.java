@@ -215,14 +215,15 @@ public class frmUser extends javax.swing.JFrame {
         txtHintConfirm = new javax.swing.JTextField();
         btnProceed = new javax.swing.JButton();
         dialogChangePass = new javax.swing.JDialog();
-        txtHintConfirm1 = new javax.swing.JTextField();
-        lblPassword1 = new javax.swing.JLabel();
-        lblPasswordConfirm1 = new javax.swing.JLabel();
-        txtPassword1 = new javax.swing.JPasswordField();
-        txtPasswordConfirm1 = new javax.swing.JPasswordField();
-        btnProceed1 = new javax.swing.JButton();
-        lblPassword2 = new javax.swing.JLabel();
-        txtPassword2 = new javax.swing.JPasswordField();
+        txtHintPass = new javax.swing.JTextField();
+        lblNewPassword = new javax.swing.JLabel();
+        lblNewPassConfirm = new javax.swing.JLabel();
+        txtNewPassword = new javax.swing.JPasswordField();
+        txtNewPassConfirm = new javax.swing.JPasswordField();
+        btnDialogChangePass = new javax.swing.JButton();
+        lblOldPassword = new javax.swing.JLabel();
+        txtOldPassword = new javax.swing.JPasswordField();
+        genderGroup = new javax.swing.ButtonGroup();
         panelUser = new javax.swing.JPanel();
         lblMenu = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
@@ -631,9 +632,11 @@ public class frmUser extends javax.swing.JFrame {
 
         txtEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        genderGroup.add(rdoFemale);
         rdoFemale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoFemale.setText("Female");
 
+        genderGroup.add(rdoMale);
         rdoMale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoMale.setText("Male");
 
@@ -727,7 +730,7 @@ public class frmUser extends javax.swing.JFrame {
         txtPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         lblPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblPasswordConfirm.setText("Confirmation:");
+        lblPasswordConfirm.setText("Confirm Password:");
 
         lblPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPassword.setText("Enter Password:");
@@ -757,7 +760,7 @@ public class frmUser extends javax.swing.JFrame {
                     .addComponent(txtHintConfirm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dialogConfirmLayout.createSequentialGroup()
                         .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblPasswordConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -784,33 +787,35 @@ public class frmUser extends javax.swing.JFrame {
                 .addGap(40, 40, 40))
         );
 
-        txtHintConfirm1.setEditable(false);
-        txtHintConfirm1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtHintConfirm1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtHintConfirm1.setText("Please enter your password to confirm changing info");
+        dialogChangePass.setTitle("Change Password");
 
-        lblPassword1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblPassword1.setText("Enter Password:");
+        txtHintPass.setEditable(false);
+        txtHintPass.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtHintPass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtHintPass.setText("Please re-enter new password to Confirm field");
 
-        lblPasswordConfirm1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblPasswordConfirm1.setText("Confirmation:");
+        lblNewPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblNewPassword.setText("New Password:");
 
-        txtPassword1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblNewPassConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblNewPassConfirm.setText("Confirm Password:");
 
-        txtPasswordConfirm1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtNewPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        btnProceed1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnProceed1.setText("Proceed");
-        btnProceed1.addActionListener(new java.awt.event.ActionListener() {
+        txtNewPassConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnDialogChangePass.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnDialogChangePass.setText("Change Password");
+        btnDialogChangePass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProceed1ActionPerformed(evt);
+                btnDialogChangePassActionPerformed(evt);
             }
         });
 
-        lblPassword2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblPassword2.setText("Enter Password:");
+        lblOldPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblOldPassword.setText("Old Password:");
 
-        txtPassword2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtOldPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout dialogChangePassLayout = new javax.swing.GroupLayout(dialogChangePass.getContentPane());
         dialogChangePass.getContentPane().setLayout(dialogChangePassLayout);
@@ -819,44 +824,40 @@ public class frmUser extends javax.swing.JFrame {
             .addGroup(dialogChangePassLayout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtHintConfirm1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnProceed1)
+                    .addComponent(txtHintPass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dialogChangePassLayout.createSequentialGroup()
                         .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblPassword2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPassword1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                            .addComponent(lblPasswordConfirm1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblOldPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNewPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNewPassConfirm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(dialogChangePassLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPasswordConfirm1)
-                                    .addComponent(txtPassword1)))
-                            .addGroup(dialogChangePassLayout.createSequentialGroup()
-                                .addGap(169, 169, 169)
-                                .addComponent(txtPassword2)))))
-                .addContainerGap(94, Short.MAX_VALUE))
+                            .addComponent(txtNewPassConfirm)
+                            .addComponent(txtNewPassword)
+                            .addComponent(txtOldPassword)))
+                    .addComponent(btnDialogChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         dialogChangePassLayout.setVerticalGroup(
             dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dialogChangePassLayout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(txtHintConfirm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtHintPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPassword2)
-                    .addComponent(txtPassword2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPassword1)
-                    .addComponent(txtPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblOldPassword)
+                    .addComponent(txtOldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPasswordConfirm1)
-                    .addComponent(txtPasswordConfirm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
-                .addComponent(btnProceed1)
-                .addGap(40, 40, 40))
+                    .addComponent(lblNewPassword)
+                    .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNewPassConfirm)
+                    .addComponent(txtNewPassConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addComponent(btnDialogChangePass)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1561,14 +1562,14 @@ public class frmUser extends javax.swing.JFrame {
                         }
                         // if withdrawal failed
                     } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         // if the withdraw amount exceeds current balance
                     } else if (result.getDeposit_lim() == -1) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                         // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
                     } else {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                     }
                     dPay.dispose();
@@ -1600,14 +1601,14 @@ public class frmUser extends javax.swing.JFrame {
 
                         // if withdrawal failed
                     } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         // if the withdraw amount exceeds current balance
                     } else if (result.getDeposit_lim() == -1) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                         // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
                     } else {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                     }
                     dPay.dispose();
@@ -1822,7 +1823,7 @@ public class frmUser extends javax.swing.JFrame {
         dialogConfirm.setTitle("Delete Account Confirmation");
         txtHintConfirm.setText("Please enter your password to confirm deleting account");
         this.action = "delete";
-        
+
         /* clear the password fields */
         txtPassword.setText("");
         txtPasswordConfirm.setText("");
@@ -1832,12 +1833,51 @@ public class frmUser extends javax.swing.JFrame {
         dialogConfirm.setLocationRelativeTo(null); // center the dialog
     }//GEN-LAST:event_btnDeleteAccountActionPerformed
     private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
-        // TODO add your handling code here:
+        txtOldPassword.setText("");
+        txtNewPassword.setText("");
+        txtNewPassConfirm.setText("");
+
+        dialogChangePass.pack(); // display dialog and its subcomponents in preferred size
+        dialogChangePass.setVisible(true); // show up the dialog
+        dialogChangePass.setLocationRelativeTo(null); // center the dialog
     }//GEN-LAST:event_btnChangePassActionPerformed
 
-    private void btnProceed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceed1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnProceed1ActionPerformed
+    private void btnDialogChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDialogChangePassActionPerformed
+        /* Check if old password, new password or password confirmation are not null or empty, or password confirmation doesn't match, or new password and old password matched*/
+        if (String.valueOf(txtOldPassword.getPassword()) == null || String.valueOf(txtOldPassword.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangePass, "Please enter your old password!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (String.valueOf(txtNewPassword.getPassword()) == null || String.valueOf(txtNewPassword.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangePass, "Please enter your new password!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (String.valueOf(txtNewPassConfirm.getPassword()) == null || String.valueOf(txtNewPassConfirm.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangePass, "Please confirm your new password!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (!String.valueOf(txtNewPassword.getPassword()).equals(String.valueOf(txtNewPassConfirm.getPassword()))) {
+            JOptionPane.showMessageDialog(dialogChangePass, "The new password confirmation must match the new password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } else if (String.valueOf(txtOldPassword.getPassword()).equals(String.valueOf(txtNewPassword.getPassword()))) {
+            JOptionPane.showMessageDialog(dialogChangePass, "The new password cannot be the same as old password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }else {
+            int result = -1; // store result of operation
+
+            // call changePassword method from server to execute
+            try {
+                result = iUser.changePassword(userInfo, String.valueOf(txtOldPassword.getPassword()), String.valueOf(txtNewPassword.getPassword()));
+            } catch (RemoteException ex) {
+                Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(dialogChangePass, "Remote Exception Occured!", "Change Password Failed", JOptionPane.ERROR_MESSAGE);
+            }
+
+            if (result == 0) {
+                JOptionPane.showMessageDialog(dialogChangePass, "Your password has been updated!", "Change Password Successfully", JOptionPane.INFORMATION_MESSAGE);
+                dialogChangePass.dispose();
+            } else if (result == 1) {
+                JOptionPane.showMessageDialog(dialogChangePass, "SQL Exception Occured on Server Side!", "Change Password Failed!", JOptionPane.ERROR_MESSAGE);
+            } else if (result == 2) {
+                JOptionPane.showMessageDialog(dialogChangePass, "Encrypting Password Error on Server Side!", "Change Password Failed!", JOptionPane.ERROR_MESSAGE);
+            } else if (result == 3) {
+                JOptionPane.showMessageDialog(dialogChangePass, "Your old password is incorrect!", "Change Password Failed!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_btnDialogChangePassActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1850,11 +1890,11 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JButton btnConfirmTransfer;
     private javax.swing.JButton btnDeleteAccount;
     private javax.swing.JButton btnDeposit;
+    private javax.swing.JButton btnDialogChangePass;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPaytuition;
     private javax.swing.JButton btnProceed;
-    private javax.swing.JButton btnProceed1;
     private javax.swing.JButton btnTransactionHistory;
     private javax.swing.JButton btnTransfer;
     private javax.swing.JButton btnWithdraw;
@@ -1866,6 +1906,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JDialog dialogDepositWithdraw;
     private javax.swing.JDialog dialogTransPhone;
     private javax.swing.JDialog dialogTransfer;
+    private javax.swing.ButtonGroup genderGroup;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblAmount;
     private javax.swing.JLabel lblBalance;
@@ -1880,13 +1921,13 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblInput;
     private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblNewPassConfirm;
+    private javax.swing.JLabel lblNewPassword;
     private javax.swing.JLabel lblNotification;
     private javax.swing.JLabel lblNotification1;
+    private javax.swing.JLabel lblOldPassword;
     private javax.swing.JLabel lblPassword;
-    private javax.swing.JLabel lblPassword1;
-    private javax.swing.JLabel lblPassword2;
     private javax.swing.JLabel lblPasswordConfirm;
-    private javax.swing.JLabel lblPasswordConfirm1;
     private javax.swing.JLabel lblPayTuition;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblPhoneNumber;
@@ -1921,14 +1962,14 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtHint;
     private javax.swing.JTextField txtHintConfirm;
-    private javax.swing.JTextField txtHintConfirm1;
+    private javax.swing.JTextField txtHintPass;
     private javax.swing.JTextField txtInput;
     private javax.swing.JTextField txtName;
+    private javax.swing.JPasswordField txtNewPassConfirm;
+    private javax.swing.JPasswordField txtNewPassword;
+    private javax.swing.JPasswordField txtOldPassword;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JPasswordField txtPassword1;
-    private javax.swing.JPasswordField txtPassword2;
     private javax.swing.JPasswordField txtPasswordConfirm;
-    private javax.swing.JPasswordField txtPasswordConfirm1;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtPhoneNumber;
     private javax.swing.JTextField txtRecName;
