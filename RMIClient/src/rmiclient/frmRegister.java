@@ -267,7 +267,7 @@ public class frmRegister extends javax.swing.JFrame {
 
             // call method createUser on server side to execute
             try {
-                result = iUser.createUser(username, password, fullname, gender, email, phone, address,role);
+                result = iUser.createUser(username, password, fullname, gender, mail, phone, address,role);
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
