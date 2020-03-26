@@ -47,6 +47,12 @@ public class frmAdmin extends javax.swing.JFrame {
         try {
             /* Add the icons to the buttons */
 
+//            /* Add Wibuu Pay Icon */
+//            BufferedImage wibuuImage = ImageIO.read(new File("Wibuu.png"));
+//            Image rWibuuImg = wibuuImage.getScaledInstance(iconWibuuPay.getWidth(), iconWibuuPay.getHeight(), Image.SCALE_SMOOTH);
+//            ImageIcon wibuuIcon = new ImageIcon(rWibuuImg);
+//            iconWibuuPay.setIcon(wibuuIcon);
+
             // Add icon for the Create New User Button
             BufferedImage add = ImageIO.read(new File("adduser.png"));
             Image resizeAdd = add.getScaledInstance(btnCreateNewUser.getHeight(), btnCreateNewUser.getWidth(), Image.SCALE_SMOOTH);
@@ -334,7 +340,7 @@ public class frmAdmin extends javax.swing.JFrame {
                 .addComponent(btnTransferReport, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
@@ -424,11 +430,11 @@ public class frmAdmin extends javax.swing.JFrame {
                         .addComponent(pnReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pnUsermanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 1, Short.MAX_VALUE))
+                        .addGap(0, 31, Short.MAX_VALUE))
                     .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(panelAdminLayout.createSequentialGroup()
-                .addGap(222, 222, 222)
+                .addGap(247, 247, 247)
                 .addComponent(lblMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -440,7 +446,7 @@ public class frmAdmin extends javax.swing.JFrame {
                 .addComponent(lblWelcome)
                 .addGap(30, 30, 30)
                 .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+                    .addComponent(pnReport, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                     .addComponent(pnUsermanagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
