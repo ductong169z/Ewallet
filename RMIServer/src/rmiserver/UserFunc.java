@@ -50,11 +50,13 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param email
      * @param phone
      * @param address
-     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number is duplicated
+     * @param role
+     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number
+     * is duplicated
      * @throws RemoteException
      */
     @Override
-    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException {
+    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address, int role) throws RemoteException {
         boolean error = false; // check if there's any errors occured
 
         // add user info to database
@@ -114,8 +116,10 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             int userID = rsUserID.getInt("id"); // store the user ID of the user (who has just been added to database above)
 
             // execute SQL statements to complete creating new user
-            PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , 2)");
+            PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , ?)");
             stSetRoleID.setInt(1, userID);
+            stSetRoleID.setInt(2, role);
+
             stSetRoleID.executeUpdate();
 
             PreparedStatement stSetMoney = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
@@ -376,7 +380,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stSenderUpdate.setInt(1, newInfo.getMoney() - transferAmount);
                 stSenderUpdate.setInt(2, newInfo.getId());
                 stSenderUpdate.executeUpdate();
-                
+
                 /* Update recipient money in database */
                 PreparedStatement stRecUpdate = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
                 stRecUpdate.setInt(1, recInfo.getMoney() + transferAmount);
@@ -398,7 +402,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         }
     }
 
-     @Override
+    @Override
     public User changeInfo(User oldInfo, String username, String password, String fullname, String phone, String mail, String address, String gender) throws RemoteException {
         String hashPassword = ""; // store MD5 hashed version of password
 
@@ -524,7 +528,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         try {
             PreparedStatement st = conn.prepareStatement("select id, name from universities");
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 schoolname.put(rs.getString("id"), rs.getString("name"));
             }
         } catch (SQLException ex) {
@@ -539,10 +543,10 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         try {
             PreparedStatement st = conn.prepareStatement("select tuition.name, tuition.tuition from dbo.tuition where tuition.id_student like ? and tuition.id_uni = ? ");
             st.setString(1, studentId);
-            st.setString(2, schoolId );
+            st.setString(2, schoolId);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-               tuitionInfo = rs.getString("name") + ": " + rs.getString("tuition");
+            while (rs.next()) {
+                tuitionInfo = rs.getString("name") + ": " + rs.getString("tuition");
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
@@ -556,11 +560,11 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         try {
             PreparedStatement st = conn.prepareStatement("update dbo.tuition set tuition.tuition = 0 where tuition.id_student like ? and tuition.id_uni = ? ");
             st.setString(1, studentId);
-            st.setString(2, schoolId );
+            st.setString(2, schoolId);
             int count = st.executeUpdate();
-            if(count > 0){
+            if (count > 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         } catch (SQLException ex) {

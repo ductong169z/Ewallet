@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -335,8 +336,18 @@ public class frmAdmin extends javax.swing.JFrame {
         pnUsermanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
         btnCreateNewUser.setContentAreaFilled(false);
+        btnCreateNewUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateNewUserActionPerformed(evt);
+            }
+        });
 
         btnResetPassword.setContentAreaFilled(false);
+        btnResetPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetPasswordActionPerformed(evt);
+            }
+        });
 
         btnSuspendUser.setBorder(null);
         btnSuspendUser.setContentAreaFilled(false);
@@ -476,7 +487,7 @@ public class frmAdmin extends javax.swing.JFrame {
 
     private void btnCreatenewuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreatenewuserActionPerformed
         // TODO add your handling code here:
-        frmRegister newReg = new frmRegister();
+        frmRegister newReg = new frmRegister(2);
         newReg.setVisible(true);
     }//GEN-LAST:event_btnCreatenewuserActionPerformed
 
@@ -554,6 +565,21 @@ public class frmAdmin extends javax.swing.JFrame {
             Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSuspendUserActionPerformed
+
+    private void btnCreateNewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateNewUserActionPerformed
+        // TODO add your handling code here:
+        String[] options = new String[]{"OK", "Cancel"};
+        JComboBox cbRoole = new JComboBox();
+        cbRoole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Admin", "User"}));
+        int option = JOptionPane.showOptionDialog(null, cbRoole, "Create New User",
+                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, options, options[1]);
+        int role = cbRoole.getSelectedIndex();
+        if (option == 0) {
+            new frmRegister(role + 1).setVisible(true);
+        }
+
+    }//GEN-LAST:event_btnCreateNewUserActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

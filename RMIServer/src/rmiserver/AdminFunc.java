@@ -144,7 +144,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
             } else if (type.equals("user_deposit")) {
                 stm = "SELECT * FROM user_deposit WHERE type= 0 ORDER BY created_at DESC";
             } else {
-                stm = "";
+                stm = "SELECT * FROM user_transfer WHERE type= 2 ORDER BY created_at DESC";
             }
             PreparedStatement st = conn.prepareStatement(stm);
             ResultSet rs = st.executeQuery();
@@ -153,7 +153,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
                 if (type.equals("user_withdraw") || type.equals("user_deposit")) {
                     newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"));
                 } else {
-                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), rs.getString("description") == null ? "" : rs.getString("description"));
+                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"),"");
                 }
                 rp.add(newrp);
             }

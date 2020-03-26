@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -61,7 +62,7 @@ public class frmReport extends javax.swing.JFrame {
                     lblTitle.setText("Deposit Report");
                     report = iAdmin.getReportAll("user_deposit");
                     for (ReportList rp : report) {
-                        Object objList[] = {rp.getId(),rp.getUser_id(),"", rp.getMoney(), rp.getCreated_at(), rp.getDescription()};
+                        Object objList[] = {rp.getId(), rp.getUser_id(), "", rp.getMoney(), rp.getCreated_at(), rp.getDescription()};
                         model.addRow(objList);
                     }
                     break;
@@ -70,13 +71,25 @@ public class frmReport extends javax.swing.JFrame {
                     lblTitle.setText("Withdrawal Report");
                     report = iAdmin.getReportAll("user_withdraw");
                     for (ReportList rp : report) {
-                        Object objList[] = {rp.getId(),rp.getUser_id(),"", rp.getMoney(), rp.getCreated_at(), rp.getDescription()};
+                        Object objList[] = {rp.getId(), rp.getUser_id(), "", rp.getMoney(), rp.getCreated_at(), rp.getDescription()};
                         model.addRow(objList);
                     }
                     break;
                 case 3:
                     this.setTitle("Transfer Report");
                     lblTitle.setText("Transfer Report");
+                    report = iAdmin.getReportAll("user_transfer");
+                    model = new DefaultTableModel();
+                    model.addColumn("ID");
+                    model.addColumn("Send_ID");
+                    model.addColumn("Receive_ID");
+                    model.addColumn("Amount");
+                    model.addColumn("Time");
+                    for (ReportList rp : report) {
+                        Object objList[] = {rp.getId(), rp.getUser_id(), rp.getUser_id2(), rp.getMoney(), rp.getCreated_at()};
+                        model.addRow(objList);
+                    }
+                    tbReport.setModel(model);
                     break;
                 case 4:
                     this.setTitle("Transaction History");
@@ -214,7 +227,7 @@ public class frmReport extends javax.swing.JFrame {
                     XSSFRow excelRow = excelSheet.createRow(i);
                     for (int j = 0; j < model.getColumnCount(); j++) {
                         XSSFCell excelCell = excelRow.createCell(j);
-                        String cell = model.getValueAt(i-1, j).toString();
+                        String cell = model.getValueAt(i - 1, j).toString();
                         excelCell.setCellValue(cell);
                     }
                 }

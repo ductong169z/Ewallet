@@ -220,7 +220,7 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOKLogActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        new frmRegister().setVisible(true);
+        new frmRegister(2).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**
