@@ -206,6 +206,7 @@ public class frmReport extends javax.swing.JFrame {
                     XSSFRow excelRow = excelSheet.createRow(0);
                     XSSFCell excelCell = excelRow.createCell(i);
                     String cell = model.getColumnName(i);
+                    System.out.println(cell);
                     excelCell.setCellValue(cell);
                 }
 
