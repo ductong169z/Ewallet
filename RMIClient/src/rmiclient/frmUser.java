@@ -214,6 +214,15 @@ public class frmUser extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         txtHintConfirm = new javax.swing.JTextField();
         btnProceed = new javax.swing.JButton();
+        dialogChangePass = new javax.swing.JDialog();
+        txtHintConfirm1 = new javax.swing.JTextField();
+        lblPassword1 = new javax.swing.JLabel();
+        lblPasswordConfirm1 = new javax.swing.JLabel();
+        txtPassword1 = new javax.swing.JPasswordField();
+        txtPasswordConfirm1 = new javax.swing.JPasswordField();
+        btnProceed1 = new javax.swing.JButton();
+        lblPassword2 = new javax.swing.JLabel();
+        txtPassword2 = new javax.swing.JPasswordField();
         panelUser = new javax.swing.JPanel();
         lblMenu = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
@@ -772,6 +781,81 @@ public class frmUser extends javax.swing.JFrame {
                     .addComponent(txtPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(btnProceed)
+                .addGap(40, 40, 40))
+        );
+
+        txtHintConfirm1.setEditable(false);
+        txtHintConfirm1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtHintConfirm1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtHintConfirm1.setText("Please enter your password to confirm changing info");
+
+        lblPassword1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPassword1.setText("Enter Password:");
+
+        lblPasswordConfirm1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPasswordConfirm1.setText("Confirmation:");
+
+        txtPassword1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtPasswordConfirm1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnProceed1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnProceed1.setText("Proceed");
+        btnProceed1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProceed1ActionPerformed(evt);
+            }
+        });
+
+        lblPassword2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPassword2.setText("Enter Password:");
+
+        txtPassword2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout dialogChangePassLayout = new javax.swing.GroupLayout(dialogChangePass.getContentPane());
+        dialogChangePass.getContentPane().setLayout(dialogChangePassLayout);
+        dialogChangePassLayout.setHorizontalGroup(
+            dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogChangePassLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtHintConfirm1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnProceed1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dialogChangePassLayout.createSequentialGroup()
+                        .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblPassword2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPassword1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(lblPasswordConfirm1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dialogChangePassLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPasswordConfirm1)
+                                    .addComponent(txtPassword1)))
+                            .addGroup(dialogChangePassLayout.createSequentialGroup()
+                                .addGap(169, 169, 169)
+                                .addComponent(txtPassword2)))))
+                .addContainerGap(94, Short.MAX_VALUE))
+        );
+        dialogChangePassLayout.setVerticalGroup(
+            dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogChangePassLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(txtHintConfirm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPassword2)
+                    .addComponent(txtPassword2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPassword1)
+                    .addComponent(txtPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPasswordConfirm1)
+                    .addComponent(txtPasswordConfirm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(53, 53, 53)
+                .addComponent(btnProceed1)
                 .addGap(40, 40, 40))
         );
 
@@ -1720,6 +1804,10 @@ public class frmUser extends javax.swing.JFrame {
             rdoFemale.setSelected(true);
         }
 
+        /* clear the password fields in dialog */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
+
         /* update dialog properties */
         dialogConfirm.setTitle("Confirm Info Change");
         txtHintConfirm.setText("Please enter your password to confirm changing info");
@@ -1731,10 +1819,13 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnChangeInfoActionPerformed
 
     private void btnDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAccountActionPerformed
-        // TODO add your handling code here:
         dialogConfirm.setTitle("Delete Account Confirmation");
         txtHintConfirm.setText("Please enter your password to confirm deleting account");
         this.action = "delete";
+        
+        /* clear the password fields */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
 
         dialogConfirm.pack(); // display dialog and its subcomponents in preferred size
         dialogConfirm.setVisible(true); // show up the dialog
@@ -1743,6 +1834,10 @@ public class frmUser extends javax.swing.JFrame {
     private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnChangePassActionPerformed
+
+    private void btnProceed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceed1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProceed1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1759,17 +1854,18 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPaytuition;
     private javax.swing.JButton btnProceed;
+    private javax.swing.JButton btnProceed1;
     private javax.swing.JButton btnTransactionHistory;
     private javax.swing.JButton btnTransfer;
     private javax.swing.JButton btnWithdraw;
     private javax.swing.JComboBox<String> cbSelection;
     private javax.swing.JDialog dPay;
     private javax.swing.JDialog dialogChangeInfo;
+    private javax.swing.JDialog dialogChangePass;
     private javax.swing.JDialog dialogConfirm;
     private javax.swing.JDialog dialogDepositWithdraw;
     private javax.swing.JDialog dialogTransPhone;
     private javax.swing.JDialog dialogTransfer;
-    private javax.swing.ButtonGroup genderGroup;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblAmount;
     private javax.swing.JLabel lblBalance;
@@ -1787,7 +1883,10 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblNotification;
     private javax.swing.JLabel lblNotification1;
     private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblPassword1;
+    private javax.swing.JLabel lblPassword2;
     private javax.swing.JLabel lblPasswordConfirm;
+    private javax.swing.JLabel lblPasswordConfirm1;
     private javax.swing.JLabel lblPayTuition;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblPhoneNumber;
@@ -1822,10 +1921,14 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtHint;
     private javax.swing.JTextField txtHintConfirm;
+    private javax.swing.JTextField txtHintConfirm1;
     private javax.swing.JTextField txtInput;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JPasswordField txtPassword1;
+    private javax.swing.JPasswordField txtPassword2;
     private javax.swing.JPasswordField txtPasswordConfirm;
+    private javax.swing.JPasswordField txtPasswordConfirm1;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtPhoneNumber;
     private javax.swing.JTextField txtRecName;
