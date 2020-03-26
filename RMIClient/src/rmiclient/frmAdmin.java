@@ -154,6 +154,12 @@ public class frmAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbReport = new javax.swing.JTable();
+        lblReportTitle = new javax.swing.JLabel();
+        btnExport = new javax.swing.JButton();
         panelAdmin = new javax.swing.JPanel();
         lblMenu = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
@@ -171,6 +177,75 @@ public class frmAdmin extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+
+        tbReport.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Amount", "Time", "Description"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbReport);
+
+        lblReportTitle.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        lblReportTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblReportTitle.setText("<Title>");
+
+        btnExport.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnExport.setText("Export");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExport)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addComponent(lblReportTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(lblReportTitle)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnExport)
+                .addGap(12, 12, 12))
+        );
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EWallet (Admin UI)");
@@ -376,31 +451,15 @@ public class frmAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDepositReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositReportActionPerformed
-        try {
-            // TODO add your handling code here:
-
-            new frmReport(1).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }//GEN-LAST:event_btnDepositReportActionPerformed
 
     private void btnWithdrawReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawReportActionPerformed
-        try {
-            // TODO add your handling code here:
-            new frmReport(2).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_btnWithdrawReportActionPerformed
 
     private void btnTransferReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferReportActionPerformed
-        try {
-            // TODO add your handling code here:
-            new frmReport(3).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_btnTransferReportActionPerformed
 
     private void btnCreatenewuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreatenewuserActionPerformed
@@ -488,20 +547,26 @@ public class frmAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreateNewUser;
     private javax.swing.JButton btnDepositReport;
+    private javax.swing.JButton btnExport;
     private javax.swing.JButton btnResetPassword;
     private javax.swing.JButton btnSuspendUser;
     private javax.swing.JButton btnTransferReport;
     private javax.swing.JButton btnWithdrawReport;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblMenu;
+    private javax.swing.JLabel lblReportTitle;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel panelAdmin;
     private javax.swing.JPanel pnReport;
     private javax.swing.JPanel pnUsermanagement;
+    private javax.swing.JTable tbReport;
     // End of variables declaration//GEN-END:variables
 }

@@ -262,6 +262,12 @@ public class frmUser extends javax.swing.JFrame {
         lblInput = new javax.swing.JLabel();
         txtInput = new javax.swing.JTextField();
         lblNotification1 = new javax.swing.JLabel();
+        dialogReport = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbReport = new javax.swing.JTable();
+        lblReportTitle = new javax.swing.JLabel();
+        btnExport = new javax.swing.JButton();
         panelUser = new javax.swing.JPanel();
         lblMenu = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
@@ -646,6 +652,75 @@ public class frmUser extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
+        tbReport.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Amount", "Time", "Description"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbReport);
+
+        lblReportTitle.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        lblReportTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblReportTitle.setText("<Title>");
+
+        btnExport.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnExport.setText("Export");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExport)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addComponent(lblReportTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(lblReportTitle)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnExport)
+                .addGap(12, 12, 12))
+        );
+
+        javax.swing.GroupLayout dialogReportLayout = new javax.swing.GroupLayout(dialogReport.getContentPane());
+        dialogReport.getContentPane().setLayout(dialogReportLayout);
+        dialogReportLayout.setHorizontalGroup(
+            dialogReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        dialogReportLayout.setVerticalGroup(
+            dialogReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EWallet");
 
@@ -958,12 +1033,7 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
-        try {
-            // TODO add your handling code here:
-            new frmReport(4).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }//GEN-LAST:event_btnTransactionHistoryActionPerformed
 
     private void btnPaytuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaytuitionActionPerformed
@@ -1283,9 +1353,9 @@ public class frmUser extends javax.swing.JFrame {
         // TODO add your handling code here:
         User result = null;
         this.maxWithdrawLim = userInfo.getWithdraw_lim();
-        
+
         if (payOption == 1) {
-            
+
             if (userInfo.getMoney() < fee) {
                 JOptionPane.showMessageDialog(dPay, "You Dont Have Enough Money");
                 dPay.setVisible(false);
@@ -1293,15 +1363,33 @@ public class frmUser extends javax.swing.JFrame {
                 try {
                     boolean check = iUser.payTuition(id_uni, id_student);
                     result = iUser.withdraw(userInfo, fee, lblNotification.getText() + " " + lblNotification1.getText());
-                    if (check == true && result != null) {
+                    // if user already reached maximum withdraw limit
+                    if (result == null) {
+                        JOptionPane.showMessageDialog(dPay, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        dPay.dispose(); // hides the dialog
+                        atMaxWithdraw = true;
+                        // if withdrawal is successful
+                    } else if (result.getMoney() != userInfo.getMoney() && check == true) {
                         JOptionPane.showMessageDialog(dPay, "Paid Successfully");
-                        userInfo = result;
-                        this.txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-                        dPay.setVisible(false);
+                        userInfo = result; // update User info
+
+                        /* set new balance */
+                        txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                        txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+
+                        // if withdrawal failed
+                    } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        // if the withdraw amount exceeds current balance
+                    } else if (result.getDeposit_lim() == -1) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                        // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
                     } else {
-                        JOptionPane.showMessageDialog(dPay, "Some Error Occur !!! Please Try Again !!!");
-                        dPay.setVisible(false);
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                     }
+                    dPay.dispose();
                 } catch (RemoteException ex) {
                     Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1370,6 +1458,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JButton btnConfirmTransfer;
     private javax.swing.JButton btnDeleteAccount;
     private javax.swing.JButton btnDeposit;
+    private javax.swing.JButton btnExport;
     private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPaytuition;
     private javax.swing.JButton btnTransactionHistory;
@@ -1378,6 +1467,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbSelection;
     private javax.swing.JDialog dPay;
     private javax.swing.JDialog dialogDepositWithdraw;
+    private javax.swing.JDialog dialogReport;
     private javax.swing.JDialog dialogTransPhone;
     private javax.swing.JDialog dialogTransfer;
     private javax.swing.JLabel jLabel1;
@@ -1388,6 +1478,8 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAmount;
     private javax.swing.JLabel lblBalance;
     private javax.swing.JLabel lblCurrentBalance;
@@ -1400,6 +1492,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblRecName;
     private javax.swing.JLabel lblRecPhone;
     private javax.swing.JLabel lblRecPhoneNum;
+    private javax.swing.JLabel lblReportTitle;
     private javax.swing.JLabel lblSelection;
     private javax.swing.JLabel lblSendBalance;
     private javax.swing.JLabel lblSendName;
@@ -1413,6 +1506,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JPanel panelUser;
     private javax.swing.JPanel pnAccountmanagement;
     private javax.swing.JPanel pnTransaction;
+    private javax.swing.JTable tbReport;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtBalance;
     private javax.swing.JTextField txtCurrentBalance;
