@@ -251,15 +251,13 @@ public class frmRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtPhone.getText().length() != 10) {
             JOptionPane.showMessageDialog(this, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtAddress.getText() == null || txtAddress.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "The address field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
             /* If there are no fields having null value or being empty and both password fields match */
         } else {
             /* Temp variables to store values from the fields user inputted */
             String username = txtUsername.getText().trim();
             String password = String.valueOf(txtPasswordConfirm.getPassword());
             String fullname = txtFullname.getText().trim();
-            String email = txtEmail.getText().trim();
+            String mail = txtEmail.getText().trim();
             String phone = txtPhone.getText().trim();
             String gender = rdoMale.isSelected() ? "Male" : "Female";
             String address = txtAddress.getText().trim();
@@ -267,7 +265,7 @@ public class frmRegister extends javax.swing.JFrame {
 
             // call method createUser on server side to execute
             try {
-                result = iUser.createUser(username, password, fullname, gender, email, phone, address);
+                result = iUser.createUser(username, password, fullname, phone, mail, address, gender);
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
@@ -289,6 +287,9 @@ public class frmRegister extends javax.swing.JFrame {
                 // if phone number already bound to another account in database
             } else if (result == 2) {
                 JOptionPane.showMessageDialog(this, "This phone number already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                // if username already bound to another account in database
+            } else if (result == 3) {
+                JOptionPane.showMessageDialog(this, "This username already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnOKActionPerformed

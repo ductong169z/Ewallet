@@ -61,11 +61,19 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         try {
 
             /* Check if phone number already exists in database */
-            PreparedStatement stCheckPhone = conn.prepareStatement("SELECT * FROM users WHERE phone = " + phone);
-
+            PreparedStatement stCheckPhone = conn.prepareStatement("SELECT * FROM users WHERE phone = ?");
+            stCheckPhone.setString(1, phone);
             ResultSet rsCheckPhone = stCheckPhone.executeQuery();
+
+            /* Check if username already exists in database */
+            PreparedStatement stCheckUsername = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+            stCheckUsername.setString(1, username);
+            ResultSet rsCheckUsername = stCheckUsername.executeQuery();
+
             if (rsCheckPhone.next()) {
                 return 2; // indicate that phone number already bound to another account in database
+            } else if (rsCheckUsername.next()) {
+                return 3; // indicate that username already bound to another account in database
             }
 
             String hashPassword = ""; // store MD5 hashed version of password
@@ -376,7 +384,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stSenderUpdate.setInt(1, newInfo.getMoney() - transferAmount);
                 stSenderUpdate.setInt(2, newInfo.getId());
                 stSenderUpdate.executeUpdate();
-                
+
                 /* Update recipient money in database */
                 PreparedStatement stRecUpdate = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
                 stRecUpdate.setInt(1, recInfo.getMoney() + transferAmount);
@@ -434,8 +442,16 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             stCheckPhone.setInt(2, oldInfo.getId());
             ResultSet rsCheckPhone = stCheckPhone.executeQuery();
 
+            /* Check if username already exists in database */
+            PreparedStatement stCheckUsername = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+            stCheckUsername.setString(1, username);
+            ResultSet rsCheckUsername = stCheckUsername.executeQuery();
+
             if (rsCheckPhone.next()) {
                 oldInfo.setPhone("-1");
+                return oldInfo;
+            } else if (rsCheckUsername.next()) {
+                oldInfo.setUsername("-1");
                 return oldInfo;
             } else if (rsCheckPass.next()) {
                 PreparedStatement stUpdateInfo = conn.prepareStatement("UPDATE users SET username = ?, fullname = ?, phone = ?, mail = ?, address = ?, gender = ? WHERE id = ?");
@@ -457,6 +473,76 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             return new User(); // indicate SQL error occured
         }
 
+    }
+
+    @Override
+    public int changePassword(User userInfo, String oldPassword, String newPassword) throws RemoteException {
+
+        try {
+            String hashOldPassword = ""; // store MD5 hashed version of password
+
+            /* code to hash old password using MD5 algorithm */
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                byte[] messageDigest = md.digest(oldPassword.getBytes());
+
+                BigInteger no = new BigInteger(1, messageDigest);
+
+                // Convert message digest into hex value
+                hashOldPassword = no.toString(16);
+                while (hashOldPassword.length() < 32) {
+                    hashOldPassword = "0" + hashOldPassword;
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+                return 2;
+            }
+
+            /* Check if password is correct */
+            PreparedStatement stCheckPass = conn.prepareStatement("SELECT * FROM users WHERE id = ? AND password = ?");
+            stCheckPass.setInt(1, userInfo.getId());
+            stCheckPass.setString(2, hashOldPassword);
+            ResultSet rsCheckPass = stCheckPass.executeQuery();
+
+            String hashNewPassword = ""; // re-initialize hashOldPassword to store MD5 hashed new password
+
+            /* code to hash new password using MD5 algorithm */
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                byte[] messageDigest = md.digest(newPassword.getBytes());
+
+                BigInteger no = new BigInteger(1, messageDigest);
+
+                // Convert message digest into hex value
+                hashNewPassword = no.toString(16);
+                while (hashNewPassword.length() < 32) {
+                    hashNewPassword = "0" + hashNewPassword;
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+                return 2;
+            }
+
+            // if password is correct
+            if (rsCheckPass.next()) {
+                /* Update new password in database */
+                PreparedStatement stUpdatePass = conn.prepareStatement("UPDATE users SET password = ? WHERE id = ? AND password = ?");
+                stUpdatePass.setString(1, hashNewPassword);
+                stUpdatePass.setInt(2, userInfo.getId());
+                stUpdatePass.setString(3, hashOldPassword);
+                stUpdatePass.executeUpdate();
+
+                return 0;
+            } else {
+                return 3;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            return 1;
+        }
     }
 
     @Override
@@ -516,6 +602,55 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     @Override
     public int viewTransactionHistory() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+    public Map<String, String> getSchool() throws RemoteException {
+        Map<String, String> schoolname = new HashMap<>();
+        try {
+            PreparedStatement st = conn.prepareStatement("select id, name from universities");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                schoolname.put(rs.getString("id"), rs.getString("name"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return schoolname;
+    }
+
+    @Override
+    public String getTuition(String schoolId, String studentId) throws RemoteException {
+        String tuitionInfo = "";
+        try {
+            PreparedStatement st = conn.prepareStatement("select tuition.name, tuition.tuition from dbo.tuition where tuition.id_student like ? and tuition.id_uni = ? ");
+            st.setString(1, studentId);
+            st.setString(2, schoolId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                tuitionInfo = rs.getString("name") + ": " + rs.getString("tuition");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return tuitionInfo;
+    }
+
+    @Override
+    public boolean payTuition(String schoolId, String studentId) throws RemoteException {
+        try {
+            PreparedStatement st = conn.prepareStatement("update dbo.tuition set tuition.tuition = 0 where tuition.id_student like ? and tuition.id_uni = ? ");
+            st.setString(1, studentId);
+            st.setString(2, schoolId);
+            int count = st.executeUpdate();
+            if (count > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override
