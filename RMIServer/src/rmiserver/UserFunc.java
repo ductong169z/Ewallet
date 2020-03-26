@@ -50,11 +50,13 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param email
      * @param phone
      * @param address
-     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number is duplicated
+     * @param role
+     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number
+     * is duplicated
      * @throws RemoteException
      */
     @Override
-    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException {
+    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address, int role) throws RemoteException {
         boolean error = false; // check if there's any errors occured
 
         // add user info to database
@@ -122,8 +124,10 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             int userID = rsUserID.getInt("id"); // store the user ID of the user (who has just been added to database above)
 
             // execute SQL statements to complete creating new user
-            PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , 2)");
+            PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , ?)");
             stSetRoleID.setInt(1, userID);
+            stSetRoleID.setInt(2, role);
+
             stSetRoleID.executeUpdate();
 
             PreparedStatement stSetMoney = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
@@ -406,7 +410,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         }
     }
 
-     @Override
+    @Override
     public User changeInfo(User oldInfo, String username, String password, String fullname, String phone, String mail, String address, String gender) throws RemoteException {
         String hashPassword = ""; // store MD5 hashed version of password
 
