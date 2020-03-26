@@ -13,9 +13,9 @@ import java.io.Serializable;
 
 public class ReportList implements Serializable {
 
-    private String created_at, user_id, user_id2, description, id, money, type;
+    private String created_at, user_id, user_id2, description, id, money, type,fullname;
 
-    public ReportList(String id, String money, String type, String created_at, String user_id, String user_id2, String description) {
+    public ReportList(String id, String money, String type, String created_at, String user_id, String user_id2, String description,String fullname) {
         this.id = id;
         this.money = money;
         this.type = type;
@@ -23,6 +23,7 @@ public class ReportList implements Serializable {
         this.user_id = user_id;
         this.user_id2 = user_id2;
         this.description = description;
+        this.fullname=fullname;
     }
 
     public String getId() {
@@ -31,6 +32,14 @@ public class ReportList implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getMoney() {
