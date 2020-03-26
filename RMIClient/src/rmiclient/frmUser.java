@@ -1155,53 +1155,56 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameActionPerformed
 
     private void btnWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawActionPerformed
-        // check if user reached max withdraw limit
+        /* Check if user is at max withdraw limit, or user money is less than 1000 */
         if (atMaxWithdraw) {
-            JOptionPane.showMessageDialog(this, "You have reached maximum withdraw limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
-            // check if user balance is less than 1000
+            JOptionPane.showMessageDialog(this, "You have reached maximum withdraw limit!", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else if (userInfo.getMoney() < 1000) {
-            JOptionPane.showMessageDialog(this, "You must have at least 1000 VND to withdraw", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You must have at least 1000 VND to withdraw!", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            /* set the values on dialog */
+            /* Set values on Dialog */
             txtName.setText(userInfo.getFullname());
             txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             txtPhoneNumber.setText(userInfo.getPhone());
             txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
 
+            /* Set Dialog properties */
             dialogDepositWithdraw.setTitle("Withdraw Transaction");
             lblAmount.setText("Withdraw Amount");
             btnConfirm.setText("Confirm Withdraw");
 
+            /* Show the Dialog visible to user, and center it */
             dialogDepositWithdraw.pack(); // display dialog and its subcomponents in preferred size
-
             dialogDepositWithdraw.setVisible(true); // show up the dialog
             dialogDepositWithdraw.setLocationRelativeTo(null); // center the dialog
-            this.action = "withdraw"; // set action
+            
+            this.action = "withdraw"; // update user action to Withdraw
         }
     }//GEN-LAST:event_btnWithdrawActionPerformed
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
-        // check if user reached max deposit limit
+        /* Check if user already at max deposit limit */
         if (atMaxDeposit) {
             JOptionPane.showMessageDialog(this, "You have reached maximum deposit limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            /* set the values on dialog */
+            /* Set values on Dialog */
             txtName.setText(userInfo.getFullname());
             txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             txtPhoneNumber.setText(userInfo.getPhone());
             txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
 
+            /* Set Dialog properties */
             dialogDepositWithdraw.setTitle("Deposit Transaction");
             lblAmount.setText("Deposit Amount");
             btnConfirm.setText("Confirm Deposit");
 
+            /* Show the Dialog visible to user, and center it */
             dialogDepositWithdraw.pack();// display dialog and its subcomponents in preferred size
-
             dialogDepositWithdraw.setVisible(true); // show up the dialog
             dialogDepositWithdraw.setLocationRelativeTo(null); // center the dialog
-            this.action = "deposit"; // set action
+            
+            this.action = "deposit";  // update user action to Deposit
         }
     }//GEN-LAST:event_btnDepositActionPerformed
 
@@ -1271,7 +1274,7 @@ public class frmUser extends javax.swing.JFrame {
         this.maxDepositLim = userInfo.getDeposit_lim();
         this.maxWithdrawLim = userInfo.getWithdraw_lim();
 
-        /* Switch action dependent on deposit or withdraw transaction*/
+        /* Switch action dependent on deposit or withdraw transaction */
         switch (action) {
             case "deposit":
 
@@ -1519,8 +1522,11 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_txtRecPhoneNumActionPerformed
 
     private void btnTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferActionPerformed
+        /* Check if user is at max transfer limit, or user money is less than 1000 */
         if (atMaxTrans) {
-            JOptionPane.showMessageDialog(this, "You have reached maximum transfer limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You have reached maximum transfer limit!", "Transfer Failed!", JOptionPane.INFORMATION_MESSAGE);
+        } else if (userInfo.getMoney() < 1000) {
+            JOptionPane.showMessageDialog(this, "You must have at least 1000 VND to transfer money!", "Transfer Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             dialogTransPhone.pack();// display dialog and its subcomponents in preferred size
 
@@ -1854,7 +1860,7 @@ public class frmUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(dialogChangePass, "The new password confirmation must match the new password!", "Input Error", JOptionPane.ERROR_MESSAGE);
         } else if (String.valueOf(txtOldPassword.getPassword()).equals(String.valueOf(txtNewPassword.getPassword()))) {
             JOptionPane.showMessageDialog(dialogChangePass, "The new password cannot be the same as old password!", "Input Error", JOptionPane.ERROR_MESSAGE);
-        }else {
+        } else {
             int result = -1; // store result of operation
 
             // call changePassword method from server to execute

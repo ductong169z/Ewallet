@@ -13,9 +13,6 @@ import java.rmi.RemoteException;
 import java.util.Map;
 
 public interface IUserFunc extends Remote {
-
-    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address,int role) throws RemoteException;
-
     public User getUser(String phone) throws RemoteException;
 
     public User deposit(User oldInfo, int depositAmount) throws RemoteException;
