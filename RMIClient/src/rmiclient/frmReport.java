@@ -202,8 +202,8 @@ public class frmReport extends javax.swing.JFrame {
             try {
                 XSSFWorkbook excelExporter = new XSSFWorkbook();
                 XSSFSheet excelSheet = excelExporter.createSheet(lblTitle.getText());
+                XSSFRow excelRow = excelSheet.createRow(0);
                 for (int i = 0; i < model.getColumnCount(); i++) {
-                    XSSFRow excelRow = excelSheet.createRow(0);
                     XSSFCell excelCell = excelRow.createCell(i);
                     String cell = model.getColumnName(i);
                     System.out.println(cell);
@@ -211,7 +211,7 @@ public class frmReport extends javax.swing.JFrame {
                 }
 
                 for (int i = 1; i < model.getRowCount(); i++) {
-                    XSSFRow excelRow = excelSheet.createRow(i);
+                    excelRow = excelSheet.createRow(i);
                     for (int j = 0; j < model.getColumnCount(); j++) {
                         XSSFCell excelCell = excelRow.createCell(j);
                         String cell = model.getValueAt(i-1, j).toString();
