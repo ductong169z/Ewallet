@@ -31,6 +31,7 @@ public class frmUser extends javax.swing.JFrame {
 
     IUserFunc iUser;
     User userInfo; // store logged in user info
+    User newInfo; // store new user info (for change info function)
     String action; // store action of user on form (whether deposit or withdraw)
     String recPhone; // store recipient phone number
     Map<String, String> schools = new HashMap<>();
@@ -985,8 +986,18 @@ public class frmUser extends javax.swing.JFrame {
         pnAccountmanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
 
         btnChangeInfo.setContentAreaFilled(false);
+        btnChangeInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeInfoActionPerformed(evt);
+            }
+        });
 
         btnDeleteAccount.setContentAreaFilled(false);
+        btnDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteAccountActionPerformed(evt);
+            }
+        });
 
         btnTransactionHistory.setContentAreaFilled(false);
         btnTransactionHistory.addActionListener(new java.awt.event.ActionListener() {
@@ -1186,6 +1197,7 @@ public class frmUser extends javax.swing.JFrame {
                 cbSelection.addItem(value);
             }
             dPay.pack();
+            dPay.setLocationRelativeTo(null);
             payOption = 1;
             dPay.setVisible(true);
 
@@ -1211,6 +1223,7 @@ public class frmUser extends javax.swing.JFrame {
         cbSelection.addItem("200000 VND");
         cbSelection.addItem("500000 VND");
         dPay.pack();
+        dPay.setLocationRelativeTo(null);
         payOption = 2;
         dPay.setVisible(true);
     }//GEN-LAST:event_btnBuyMobileActionPerformed
@@ -1740,6 +1753,41 @@ public class frmUser extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnProceedActionPerformed
+
+    private void btnChangeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeInfoActionPerformed
+        // TODO add your handling code here:
+        /* Set old info to the dialog */
+        txtUsername.setText(userInfo.getUsername());
+        txtFullname.setText(userInfo.getFullname());
+        txtEmail.setText(userInfo.getMail());
+        txtPhone.setText(userInfo.getPhone());
+        txtAddress.setText(userInfo.getAddress());
+        if (userInfo.getGender().equals("Male")) {
+            rdoMale.setSelected(true);
+        } else {
+            rdoFemale.setSelected(true);
+        }
+
+        /* update dialog properties */
+        dialogConfirm.setTitle("Confirm Info Change");
+        txtHintConfirm.setText("Please enter your password to confirm changing info");
+        this.action = "changeinfo"; // update action
+
+        dialogChangeInfo.pack();// display dialog and its subcomponents in preferred size
+        dialogChangeInfo.setVisible(true); // show up the dialog
+        dialogChangeInfo.setLocationRelativeTo(null); // center the dialog
+    }//GEN-LAST:event_btnChangeInfoActionPerformed
+
+    private void btnDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAccountActionPerformed
+        // TODO add your handling code here:
+        dialogConfirm.setTitle("Delete Account Confirmation");
+        txtHintConfirm.setText("Please enter your password to confirm deleting account");
+        this.action = "delete";
+
+        dialogConfirm.pack(); // display dialog and its subcomponents in preferred size
+        dialogConfirm.setVisible(true); // show up the dialog
+        dialogConfirm.setLocationRelativeTo(null); // center the dialog
+    }//GEN-LAST:event_btnDeleteAccountActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
