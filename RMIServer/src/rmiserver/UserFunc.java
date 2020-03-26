@@ -24,18 +24,18 @@ import java.util.logging.Logger;
 
 public class UserFunc extends UnicastRemoteObject implements IUserFunc {
 
-    Connection conn;
+    Connection conn; // connection to database
 
-    // constructor
+    /* Constructor */
     public UserFunc(Connection conn) throws RemoteException {
         super();
 
         // register the JDBC driver
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            this.conn = conn;
+            this.conn = conn; // update connection to database
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -47,17 +47,15 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param password
      * @param fullname
      * @param gender
-     * @param email
+     * @param mail
      * @param phone
      * @param address
-     * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number is duplicated
+     * @return 0 if operation successful, 1 if encountered SQL Exception, 2 if phone number is duplicated, 3 if username is duplicated, 4 if encrypting password error
      * @throws RemoteException
      */
     @Override
-    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException {
-        boolean error = false; // check if there's any errors occured
-
-        // add user info to database
+    public int createUser(String username, String password, String fullname, String gender, String mail, String phone, String address) throws RemoteException {
+        /* Add user info to database */
         try {
 
             /* Check if phone number already exists in database */
@@ -92,8 +90,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                     hashPassword = "0" + hashPassword;
                 }
             } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
-                error = true;
+                Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+                return 4; // indicate encrypting password error
             }
 
             /* Add new user to database */
@@ -106,7 +104,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             stCreateUser.setString(3, fullname);
             stCreateUser.setString(4, address);
             stCreateUser.setString(5, phone);
-            stCreateUser.setString(6, email);
+            stCreateUser.setString(6, mail);
             stCreateUser.setString(7, gender);
             stCreateUser.setInt(8, 1);
 
@@ -130,16 +128,11 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             stSetMoney.setInt(1, userID);
             stSetMoney.setInt(2, 0);
             stSetMoney.executeUpdate();
+            
+            return 0; // if there are no errors
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
-            error = true; // if any errors occured
-        }
-
-        // return 0 if there are no errors (successful operation), else return 1 (unsuccessful)
-        if (!error) {
-            return 0;
-        } else {
-            return 1;
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            return 1; // if there is SQL Exception
         }
     }
 
@@ -234,7 +227,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -310,7 +303,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -393,7 +386,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 

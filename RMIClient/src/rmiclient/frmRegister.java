@@ -21,22 +21,14 @@ public class frmRegister extends javax.swing.JFrame {
 
     IUserFunc iUser;
 
-    /**
-     * Creates new form frmRegister
-     */
+    /* Constructor for form Register */
     public frmRegister() {
         initComponents();
 
         try {
             // look up the registry created in RMI Server
             iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -270,26 +262,34 @@ public class frmRegister extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
 
-            // if operation is successful on server side
-            if (result == 0) {
-                // clear all input fields
-                txtUsername.setText("");
-                txtPassword.setText("");
-                txtPasswordConfirm.setText("");
-                txtFullname.setText("");
-                txtEmail.setText("");
-                txtPhone.setText("");
-                txtAddress.setText("");
-                JOptionPane.showMessageDialog(this, "Creating new account succesfully!", "Registration successfully", JOptionPane.INFORMATION_MESSAGE);
-                // if operation is unsuccessful on server side
-            } else if (result == 1) {
-                JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception or Hashing Error Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
-                // if phone number already bound to another account in database
-            } else if (result == 2) {
-                JOptionPane.showMessageDialog(this, "This phone number already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
-                // if username already bound to another account in database
-            } else if (result == 3) {
-                JOptionPane.showMessageDialog(this, "This username already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+            /* Perform action dependent on result */
+            switch (result) {
+                case 0:
+                    // clear all input fields
+                    txtUsername.setText("");
+                    txtPassword.setText("");
+                    txtPasswordConfirm.setText("");
+                    txtFullname.setText("");
+                    txtEmail.setText("");
+                    txtPhone.setText("");
+                    txtAddress.setText("");
+                    JOptionPane.showMessageDialog(this, "Creating new account succesfully!", "Registration successfully", JOptionPane.INFORMATION_MESSAGE);
+                    // if operation is unsuccessful on server side
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception or Hashing Error Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    // if phone number already bound to another account in database
+                    break;
+                case 2:
+                    JOptionPane.showMessageDialog(this, "This phone number already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    // if username already bound to another account in database
+                    break;
+                case 3:
+                    JOptionPane.showMessageDialog(this, "This username already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case 4:
+                    JOptionPane.showMessageDialog(this, "Encrypting Password Error!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    break;
             }
         }
     }//GEN-LAST:event_btnOKActionPerformed
