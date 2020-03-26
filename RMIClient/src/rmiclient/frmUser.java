@@ -31,6 +31,7 @@ public class frmUser extends javax.swing.JFrame {
 
     IUserFunc iUser;
     User userInfo; // store logged in user info
+    User newInfo; // store new user info (for change info function)
     String action; // store action of user on form (whether deposit or withdraw)
     String recPhone; // store recipient phone number
     Map<String, String> schools = new HashMap<>();
