@@ -38,10 +38,4 @@ public interface IUserFunc extends Remote {
 
     public int viewTransactionHistory() throws RemoteException;
 
-    public Map<String, String> getSchool() throws RemoteException;
-
-    public String getTuition(String schoolId, String studentId) throws RemoteException;
-
-    public boolean payTuition(String schoolId, String studentId) throws RemoteException;
-
 }

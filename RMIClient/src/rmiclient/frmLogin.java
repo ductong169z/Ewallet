@@ -52,7 +52,6 @@ public class frmLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        grpGender = new javax.swing.ButtonGroup();
         panelLogin = new javax.swing.JPanel();
         lblUsernameLog = new javax.swing.JLabel();
         lblPasswordLog = new javax.swing.JLabel();
@@ -85,7 +84,6 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
-        btnRegister.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnRegister.setForeground(new java.awt.Color(102, 102, 255));
         btnRegister.setText("Register Now");
         btnRegister.setBorderPainted(false);
@@ -122,7 +120,7 @@ public class frmLogin extends javax.swing.JFrame {
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
-                .addContainerGap(70, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsernameLog)
                     .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -269,7 +267,6 @@ public class frmLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOKLog;
     private javax.swing.JButton btnRegister;
-    private javax.swing.ButtonGroup grpGender;
     private javax.swing.JLabel lblPasswordLog;
     private javax.swing.JLabel lblUsernameLog;
     private javax.swing.JPanel panelLogin;

@@ -443,8 +443,9 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             ResultSet rsCheckPhone = stCheckPhone.executeQuery();
 
             /* Check if username already exists in database */
-            PreparedStatement stCheckUsername = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+            PreparedStatement stCheckUsername = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND id != ?");
             stCheckUsername.setString(1, username);
+            stCheckPhone.setInt(2, oldInfo.getId());
             ResultSet rsCheckUsername = stCheckUsername.executeQuery();
 
             if (rsCheckPhone.next()) {
@@ -496,7 +497,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 }
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-                return 2;
+                return 2; // encrypt error
             }
 
             /* Check if password is correct */
@@ -522,7 +523,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 }
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-                return 2;
+                return 2; // encrypt error
             }
 
             // if password is correct
@@ -534,9 +535,9 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stUpdatePass.setString(3, hashOldPassword);
                 stUpdatePass.executeUpdate();
 
-                return 0;
+                return 0; // successful
             } else {
-                return 3;
+                return 3; // password is incorrect
             }
 
         } catch (SQLException ex) {
@@ -602,7 +603,9 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     @Override
     public int viewTransactionHistory() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
+    }
+    
+    @Override
     public Map<String, String> getSchool() throws RemoteException {
         Map<String, String> schoolname = new HashMap<>();
         try {
@@ -652,56 +655,4 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
         }
         return false;
     }
-
-    @Override
-    public Map<String, String> getSchool() throws RemoteException {
-        Map<String, String> schoolname = new HashMap<>();
-        try {
-            PreparedStatement st = conn.prepareStatement("select id, name from universities");
-            ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                schoolname.put(rs.getString("id"), rs.getString("name"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return schoolname;
-    }
-
-    @Override
-    public String getTuition(String schoolId, String studentId) throws RemoteException {
-        String tuitionInfo = "";
-        try {
-            PreparedStatement st = conn.prepareStatement("select tuition.name, tuition.tuition from dbo.tuition where tuition.id_student like ? and tuition.id_uni = ? ");
-            st.setString(1, studentId);
-            st.setString(2, schoolId );
-            ResultSet rs = st.executeQuery();
-            while(rs.next()){
-               tuitionInfo = rs.getString("name") + ": " + rs.getString("tuition");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return tuitionInfo;
-    }
-
-    @Override
-    public boolean payTuition(String schoolId, String studentId) throws RemoteException {
-        try {
-            PreparedStatement st = conn.prepareStatement("update dbo.tuition set tuition.tuition = 0 where tuition.id_student like ? and tuition.id_uni = ? ");
-            st.setString(1, studentId);
-            st.setString(2, schoolId );
-            int count = st.executeUpdate();
-            if(count > 0){
-                return true;
-            }else{
-                return false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
 }

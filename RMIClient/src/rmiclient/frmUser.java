@@ -46,97 +46,13 @@ public class frmUser extends javax.swing.JFrame {
     boolean atMaxWithdraw; // determines if user reached max withdraw limit
     boolean atMaxDeposit; // determines if user reached max deposit limit
     boolean atMaxTrans; // determines if user reached max transfer limit
-    User newInfo; // store new user info (for change info function)
-    Map<String, String> schools = new HashMap<>();
-    String id_student;
-    String id_uni;
-    String phoneNum;
-    int payOption; // pay option 1 is tuition fee, 2 is mobile card
-    int fee;
-
-    /**
-     * Creates new form frmUser
-     */
-    public frmUser() {
-        initComponents();
-        this.setLocationRelativeTo(null); // center the frame
-        try {
-            /* Add the icons to the buttons */
-
-            // Add icon for the Create New User Button
-            BufferedImage deposit = ImageIO.read(new File("deposit.png"));
-            Image resizeDeposit = deposit.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon depositIcon = new ImageIcon(resizeDeposit);
-            btnDeposit.setIcon(depositIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
-            Image resizeWithdraw = withdraw.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon withdrawIcon = new ImageIcon(resizeWithdraw);
-            btnWithdraw.setIcon(withdrawIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage transfer = ImageIO.read(new File("transfer.png"));
-            Image resizeTransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon transferIcon = new ImageIcon(resizeTransfer);
-            btnTransfer.setIcon(transferIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage tuition = ImageIO.read(new File("tuition.png"));
-            Image resizeTuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon tuitionIcon = new ImageIcon(resizeTuition);
-            btnPaytuition.setIcon(tuitionIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage card = ImageIO.read(new File("card.png"));
-            Image resizeCard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon cardIcon = new ImageIcon(resizeCard);
-            btnBuyMobile.setIcon(cardIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage changeInfo = ImageIO.read(new File("changeinfo.png"));
-            Image resizeChangeInfo = changeInfo.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon changeInfoIcon = new ImageIcon(resizeChangeInfo);
-            btnChangeInfo.setIcon(changeInfoIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage history = ImageIO.read(new File("history.png"));
-            Image resizeHistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon historyIcon = new ImageIcon(resizeHistory);
-            btnTransactionHistory.setIcon(historyIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage delete = ImageIO.read(new File("delete.png"));
-            Image resizeDelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon deleteIcon = new ImageIcon(resizeDelete);
-            btnDeleteAccount.setIcon(deleteIcon);
-
-            /* Connects to server */
-            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
-
-            /* Display user's full name and balance */
-            txtName.setText(userInfo.getFullname());
-            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-
-//            set icon for the frame
-//              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
-//            this.setIconImage(icon);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public frmUser(User userInfo) {
         initComponents();
 
         /* initialize variables */
         this.userInfo = userInfo; // set userInfo
+        this.newInfo = new User(); // initialize new user info
         this.maxDepositLim = userInfo.getDeposit_lim(); // set max deposit limit
         this.maxWithdrawLim = userInfo.getWithdraw_lim(); // set max withdraw limit
         this.maxTransLim = userInfo.getTrans_lim(); // set max transfer limit
@@ -228,8 +144,7 @@ public class frmUser extends javax.swing.JFrame {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
@@ -1703,88 +1618,92 @@ public class frmUser extends javax.swing.JFrame {
     private void btnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceedActionPerformed
         switch (action) {
             case "changeinfo":
-            /* Check if password and password confirmation are matched and not null or empty */
-            if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                User result = null; // store return user from server
-
-                // call method on server to execute
-                try {
-                    result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                // if password is incorrect
-                if (result == null) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                    // if there is SQL Error
-                } else if (result.getPhone() == null) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
-                } else if (result.getPhone().equals("-1")) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "The inputted phone number already exist in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                    dialogConfirm.dispose();
-                } else if (result.getUsername().equalsIgnoreCase("Error")) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
+                /* Check if password and password confirmation are matched and not null or empty */
+                if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(dialogConfirm, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
+                    User result = null; // store return user from server
 
-                    userInfo = result; // update user info on client side
-                    txtName.setText(userInfo.getFullname()); // update user name on form
-                    /* Dispose the two dialog used for changing info */
-                    dialogConfirm.dispose();
-                    dialogChangeInfo.dispose();
-                }
-            }
-
-            /* clear the password fields */
-            txtPassword.setText("");
-            txtPasswordConfirm.setText("");
-            break;
-
-            case "delete":
-            /* Check if password and password confirmation are matched and not null or empty */
-            if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                int userChoice = JOptionPane.showConfirmDialog(dialogConfirm, "Do you really want to delete your account?", "Confirmation", JOptionPane.YES_NO_OPTION);
-                if (userChoice == JOptionPane.YES_OPTION) {
-                    int result = -1; // store result of operation
-
-                    // call deleteAccount method from server to execute
+                    // call method on server to execute
                     try {
-                        result = iUser.deleteAccount(userInfo, String.valueOf(txtPassword.getPassword()));
+                        result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
                     } catch (RemoteException ex) {
                         Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    // dependent on result, print out messages
-                    if (result == 0) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "Thank you for using our service!", "Delete User Successfully!", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
-                    } else if (result == 1) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
-                    } else if (result == 2) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                    // if password is incorrect
+                    if (result == null) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        // if there is SQL Error
+                    } else if (result.getPhone() == null) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
+                    } else if (result.getPhone().equals("-1")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted phone number " + txtPhone.getText() + " already exists in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        dialogConfirm.dispose();
+                    } else if (result.getUsername().equals("-1")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted username " + txtUsername.getText() + " already exists in database! \nPlease input another username!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        dialogConfirm.dispose();
+                    } else if (result.getUsername().equalsIgnoreCase("Error")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted password is incorrect! \nDelete Account Aborted!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dialogConfirm, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
+
+                        userInfo = result; // update user info on client side
+                        txtName.setText(userInfo.getFullname()); // update user name on form
+                        /* Dispose the two dialog used for changing info */
+                        dialogConfirm.dispose();
+                        dialogChangeInfo.dispose();
                     }
-                } else {
-                    dialogConfirm.dispose(); // closes the dialog
                 }
 
                 break;
-            }
+
+            case "delete":
+                /* Check if password and password confirmation are matched and not null or empty */
+                if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    int userChoice = JOptionPane.showConfirmDialog(dialogConfirm, "Do you really want to delete your account?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                    if (userChoice == JOptionPane.YES_OPTION) {
+                        int result = -1; // store result of operation
+
+                        // call deleteAccount method from server to execute
+                        try {
+                            result = iUser.deleteAccount(userInfo, String.valueOf(txtPassword.getPassword()));
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        // dependent on result, print out messages
+                        if (result == 0) {
+                            JOptionPane.showMessageDialog(dialogConfirm, "Thank you for using our service!", "Delete User Successfully!", JOptionPane.INFORMATION_MESSAGE);
+                            System.exit(0);
+                        } else if (result == 1) {
+                            JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        } else if (result == 2) {
+                            JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(dialogConfirm, "The inputted password is incorrect! \nDelete Account Aborted!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        dialogConfirm.dispose(); // closes the dialog
+                    }
+
+                    break;
+                }
         }
+
+        /* clear the password fields */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
     }//GEN-LAST:event_btnProceedActionPerformed
 
     private void btnChangeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeInfoActionPerformed
