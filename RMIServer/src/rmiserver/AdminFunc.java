@@ -23,18 +23,119 @@ import java.util.logging.Logger;
 
 public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
-    Connection conn;
+    Connection conn; // connection to database
 
-    // constructor
+    /* Constructor */
     public AdminFunc(Connection conn) throws RemoteException {
         super();
 
-        // register the JDBC driver
+        // Register the JDBC Driver
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            this.conn = conn;
+            this.conn = conn; // setup the connection to database
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /* Override methods in IAdminFunc interface */
+    
+    /**
+     * create user and store into database
+     *
+     * @param username
+     * @param password
+     * @param fullname
+     * @param gender
+     * @param email
+     * @param phone
+     * @param address
+     * @param role
+     * @return 0 (operation successful), 1 (SQL Exception occurred), 2 (phone number already exists), 3 (username already exists), 4 (encrypt password error)
+     * @throws RemoteException
+     */
+    @Override
+    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address, int role) throws RemoteException {
+        /* Add user info to database */
+        try {
+
+            /* Check if phone number already exists in database */
+            PreparedStatement stCheckPhone = conn.prepareStatement("SELECT * FROM users WHERE phone = ?");
+            stCheckPhone.setString(1, phone);
+            ResultSet rsCheckPhone = stCheckPhone.executeQuery();
+
+            /* Check if username already exists in database */
+            PreparedStatement stCheckUsername = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+            stCheckUsername.setString(1, username);
+            ResultSet rsCheckUsername = stCheckUsername.executeQuery();
+
+            if (rsCheckPhone.next()) {
+                return 2; // indicate that phone number already bound to another account in database
+            } else if (rsCheckUsername.next()) {
+                return 3; // indicate that username already bound to another account in database
+            }
+
+            String hashPassword = ""; // store MD5 hashed version of password
+
+            /* Code to hash password using MD5 algorithm */
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                byte[] messageDigest = md.digest(password.getBytes());
+
+                BigInteger no = new BigInteger(1, messageDigest);
+
+                // Convert message digest into hex value
+                hashPassword = no.toString(16);
+                while (hashPassword.length() < 32) {
+                    hashPassword = "0" + hashPassword;
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
+                return 4; // indicate encrypt password error
+            }
+
+            /* Execute SQL to add new user to database */
+            PreparedStatement stCreateUser = conn.prepareStatement("Insert into users (username, password, fullname, address, phone, mail, gender, status)"
+                    + " values(?, ?, ?, ?, ?, ?, ?, ?)");
+
+            /* Set values in SQL statement */
+            stCreateUser.setString(1, username);
+            stCreateUser.setString(2, hashPassword);
+            stCreateUser.setString(3, fullname);
+            stCreateUser.setString(4, address);
+            stCreateUser.setString(5, phone);
+            stCreateUser.setString(6, email);
+            stCreateUser.setString(7, gender);
+            stCreateUser.setInt(8, 1);
+
+            stCreateUser.executeUpdate();
+
+            /* Get user ID from database to add data to other tables */
+            PreparedStatement stGetUserID = conn.prepareStatement("SELECT id FROM users WHERE phone = ?");
+            stGetUserID.setString(1, phone);
+
+            ResultSet rsUserID = stGetUserID.executeQuery();
+            rsUserID.next();
+
+            int userID = rsUserID.getInt("id"); // store the user ID of the user (who has just been added to database above)
+
+            /* Adding data to other 2 tables */
+            PreparedStatement stSetRoleID = conn.prepareStatement("INSERT INTO user_role(user_id, role_id) VALUES(? , ?)");
+            stSetRoleID.setInt(1, userID);
+            stSetRoleID.setInt(2, role);
+
+            stSetRoleID.executeUpdate();
+
+            PreparedStatement stSetMoney = conn.prepareStatement("INSERT INTO user_money(user_id, total_money) VALUES(?, ?)");
+            stSetMoney.setInt(1, userID);
+            stSetMoney.setInt(2, 0);
+            stSetMoney.executeUpdate();
+            
+            return 0; // operation successful
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
+            return 1; // indicate SQL Exception
         }
     }
 
@@ -72,8 +173,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
     }
 
     @Override
-    public boolean changePassword(String id, String password
-    ) {
+    public boolean changePassword(String id, String password) {
         String hashPassword = ""; // store password that is MD5 hashed version of user's password (for validation)
 
         /* code to hash password using MD5 algorithm */
@@ -144,7 +244,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
             } else if (type.equals("user_deposit")) {
                 stm = "SELECT * FROM user_deposit WHERE type= 0 ORDER BY created_at DESC";
             } else {
-                stm = "";
+                stm = "SELECT * FROM user_transfer WHERE type= 2 ORDER BY created_at DESC";
             }
             PreparedStatement st = conn.prepareStatement(stm);
             ResultSet rs = st.executeQuery();
@@ -153,7 +253,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
                 if (type.equals("user_withdraw") || type.equals("user_deposit")) {
                     newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"));
                 } else {
-                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), rs.getString("description") == null ? "" : rs.getString("description"));
+                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), "");
                 }
                 rp.add(newrp);
             }
@@ -165,5 +265,4 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
 
         return null;
     }
-    /* Override methods in IAdminFunc interface */
 }

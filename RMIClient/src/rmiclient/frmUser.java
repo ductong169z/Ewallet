@@ -12,7 +12,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -29,10 +28,11 @@ import rmiserver.User;
 
 public class frmUser extends javax.swing.JFrame {
 
-    IUserFunc iUser;
+    /* Class variables */
+    IUserFunc iUser; // object from IUserFunc to call methods in server
     User userInfo; // store logged in user info
-    User newInfo; // store new user info (for change info function)
-    String action; // store action of user on form (whether deposit or withdraw)
+    User newInfo; // store new user info (for changing info)
+    String action; // store action of user
     String recPhone; // store recipient phone number
     Map<String, String> schools = new HashMap<>();
     String id_student;
@@ -40,152 +40,92 @@ public class frmUser extends javax.swing.JFrame {
     String phoneNum;
     int payOption; // pay option 1 is tuition fee, 2 is mobile card
     int fee;
+    /* 3 Transaction Limits */
     int maxDepositLim;
     int maxWithdrawLim;
     int maxTransLim;
-    boolean atMaxWithdraw; // determines if user reached max withdraw limit
-    boolean atMaxDeposit; // determines if user reached max deposit limit
-    boolean atMaxTrans; // determines if user reached max transfer limit
+    boolean atMaxWithdraw; // flag: user reached max withdraw limit
+    boolean atMaxDeposit; // flag: user reached max deposit limit
+    boolean atMaxTrans; // flag: user reached max transfer limit
 
-    /**
-     * Creates new form frmUser
-     */
-    public frmUser() {
-        initComponents();
-        this.setLocationRelativeTo(null); // center the frame
-        try {
-            /* Add the icons to the buttons */
-
-            // Add icon for the Create New User Button
-            BufferedImage deposit = ImageIO.read(new File("deposit.png"));
-            Image resizeDeposit = deposit.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon depositIcon = new ImageIcon(resizeDeposit);
-            btnDeposit.setIcon(depositIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
-            Image resizeWithdraw = withdraw.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon withdrawIcon = new ImageIcon(resizeWithdraw);
-            btnWithdraw.setIcon(withdrawIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage transfer = ImageIO.read(new File("transfer.png"));
-            Image resizeTransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon transferIcon = new ImageIcon(resizeTransfer);
-            btnTransfer.setIcon(transferIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage tuition = ImageIO.read(new File("tuition.png"));
-            Image resizeTuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon tuitionIcon = new ImageIcon(resizeTuition);
-            btnPaytuition.setIcon(tuitionIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage card = ImageIO.read(new File("card.png"));
-            Image resizeCard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon cardIcon = new ImageIcon(resizeCard);
-            btnBuyMobile.setIcon(cardIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage changeInfo = ImageIO.read(new File("changeinfo.png"));
-            Image resizeChangeInfo = changeInfo.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon changeInfoIcon = new ImageIcon(resizeChangeInfo);
-            btnChangeInfo.setIcon(changeInfoIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage history = ImageIO.read(new File("history.png"));
-            Image resizeHistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon historyIcon = new ImageIcon(resizeHistory);
-            btnTransactionHistory.setIcon(historyIcon);
-
-            // Add icon for the Create New User Button
-            BufferedImage delete = ImageIO.read(new File("delete.png"));
-            Image resizeDelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
-            ImageIcon deleteIcon = new ImageIcon(resizeDelete);
-            btnDeleteAccount.setIcon(deleteIcon);
-
-            /* Connects to server */
-            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
-
-            /* Display user's full name and balance */
-            txtName.setText(userInfo.getFullname());
-            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
-
-//            set icon for the frame
-//              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
-//            this.setIconImage(icon);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    /* CONSTRUCTOR FOR FORM USER */
     public frmUser(User userInfo) {
         initComponents();
 
         /* initialize variables */
         this.userInfo = userInfo; // set userInfo
+        this.newInfo = new User(); // initialize new user info
         this.maxDepositLim = userInfo.getDeposit_lim(); // set max deposit limit
         this.maxWithdrawLim = userInfo.getWithdraw_lim(); // set max withdraw limit
         this.maxTransLim = userInfo.getTrans_lim(); // set max transfer limit
-        this.atMaxWithdraw = false; // at the start user did not reach max withdraw limit yet
-        this.atMaxDeposit = false; // at the start user did not reach max deposit limit yet
-        this.atMaxTrans = false; // at the start user did not reach max transfer limit yet
+        this.atMaxWithdraw = false; // max limit not reached yet
+        this.atMaxDeposit = false; // max limit not reached yet
+        this.atMaxTrans = false; // max limit not reached yet
 
-        this.setLocationRelativeTo(null); // center the frame
+        this.setLocationRelativeTo(null); // center the form
+
         try {
             /* Add the icons to the buttons */
+            int height = btnDeposit.getHeight(); // button's height
+            int width = btnDeposit.getWidth(); // button's width
 
-            // Add icon for the Create New User Button
+            /* Add Wibuu Pay Icon */
+            BufferedImage wibuuImage = ImageIO.read(new File("Wibuu.png"));
+            Image rWibuuImg = wibuuImage.getScaledInstance(iconWibuuPay.getWidth(), iconWibuuPay.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon wibuuIcon = new ImageIcon(rWibuuImg);
+            iconWibuuPay.setIcon(wibuuIcon);
+
+            // Add icon for the Deposit Button
             BufferedImage deposit = ImageIO.read(new File("deposit.png"));
-            Image resizeDeposit = deposit.getScaledInstance(btnDeposit.getHeight(), btnDeposit.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeDeposit = deposit.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon depositIcon = new ImageIcon(resizeDeposit);
             btnDeposit.setIcon(depositIcon);
 
-            // Add icon for the Create New User Button
+            // Add icon for the Withdraw Button
             BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
-            Image resizeWithdraw = withdraw.getScaledInstance(btnWithdraw.getHeight(), btnWithdraw.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeWithdraw = withdraw.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon withdrawIcon = new ImageIcon(resizeWithdraw);
             btnWithdraw.setIcon(withdrawIcon);
 
-            // Add icon for the Create New User Button
+            // Add icon for the Transfer Button
             BufferedImage transfer = ImageIO.read(new File("transfer.png"));
-            Image resizeTransfer = transfer.getScaledInstance(btnTransfer.getHeight(), btnTransfer.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeTransfer = transfer.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon transferIcon = new ImageIcon(resizeTransfer);
             btnTransfer.setIcon(transferIcon);
 
-            // Add icon for the Create New User Button
+            // Add icon for the Pay Tuition Button
             BufferedImage tuition = ImageIO.read(new File("tuition.png"));
-            Image resizeTuition = tuition.getScaledInstance(btnPaytuition.getHeight(), btnPaytuition.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeTuition = tuition.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon tuitionIcon = new ImageIcon(resizeTuition);
             btnPaytuition.setIcon(tuitionIcon);
 
-            // Add icon for the Create New User Button
+            // Add icon for the Top Up Mobile Button
             BufferedImage card = ImageIO.read(new File("card.png"));
-            Image resizeCard = card.getScaledInstance(btnBuyMobile.getHeight(), btnBuyMobile.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeCard = card.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon cardIcon = new ImageIcon(resizeCard);
             btnBuyMobile.setIcon(cardIcon);
 
-            // Add icon for the Create New User Button
+            // Add icon for the Change Info Button
             BufferedImage changeInfo = ImageIO.read(new File("changeinfo.png"));
-            Image resizeChangeInfo = changeInfo.getScaledInstance(btnChangeInfo.getHeight(), btnChangeInfo.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeChangeInfo = changeInfo.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon changeInfoIcon = new ImageIcon(resizeChangeInfo);
             btnChangeInfo.setIcon(changeInfoIcon);
 
-            // Add icon for the Create New User Button
+            // Add icon for the Change Password Button
+            BufferedImage changePass = ImageIO.read(new File("password.png"));
+            Image resizechangePass = changePass.getScaledInstance(height, width, Image.SCALE_SMOOTH);
+            ImageIcon changePassIcon = new ImageIcon(resizechangePass);
+            btnChangePass.setIcon(changePassIcon);
+
+            // Add icon for the Transaction History Button
             BufferedImage history = ImageIO.read(new File("history.png"));
-            Image resizeHistory = history.getScaledInstance(btnTransactionHistory.getHeight(), btnTransactionHistory.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeHistory = history.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon historyIcon = new ImageIcon(resizeHistory);
             btnTransactionHistory.setIcon(historyIcon);
 
-            // Add icon for the Create New User Button
+            // Add icon for the Delete Account Button
             BufferedImage delete = ImageIO.read(new File("delete.png"));
-            Image resizeDelete = delete.getScaledInstance(btnDeleteAccount.getHeight(), btnDeleteAccount.getWidth(), Image.SCALE_SMOOTH);
+            Image resizeDelete = delete.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon deleteIcon = new ImageIcon(resizeDelete);
             btnDeleteAccount.setIcon(deleteIcon);
 
@@ -200,23 +140,16 @@ public class frmUser extends javax.swing.JFrame {
             txtPhoneNumber.setText(userInfo.getPhone());
             txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
 
-//            set icon for the frame
-//              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
-//            this.setIconImage(icon);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+            /* Set Icon for the form */
+            ImageIcon icon = new ImageIcon("miniWibuu.png");
+            this.setIconImage(icon.getImage());
+        } catch (NotBoundException | IOException ex) {
             Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
@@ -286,8 +219,17 @@ public class frmUser extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         txtHintConfirm = new javax.swing.JTextField();
         btnProceed = new javax.swing.JButton();
+        dialogChangePass = new javax.swing.JDialog();
+        txtHintPass = new javax.swing.JTextField();
+        lblNewPassword = new javax.swing.JLabel();
+        lblNewPassConfirm = new javax.swing.JLabel();
+        txtNewPassword = new javax.swing.JPasswordField();
+        txtNewPassConfirm = new javax.swing.JPasswordField();
+        btnDialogChangePass = new javax.swing.JButton();
+        lblOldPassword = new javax.swing.JLabel();
+        txtOldPassword = new javax.swing.JPasswordField();
+        genderGroup = new javax.swing.ButtonGroup();
         panelUser = new javax.swing.JPanel();
-        lblMenu = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         lblBalance = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
@@ -298,18 +240,21 @@ public class frmUser extends javax.swing.JFrame {
         btnDeposit = new javax.swing.JButton();
         btnPaytuition = new javax.swing.JButton();
         btnBuyMobile = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblDeposit = new javax.swing.JLabel();
+        lblWithdraw = new javax.swing.JLabel();
+        lblTransfer = new javax.swing.JLabel();
+        lblPayTuition = new javax.swing.JLabel();
+        lblTopUpMobile = new javax.swing.JLabel();
         pnAccountmanagement = new javax.swing.JPanel();
         btnChangeInfo = new javax.swing.JButton();
         btnDeleteAccount = new javax.swing.JButton();
         btnTransactionHistory = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lblChangeInfo = new javax.swing.JLabel();
+        lblDeleteAccount = new javax.swing.JLabel();
+        lblTransactionHistory = new javax.swing.JLabel();
+        btnChangePass = new javax.swing.JButton();
+        lblChangePassword = new javax.swing.JLabel();
+        iconWibuuPay = new javax.swing.JLabel();
 
         lblPhoneNumber.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPhoneNumber.setText("Your Phone Number");
@@ -566,11 +511,9 @@ public class frmUser extends javax.swing.JFrame {
 
         dPay.setResizable(false);
 
-        lblNotification.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblNotification.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblNotification.setText("<notification>");
 
-        btnPay.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnPay.setText("Confirm");
         btnPay.setEnabled(false);
         btnPay.addActionListener(new java.awt.event.ActionListener() {
@@ -579,7 +522,6 @@ public class frmUser extends javax.swing.JFrame {
             }
         });
 
-        btnCheck.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnCheck.setText("Check");
         btnCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -594,13 +536,11 @@ public class frmUser extends javax.swing.JFrame {
         lblSelection.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lblSelection.setText("<Selection>:");
 
-        cbSelection.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         cbSelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
 
         lblInput.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lblInput.setText("<Input>:");
 
-        txtInput.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtInput.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txtInputInputMethodTextChanged(evt);
@@ -609,7 +549,6 @@ public class frmUser extends javax.swing.JFrame {
             }
         });
 
-        lblNotification1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblNotification1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblNotification1.setText("<notification>");
 
@@ -698,9 +637,11 @@ public class frmUser extends javax.swing.JFrame {
 
         txtEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        genderGroup.add(rdoFemale);
         rdoFemale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoFemale.setText("Female");
 
+        genderGroup.add(rdoMale);
         rdoMale.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         rdoMale.setText("Male");
 
@@ -794,7 +735,7 @@ public class frmUser extends javax.swing.JFrame {
         txtPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         lblPasswordConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblPasswordConfirm.setText("Confirmation:");
+        lblPasswordConfirm.setText("Confirm Password:");
 
         lblPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPassword.setText("Enter Password:");
@@ -824,7 +765,7 @@ public class frmUser extends javax.swing.JFrame {
                     .addComponent(txtHintConfirm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dialogConfirmLayout.createSequentialGroup()
                         .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblPasswordConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(dialogConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -851,13 +792,83 @@ public class frmUser extends javax.swing.JFrame {
                 .addGap(40, 40, 40))
         );
 
+        dialogChangePass.setTitle("Change Password");
+
+        txtHintPass.setEditable(false);
+        txtHintPass.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtHintPass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtHintPass.setText("Please re-enter new password to Confirm field");
+
+        lblNewPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblNewPassword.setText("New Password:");
+
+        lblNewPassConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblNewPassConfirm.setText("Confirm Password:");
+
+        txtNewPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtNewPassConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnDialogChangePass.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnDialogChangePass.setText("Change Password");
+        btnDialogChangePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDialogChangePassActionPerformed(evt);
+            }
+        });
+
+        lblOldPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblOldPassword.setText("Old Password:");
+
+        txtOldPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout dialogChangePassLayout = new javax.swing.GroupLayout(dialogChangePass.getContentPane());
+        dialogChangePass.getContentPane().setLayout(dialogChangePassLayout);
+        dialogChangePassLayout.setHorizontalGroup(
+            dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogChangePassLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtHintPass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dialogChangePassLayout.createSequentialGroup()
+                        .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblOldPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNewPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNewPassConfirm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNewPassConfirm)
+                            .addComponent(txtNewPassword)
+                            .addComponent(txtOldPassword)))
+                    .addComponent(btnDialogChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+        dialogChangePassLayout.setVerticalGroup(
+            dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogChangePassLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(txtHintPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblOldPassword)
+                    .addComponent(txtOldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNewPassword)
+                    .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dialogChangePassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNewPassConfirm)
+                    .addComponent(txtNewPassConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addComponent(btnDialogChangePass)
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EWallet");
 
         panelUser.setPreferredSize(new java.awt.Dimension(580, 600));
-
-        lblMenu.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
-        lblMenu.setText("MENU");
 
         lblName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblName.setText("Name:");
@@ -867,7 +878,7 @@ public class frmUser extends javax.swing.JFrame {
 
         txtName.setEditable(false);
         txtName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtName.setText("<Display Name>");
+        txtName.setText("<Display Balance>");
         txtName.setBorder(null);
         txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -918,20 +929,20 @@ public class frmUser extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Deposit");
+        lblDeposit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDeposit.setText("Deposit");
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Withdraw");
+        lblWithdraw.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblWithdraw.setText("Withdraw");
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Transfer");
+        lblTransfer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTransfer.setText("Transfer");
 
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Pay Tuition");
+        lblPayTuition.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblPayTuition.setText("Pay Tuition");
 
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Top Up Mobile Account");
+        lblTopUpMobile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTopUpMobile.setText("Top Up Mobile Account");
 
         javax.swing.GroupLayout pnTransactionLayout = new javax.swing.GroupLayout(pnTransaction);
         pnTransaction.setLayout(pnTransactionLayout);
@@ -949,12 +960,12 @@ public class frmUser extends javax.swing.JFrame {
             .addGroup(pnTransactionLayout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addGroup(pnTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPayTuition, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTopUpMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(lblTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblWithdraw, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addComponent(lblDeposit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         pnTransactionLayout.setVerticalGroup(
@@ -963,24 +974,24 @@ public class frmUser extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
+                .addComponent(lblDeposit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnWithdraw, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(lblWithdraw)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
+                .addComponent(lblTransfer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnPaytuition, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
+                .addComponent(lblPayTuition)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuyMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addContainerGap())
+                .addComponent(lblTopUpMobile)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pnAccountmanagement.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Account Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 16))); // NOI18N
@@ -1006,14 +1017,24 @@ public class frmUser extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Change Info");
+        lblChangeInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblChangeInfo.setText("Change Info");
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Delete Account");
+        lblDeleteAccount.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDeleteAccount.setText("Delete Account");
 
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Transaction History");
+        lblTransactionHistory.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTransactionHistory.setText("Transaction History");
+
+        btnChangePass.setContentAreaFilled(false);
+        btnChangePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangePassActionPerformed(evt);
+            }
+        });
+
+        lblChangePassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblChangePassword.setText("Change Password");
 
         javax.swing.GroupLayout pnAccountmanagementLayout = new javax.swing.GroupLayout(pnAccountmanagement);
         pnAccountmanagement.setLayout(pnAccountmanagementLayout);
@@ -1021,17 +1042,28 @@ public class frmUser extends javax.swing.JFrame {
             pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAccountmanagementLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnChangeInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTransactionHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDeleteAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnChangeInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(110, 110, 110))
             .addGroup(pnAccountmanagementLayout.createSequentialGroup()
                 .addGap(65, 65, 65)
-                .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAccountmanagementLayout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(45, 45, 45))
+                        .addComponent(lblChangePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAccountmanagementLayout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnTransactionHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnDeleteAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(45, 45, 45))
+                        .addGroup(pnAccountmanagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblTransactionHistory, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(lblDeleteAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblChangeInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
         pnAccountmanagementLayout.setVerticalGroup(
@@ -1040,15 +1072,19 @@ public class frmUser extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnChangeInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
+                .addComponent(lblChangeInfo)
+                .addGap(18, 18, 18)
+                .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblChangePassword)
+                .addGap(18, 18, 18)
                 .addComponent(btnTransactionHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8)
+                .addComponent(lblTransactionHistory)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDeleteAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                .addComponent(btnDeleteAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
+                .addComponent(lblDeleteAccount)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
 
@@ -1057,44 +1093,46 @@ public class frmUser extends javax.swing.JFrame {
         panelUserLayout.setHorizontalGroup(
             panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUserLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelUserLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUserLayout.createSequentialGroup()
+                        .addComponent(iconWibuuPay, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
                         .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBalance)
-                            .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBalance, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
-                        .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(txtBalance)))
+                        .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBalance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelUserLayout.createSequentialGroup()
-                        .addGap(283, 283, 283)
-                        .addComponent(lblMenu))
-                    .addGroup(panelUserLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(pnTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pnAccountmanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         panelUserLayout.setVerticalGroup(
             panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUserLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblMenu)
-                .addGap(18, 18, 18)
-                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBalance)
-                    .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelUserLayout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblBalance)
+                            .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUserLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(iconWibuuPay, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addGroup(panelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnAccountmanagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1109,9 +1147,8 @@ public class frmUser extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 794, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -1121,54 +1158,59 @@ public class frmUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNameActionPerformed
 
+    /* Code for Button to open WITHDRAW transaction Dialog */
     private void btnWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawActionPerformed
-        // check if user reached max withdraw limit
+        /* Check if user is at max withdraw limit, or user money is less than 1000 */
         if (atMaxWithdraw) {
-            JOptionPane.showMessageDialog(this, "You have reached maximum withdraw limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
-            // check if user balance is less than 1000
+            JOptionPane.showMessageDialog(dialogDepositWithdraw, "You have reached maximum withdraw limit!", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else if (userInfo.getMoney() < 1000) {
-            JOptionPane.showMessageDialog(this, "You must have at least 1000 VND to withdraw", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(dialogDepositWithdraw, "You must have at least 1000 VND to withdraw!", "Withdraw Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            /* set the values on dialog */
+            /* Set values on Dialog */
             txtName.setText(userInfo.getFullname());
             txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             txtPhoneNumber.setText(userInfo.getPhone());
             txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
 
+            /* Set Dialog properties */
             dialogDepositWithdraw.setTitle("Withdraw Transaction");
             lblAmount.setText("Withdraw Amount");
             btnConfirm.setText("Confirm Withdraw");
 
+            /* Show the Dialog visible to user, and center it */
             dialogDepositWithdraw.pack(); // display dialog and its subcomponents in preferred size
-
             dialogDepositWithdraw.setVisible(true); // show up the dialog
             dialogDepositWithdraw.setLocationRelativeTo(null); // center the dialog
-            this.action = "withdraw"; // set action
+
+            this.action = "withdraw"; // update user action to Withdraw
         }
     }//GEN-LAST:event_btnWithdrawActionPerformed
 
+    /* Code for Button to open DEPOSIT transaction Dialog */
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
-        // check if user reached max deposit limit
+        /* Check if user already at max deposit limit */
         if (atMaxDeposit) {
             JOptionPane.showMessageDialog(this, "You have reached maximum deposit limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            /* set the values on dialog */
+            /* Set values on Dialog */
             txtName.setText(userInfo.getFullname());
             txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
 
             txtPhoneNumber.setText(userInfo.getPhone());
             txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
 
+            /* Set Dialog properties */
             dialogDepositWithdraw.setTitle("Deposit Transaction");
             lblAmount.setText("Deposit Amount");
             btnConfirm.setText("Confirm Deposit");
 
+            /* Show the Dialog visible to user, and center it */
             dialogDepositWithdraw.pack();// display dialog and its subcomponents in preferred size
-
             dialogDepositWithdraw.setVisible(true); // show up the dialog
             dialogDepositWithdraw.setLocationRelativeTo(null); // center the dialog
-            this.action = "deposit"; // set action
+
+            this.action = "deposit";  // update user action to Deposit
         }
     }//GEN-LAST:event_btnDepositActionPerformed
 
@@ -1228,6 +1270,7 @@ public class frmUser extends javax.swing.JFrame {
         dPay.setVisible(true);
     }//GEN-LAST:event_btnBuyMobileActionPerformed
 
+    /* Code for Button to confirm DEPOSIT/WITHDRAW transaction */
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         String txtAmountString; // deposit/withdraw amount in String
         int txtAmountInt; // deposit/withdraw amount in integer
@@ -1238,7 +1281,7 @@ public class frmUser extends javax.swing.JFrame {
         this.maxDepositLim = userInfo.getDeposit_lim();
         this.maxWithdrawLim = userInfo.getWithdraw_lim();
 
-        /* Switch action dependent on deposit or withdraw transaction*/
+        /* Switch action dependent on deposit or withdraw transaction */
         switch (action) {
             case "deposit":
 
@@ -1277,7 +1320,7 @@ public class frmUser extends javax.swing.JFrame {
                         // if user already reached maximum deposit limit
                         if (result == null) {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "You have already reached maximum deposit limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
-                            dialogDepositWithdraw.dispose(); // hides the dialog
+                            dialogDepositWithdraw.dispose(); // dispose the dialog
                             atMaxDeposit = true;
                             // if deposit is successful
                         } else if (result.getMoney() != userInfo.getMoney()) {
@@ -1334,7 +1377,7 @@ public class frmUser extends javax.swing.JFrame {
                     } else {
                         // call method in server to execute
                         try {
-                            result = iUser.withdraw(userInfo, txtAmountInt, "Withdrawal");
+                            result = iUser.withdraw(userInfo, txtAmountInt, "");
                         } catch (RemoteException ex) {
                             Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -1342,11 +1385,12 @@ public class frmUser extends javax.swing.JFrame {
                         // if user already reached maximum withdraw limit
                         if (result == null) {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
-                            dialogDepositWithdraw.dispose(); // hides the dialog
+                            dialogDepositWithdraw.dispose(); // dispose the dialog
                             atMaxWithdraw = true;
                             // if withdrawal is successful
                         } else if (result.getMoney() != userInfo.getMoney()) {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw successfully! \nNew Account Balance: " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
+
                             userInfo = result; // update User info
 
                             /* set new balance */
@@ -1370,9 +1414,9 @@ public class frmUser extends javax.swing.JFrame {
                 }
                 break;
         }
-        txtAmount.setText("");
     }//GEN-LAST:event_btnConfirmActionPerformed
 
+    /* Code for Button to confirm TRANSFER transaction */
     private void btnConfirmTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTransferActionPerformed
         /* initialize variables */
         String txtAmountString = txtTransAmount.getText(); // string from amount field
@@ -1444,11 +1488,11 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmTransferActionPerformed
 
     private void btnConfirmRecPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmRecPhoneActionPerformed
-        /* Check if user not enter anything or just spaces, or not a 10 digit number or enter his/her number */
+        /* Check if recipient phone is entered correctly */
         if (txtRecPhoneNum.getText() == null || txtRecPhoneNum.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a 10-digit phone number", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtRecPhoneNum.getText().length() != 10) {
-            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a 10-digit phone number", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (!txtPhone.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtRecPhoneNum.getText().equals(userInfo.getPhone())) {
             JOptionPane.showMessageDialog(dialogTransPhone, "You cannot transfer money to yourself", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -1476,7 +1520,7 @@ public class frmUser extends javax.swing.JFrame {
                 dialogTransfer.pack(); // display dialog and its subcomponents in preferred size
                 dialogTransfer.setVisible(true); // show up the dialog
                 dialogTransfer.setLocationRelativeTo(null); // center the dialog
-                dialogTransPhone.dispose();
+                dialogTransPhone.dispose(); // dispose the dialog
             }
         }
     }//GEN-LAST:event_btnConfirmRecPhoneActionPerformed
@@ -1486,8 +1530,11 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_txtRecPhoneNumActionPerformed
 
     private void btnTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferActionPerformed
+        /* Check if user is at max transfer limit, or user money is less than 1000 */
         if (atMaxTrans) {
-            JOptionPane.showMessageDialog(this, "You have reached maximum transfer limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You have reached maximum transfer limit!", "Transfer Failed!", JOptionPane.INFORMATION_MESSAGE);
+        } else if (userInfo.getMoney() < 1000) {
+            JOptionPane.showMessageDialog(this, "You must have at least 1000 VND to transfer money!", "Transfer Failed!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             dialogTransPhone.pack();// display dialog and its subcomponents in preferred size
 
@@ -1529,14 +1576,14 @@ public class frmUser extends javax.swing.JFrame {
                         }
                         // if withdrawal failed
                     } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         // if the withdraw amount exceeds current balance
                     } else if (result.getDeposit_lim() == -1) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                         // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
                     } else {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                     }
                     dPay.dispose();
@@ -1568,14 +1615,14 @@ public class frmUser extends javax.swing.JFrame {
 
                         // if withdrawal failed
                     } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         // if the withdraw amount exceeds current balance
                     } else if (result.getDeposit_lim() == -1) {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                         // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
                     } else {
-                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dPay, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                         this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
                     }
                     dPay.dispose();
@@ -1639,7 +1686,7 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_txtInputInputMethodTextChanged
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        /* Check if there are any fields having null values or being empty, or the 2 password fields don't match, or phone number is not 10-digit */
+        /* Check if all fields are entered correctly */
         if (txtUsername.getText() == null || txtUsername.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(dialogChangeInfo, "The username must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtFullname.getText() == null || txtFullname.getText().trim().isEmpty()) {
@@ -1648,9 +1695,9 @@ public class frmUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(dialogChangeInfo, "The email field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtPhone.getText() == null || txtPhone.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(dialogChangeInfo, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtPhone.getText().length() != 10) {
-            JOptionPane.showMessageDialog(dialogChangeInfo, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            /* If there are no fields having null value or being empty and both password fields match */
+        } else if (!txtPhone.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+            JOptionPane.showMessageDialog(dialogChangeInfo, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+            /* In case user input is correct */
         } else {
             /* Temp variables to store values from the fields user inputted */
             newInfo.setUsername(txtUsername.getText().trim());
@@ -1668,94 +1715,108 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void btnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceedActionPerformed
+        /* Switch action dependent on "change info" or "delete account" function*/
         switch (action) {
             case "changeinfo":
-            /* Check if password and password confirmation are matched and not null or empty */
-            if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                User result = null; // store return user from server
-
-                // call method on server to execute
-                try {
-                    result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                // if password is incorrect
-                if (result == null) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                    // if there is SQL Error
-                } else if (result.getPhone() == null) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
-                } else if (result.getPhone().equals("-1")) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "The inputted phone number already exist in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-                    dialogConfirm.dispose();
-                } else if (result.getUsername().equalsIgnoreCase("Error")) {
-                    JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
+                /* Check if password and password confirmation are all entered correctly*/
+                if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(dialogConfirm, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
+                    User result = null; // store return user from server
 
-                    userInfo = result; // update user info on client side
-                    txtName.setText(userInfo.getFullname()); // update user name on form
-                    /* Dispose the two dialog used for changing info */
-                    dialogConfirm.dispose();
-                    dialogChangeInfo.dispose();
-                }
-            }
-
-            /* clear the password fields */
-            txtPassword.setText("");
-            txtPasswordConfirm.setText("");
-            break;
-
-            case "delete":
-            /* Check if password and password confirmation are matched and not null or empty */
-            if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
-                JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                int userChoice = JOptionPane.showConfirmDialog(dialogConfirm, "Do you really want to delete your account?", "Confirmation", JOptionPane.YES_NO_OPTION);
-                if (userChoice == JOptionPane.YES_OPTION) {
-                    int result = -1; // store result of operation
-
-                    // call deleteAccount method from server to execute
+                    // call method on server to execute
                     try {
-                        result = iUser.deleteAccount(userInfo, String.valueOf(txtPassword.getPassword()));
+                        result = iUser.changeInfo(userInfo, newInfo.getUsername(), String.valueOf(txtPassword.getPassword()), newInfo.getFullname(), newInfo.getPhone(), newInfo.getMail(), newInfo.getAddress(), newInfo.getGender());
                     } catch (RemoteException ex) {
                         Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    // dependent on result, print out messages
-                    if (result == 0) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "Thank you for using our service!", "Delete User Successfully!", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
-                    } else if (result == 1) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
-                    } else if (result == 2) {
-                        JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                    /* Dependent on result, print out messages and perform actions appropriately */
+                    // if password is incorrect
+                    if (result == null) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "Password is incorrect! \nPlease enter your password again!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (result.getPhone() == null) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
+                    } else if (result.getPhone().equals("-1")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted phone number \"" + txtPhone.getText() + "\" already exists in database! \nPlease input another number!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        dialogConfirm.dispose();
+                    } else if (result.getUsername().equals("-1")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted username \"" + txtUsername.getText() + "\" already exists in database! \nPlease input another username!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                        dialogConfirm.dispose();
+                    } else if (result.getUsername().equalsIgnoreCase("Error")) {
+                        JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Changing Info Failed!", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(dialogConfirm, "The inputted password is incorrect! \nDelete Account Aborted!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                        /* In case operation successful */
+                        JOptionPane.showMessageDialog(dialogConfirm, "Your info has been updated!", "Changing Info Successfully!", JOptionPane.INFORMATION_MESSAGE);
+
+                        userInfo = result; // update user info on client side
+                        txtName.setText(userInfo.getFullname()); // update user name on form
+                        /* Dispose the two dialog used for changing info */
+                        dialogConfirm.dispose();
+                        dialogChangeInfo.dispose();
                     }
-                } else {
-                    dialogConfirm.dispose(); // closes the dialog
                 }
 
                 break;
-            }
+
+            case "delete":
+                /* Check if password and password confirmation are all entered correctly*/
+                if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (String.valueOf(txtPasswordConfirm.getPassword()) == null || String.valueOf(txtPasswordConfirm.getPassword()).trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+                } else if (!String.valueOf(txtPasswordConfirm.getPassword()).equals(String.valueOf(txtPassword.getPassword()))) {
+                    JOptionPane.showMessageDialog(dialogConfirm, "The password confirmation must match the password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    int choice = JOptionPane.showConfirmDialog(dialogConfirm, "Do you really want to delete your account?", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                    if (choice == JOptionPane.YES_OPTION) {
+                        int result = -1; // store result of operation
+
+                        // call deleteAccount method from server to execute
+                        try {
+                            result = iUser.deleteAccount(userInfo, String.valueOf(txtPassword.getPassword()));
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        /* Dependent on result, print out messages and perform actions */
+                        switch (result) {
+                            /* In case operation successful */
+                            case 0:
+                                JOptionPane.showMessageDialog(dialogConfirm, "Thank you for using our service!", "Delete User Successfully!", JOptionPane.INFORMATION_MESSAGE);
+                                System.exit(0);
+
+                            /* Other cases (unsuccessful or error occured) */
+                            case 1:
+                                JOptionPane.showMessageDialog(dialogConfirm, "SQL Exception Occured on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                                break;
+                            case 2:
+                                JOptionPane.showMessageDialog(dialogConfirm, "Encrypting Password Error on Server Side!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(dialogConfirm, "The inputted password is incorrect! \nDelete Account Aborted!", "Delete User Failed!", JOptionPane.ERROR_MESSAGE);
+                                break;
+                        }
+                    } else {
+                        /* In case user don't want to delete account */
+                        dialogConfirm.dispose(); // closes the dialog
+                    }
+
+                    break;
+                }
         }
+
+        /* clear the password fields */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
     }//GEN-LAST:event_btnProceedActionPerformed
 
     private void btnChangeInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeInfoActionPerformed
-        // TODO add your handling code here:
         /* Set old info to the dialog */
         txtUsername.setText(userInfo.getUsername());
         txtFullname.setText(userInfo.getFullname());
@@ -1768,7 +1829,11 @@ public class frmUser extends javax.swing.JFrame {
             rdoFemale.setSelected(true);
         }
 
-        /* update dialog properties */
+        /* Clear the password fields in dialog */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
+
+        /* Update dialog properties */
         dialogConfirm.setTitle("Confirm Info Change");
         txtHintConfirm.setText("Please enter your password to confirm changing info");
         this.action = "changeinfo"; // update action
@@ -1779,26 +1844,88 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnChangeInfoActionPerformed
 
     private void btnDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAccountActionPerformed
-        // TODO add your handling code here:
+        /* Update dialog properties */
         dialogConfirm.setTitle("Delete Account Confirmation");
         txtHintConfirm.setText("Please enter your password to confirm deleting account");
-        this.action = "delete";
+        this.action = "delete"; // update user action
+
+        /* Clear the password fields in dialog */
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
 
         dialogConfirm.pack(); // display dialog and its subcomponents in preferred size
         dialogConfirm.setVisible(true); // show up the dialog
         dialogConfirm.setLocationRelativeTo(null); // center the dialog
     }//GEN-LAST:event_btnDeleteAccountActionPerformed
+    private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
+        /* Empty the password fields */
+        txtOldPassword.setText("");
+        txtNewPassword.setText("");
+        txtNewPassConfirm.setText("");
+
+        dialogChangePass.pack(); // display dialog and its subcomponents in preferred size
+        dialogChangePass.setVisible(true); // show up the dialog
+        dialogChangePass.setLocationRelativeTo(null); // center the dialog
+    }//GEN-LAST:event_btnChangePassActionPerformed
+
+    private void btnDialogChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDialogChangePassActionPerformed
+        /* Check if old password, new password and confirmation are all entered correctly*/
+        if (String.valueOf(txtOldPassword.getPassword()) == null || String.valueOf(txtOldPassword.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangePass, "Please enter your old password!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (String.valueOf(txtNewPassword.getPassword()) == null || String.valueOf(txtNewPassword.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangePass, "Please enter your new password!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (String.valueOf(txtNewPassConfirm.getPassword()) == null || String.valueOf(txtNewPassConfirm.getPassword()).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(dialogChangePass, "Please confirm your new password!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (!String.valueOf(txtNewPassword.getPassword()).equals(String.valueOf(txtNewPassConfirm.getPassword()))) {
+            JOptionPane.showMessageDialog(dialogChangePass, "The new password confirmation must match the new password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } else if (String.valueOf(txtOldPassword.getPassword()).equals(String.valueOf(txtNewPassword.getPassword()))) {
+            JOptionPane.showMessageDialog(dialogChangePass, "The new password cannot be the same as old password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int result = -1; // store result of operation
+
+            // call changePassword method from server to execute
+            try {
+                result = iUser.changePassword(userInfo, String.valueOf(txtOldPassword.getPassword()), String.valueOf(txtNewPassword.getPassword()));
+            } catch (RemoteException ex) {
+                Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(dialogChangePass, "Remote Exception Occured!", "Change Password Failed", JOptionPane.ERROR_MESSAGE);
+            }
+
+            /* Dependent on result, print out messages and perform actions */
+            switch (result) {
+                /* In case operation successful */
+                case 0:
+                    JOptionPane.showMessageDialog(dialogChangePass, "Your password has been updated!", "Change Password Successfully", JOptionPane.INFORMATION_MESSAGE);
+                    dialogChangePass.dispose();
+                    break;
+
+                /* Other cases (unsuccessful or error) */
+                case 1:
+                    JOptionPane.showMessageDialog(dialogChangePass, "SQL Exception Occured on Server Side!", "Change Password Failed!", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case 2:
+                    JOptionPane.showMessageDialog(dialogChangePass, "Encrypting Password Error on Server Side!", "Change Password Failed!", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case 3:
+                    JOptionPane.showMessageDialog(dialogChangePass, "Your old password is incorrect!", "Change Password Failed!", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
+        }
+
+    }//GEN-LAST:event_btnDialogChangePassActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuyMobile;
     private javax.swing.JButton btnChangeInfo;
+    private javax.swing.JButton btnChangePass;
     private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnConfirm;
     private javax.swing.JButton btnConfirmRecPhone;
     private javax.swing.JButton btnConfirmTransfer;
     private javax.swing.JButton btnDeleteAccount;
     private javax.swing.JButton btnDeposit;
+    private javax.swing.JButton btnDialogChangePass;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPaytuition;
@@ -1809,32 +1936,34 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbSelection;
     private javax.swing.JDialog dPay;
     private javax.swing.JDialog dialogChangeInfo;
+    private javax.swing.JDialog dialogChangePass;
     private javax.swing.JDialog dialogConfirm;
     private javax.swing.JDialog dialogDepositWithdraw;
     private javax.swing.JDialog dialogTransPhone;
     private javax.swing.JDialog dialogTransfer;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.ButtonGroup genderGroup;
+    private javax.swing.JLabel iconWibuuPay;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblAmount;
     private javax.swing.JLabel lblBalance;
+    private javax.swing.JLabel lblChangeInfo;
+    private javax.swing.JLabel lblChangePassword;
     private javax.swing.JLabel lblCurrentBalance;
+    private javax.swing.JLabel lblDeleteAccount;
+    private javax.swing.JLabel lblDeposit;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFullname;
     private javax.swing.JLabel lblGender;
     private javax.swing.JLabel lblInput;
-    private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblNewPassConfirm;
+    private javax.swing.JLabel lblNewPassword;
     private javax.swing.JLabel lblNotification;
     private javax.swing.JLabel lblNotification1;
+    private javax.swing.JLabel lblOldPassword;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPasswordConfirm;
+    private javax.swing.JLabel lblPayTuition;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblPhoneNumber;
     private javax.swing.JLabel lblRecName;
@@ -1845,12 +1974,16 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblSendName;
     private javax.swing.JLabel lblSendPhone;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblTopUpMobile;
     private javax.swing.JLabel lblTransAmount;
+    private javax.swing.JLabel lblTransactionHistory;
+    private javax.swing.JLabel lblTransfer;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JLabel lblVND;
     private javax.swing.JLabel lblVND1;
     private javax.swing.JLabel lblVND2;
     private javax.swing.JLabel lblVND3;
+    private javax.swing.JLabel lblWithdraw;
     private javax.swing.JPanel panelUser;
     private javax.swing.JPanel pnAccountmanagement;
     private javax.swing.JPanel pnTransaction;
@@ -1864,8 +1997,12 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtHint;
     private javax.swing.JTextField txtHintConfirm;
+    private javax.swing.JTextField txtHintPass;
     private javax.swing.JTextField txtInput;
     private javax.swing.JTextField txtName;
+    private javax.swing.JPasswordField txtNewPassConfirm;
+    private javax.swing.JPasswordField txtNewPassword;
+    private javax.swing.JPasswordField txtOldPassword;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JPasswordField txtPasswordConfirm;
     private javax.swing.JTextField txtPhone;

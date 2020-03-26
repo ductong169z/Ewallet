@@ -14,31 +14,31 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import rmiserver.IUserFunc;
+import rmiserver.IAdminFunc;
 
 public class frmRegister extends javax.swing.JFrame {
 
-    IUserFunc iUser;
+    int role;
+    IAdminFunc iAdmin;
 
     /**
      * Creates new form frmRegister
      */
-    public frmRegister() {
+    public frmRegister(int role) {
         initComponents();
-
+        this.role = role;
         try {
             // look up the registry created in RMI Server
-            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
-        } catch (NotBoundException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+            iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        /* Set Icon for the form */
+        ImageIcon icon = new ImageIcon("miniWibuu.png");
+        this.setIconImage(icon.getImage());
 
         this.setLocationRelativeTo(null);
     }
@@ -73,6 +73,7 @@ public class frmRegister extends javax.swing.JFrame {
         txtAddress = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("WibuuPay Registration");
 
         lblUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblUsername.setText("Username:");
@@ -234,7 +235,7 @@ public class frmRegister extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        /* Check if there are any fields having null values or being empty, or the 2 password fields don't match, or phone number is not 10-digit */
+        /* Check if all fields are correctly inputted */
         if (txtUsername.getText() == null || txtUsername.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The username must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
@@ -249,17 +250,15 @@ public class frmRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "The email field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtPhone.getText() == null || txtPhone.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtPhone.getText().length() != 10) {
-            JOptionPane.showMessageDialog(this, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtAddress.getText() == null || txtAddress.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "The address field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            /* If there are no fields having null value or being empty and both password fields match */
+        } else if (!txtPhone.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+            /* In case user input is correct */
         } else {
             /* Temp variables to store values from the fields user inputted */
             String username = txtUsername.getText().trim();
             String password = String.valueOf(txtPasswordConfirm.getPassword());
             String fullname = txtFullname.getText().trim();
-            String email = txtEmail.getText().trim();
+            String mail = txtEmail.getText().trim();
             String phone = txtPhone.getText().trim();
             String gender = rdoMale.isSelected() ? "Male" : "Female";
             String address = txtAddress.getText().trim();
@@ -267,28 +266,39 @@ public class frmRegister extends javax.swing.JFrame {
 
             // call method createUser on server side to execute
             try {
-                result = iUser.createUser(username, password, fullname, gender, email, phone, address);
+                result = iAdmin.createUser(username, password, fullname, gender, mail, phone, address, role);
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
             }
 
-            // if operation is successful on server side
-            if (result == 0) {
-                // clear all input fields
-                txtUsername.setText("");
-                txtPassword.setText("");
-                txtPasswordConfirm.setText("");
-                txtFullname.setText("");
-                txtEmail.setText("");
-                txtPhone.setText("");
-                txtAddress.setText("");
-                JOptionPane.showMessageDialog(this, "Creating new account succesfully!", "Registration successfully", JOptionPane.INFORMATION_MESSAGE);
-                // if operation is unsuccessful on server side
-            } else if (result == 1) {
-                JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception or Hashing Error Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
-                // if phone number already bound to another account in database
-            } else if (result == 2) {
-                JOptionPane.showMessageDialog(this, "This phone number already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+            /* Perform action dependent on result */
+            switch (result) {
+                case 0:
+                    // clear all input fields
+                    txtUsername.setText("");
+                    txtPassword.setText("");
+                    txtPasswordConfirm.setText("");
+                    txtFullname.setText("");
+                    txtEmail.setText("");
+                    txtPhone.setText("");
+                    txtAddress.setText("");
+                    JOptionPane.showMessageDialog(this, "Creating new account succesfully!", "Registration successfully", JOptionPane.INFORMATION_MESSAGE);
+                    // if operation is unsuccessful on server side
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(this, "Creating new account failed!\nSQL Exception or Hashing Error Occured!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    // if phone number already bound to another account in database
+                    break;
+                case 2:
+                    JOptionPane.showMessageDialog(this, "Phone number \"" + phone + "\" already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    // if username already bound to another account in database
+                    break;
+                case 3:
+                    JOptionPane.showMessageDialog(this, "Username \"" + username + "\" already bound to another account!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case 4:
+                    JOptionPane.showMessageDialog(this, "Encrypting Password Error!", "Registration failed", JOptionPane.ERROR_MESSAGE);
+                    break;
             }
         }
     }//GEN-LAST:event_btnOKActionPerformed
