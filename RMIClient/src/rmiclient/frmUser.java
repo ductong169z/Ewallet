@@ -245,6 +245,16 @@ public class frmUser extends javax.swing.JFrame {
         lblRecPhoneNum = new javax.swing.JLabel();
         txtRecPhoneNum = new javax.swing.JTextField();
         btnConfirmRecPhone = new javax.swing.JButton();
+        dPay = new javax.swing.JDialog();
+        lblNotification = new javax.swing.JLabel();
+        btnPay = new javax.swing.JButton();
+        btnCheck = new javax.swing.JButton();
+        lblTitle = new javax.swing.JLabel();
+        lblSelection = new javax.swing.JLabel();
+        cbSelection = new javax.swing.JComboBox<>();
+        lblInput = new javax.swing.JLabel();
+        txtInput = new javax.swing.JTextField();
+        lblNotification1 = new javax.swing.JLabel();
         dialogChangeInfo = new javax.swing.JDialog();
         txtUsername = new javax.swing.JTextField();
         lblUsername = new javax.swing.JLabel();
@@ -545,6 +555,112 @@ public class frmUser extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(btnConfirmRecPhone)
                 .addGap(30, 30, 30))
+        );
+
+        dPay.setResizable(false);
+
+        lblNotification.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblNotification.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblNotification.setText("<notification>");
+
+        btnPay.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btnPay.setText("Confirm");
+        btnPay.setEnabled(false);
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayActionPerformed(evt);
+            }
+        });
+
+        btnCheck.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btnCheck.setText("Check");
+        btnCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckActionPerformed(evt);
+            }
+        });
+
+        lblTitle.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitle.setText("<Title>");
+
+        lblSelection.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        lblSelection.setText("<Selection>:");
+
+        cbSelection.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cbSelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+
+        lblInput.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        lblInput.setText("<Input>:");
+
+        txtInput.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtInput.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txtInputInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+
+        lblNotification1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblNotification1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblNotification1.setText("<notification>");
+
+        javax.swing.GroupLayout dPayLayout = new javax.swing.GroupLayout(dPay.getContentPane());
+        dPay.getContentPane().setLayout(dPayLayout);
+        dPayLayout.setHorizontalGroup(
+            dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dPayLayout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dPayLayout.createSequentialGroup()
+                .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(dPayLayout.createSequentialGroup()
+                        .addContainerGap(92, Short.MAX_VALUE)
+                        .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dPayLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(btnCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPay)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblNotification, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblNotification1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(dPayLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSelection)
+                            .addComponent(lblInput))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtInput)
+                            .addComponent(cbSelection, 0, 259, Short.MAX_VALUE))))
+                .addGap(40, 40, 40))
+        );
+        dPayLayout.setVerticalGroup(
+            dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dPayLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(lblTitle)
+                .addGap(28, 28, 28)
+                .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSelection)
+                    .addComponent(cbSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblInput)
+                    .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addComponent(lblNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(dPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPay)
+                    .addComponent(btnCheck))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         dialogChangeInfo.setTitle("Change Info");
@@ -1488,21 +1604,167 @@ public class frmUser extends javax.swing.JFrame {
         dialogConfirm.setLocationRelativeTo(null); // center the dialog
     }//GEN-LAST:event_btnDeleteAccountActionPerformed
 
+    private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+        // TODO add your handling code here:
+        User result = null;
+        this.maxWithdrawLim = userInfo.getWithdraw_lim();
+
+        if (payOption == 1) {
+
+            if (userInfo.getMoney() < fee) {
+                JOptionPane.showMessageDialog(dPay, "You Dont Have Enough Money");
+                dPay.dispose();
+            } else {
+                try {
+                    result = iUser.withdraw(userInfo, fee, lblNotification.getText() + " " + lblNotification1.getText());
+                    // if user already reached maximum withdraw limit
+                    if (result == null) {
+                        JOptionPane.showMessageDialog(dPay, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        dPay.dispose(); // hides the dialog
+                        atMaxWithdraw = true;
+                        // if withdrawal is successful
+                    } else if (result.getMoney() != userInfo.getMoney()) {
+                        boolean check = iUser.payTuition(id_uni, id_student);
+                        if (check == true) {
+                            JOptionPane.showMessageDialog(dPay, "Paid Successfully");
+                            userInfo = result; // update User info
+
+                            /* set new balance */
+                            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+                        } else {
+                            JOptionPane.showMessageDialog(dPay, "Some Error Occur!!! \nPlease Try Again!!!");
+                        }
+                        // if withdrawal failed
+                    } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        // if the withdraw amount exceeds current balance
+                    } else if (result.getDeposit_lim() == -1) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                        // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
+                    } else {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                    }
+                    dPay.dispose();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        } else if (payOption == 2) {
+            if (userInfo.getMoney() < fee) {
+                JOptionPane.showMessageDialog(dPay, "You Dont Have Enough Money");
+                dPay.dispose();
+            } else {
+                try {
+                    result = iUser.withdraw(userInfo, fee, lblNotification.getText() + " " + lblNotification1.getText());
+                    // if user already reached maximum withdraw limit
+                    if (result == null) {
+                        JOptionPane.showMessageDialog(dPay, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        dPay.dispose(); // hides the dialog
+                        atMaxWithdraw = true;
+                        // if withdrawal is successful
+                    } else if (result.getMoney() != userInfo.getMoney()) {
+                        JOptionPane.showMessageDialog(dPay, "Paid Successfully");
+                        userInfo = result; // update User info
+
+                        /* set new balance */
+                        txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                        txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+
+                        // if withdrawal failed
+                    } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        // if the withdraw amount exceeds current balance
+                    } else if (result.getDeposit_lim() == -1) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                        // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
+                    } else {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                    }
+                    dPay.dispose();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnPayActionPerformed
+
+    private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
+        // TODO add your handling code here:
+        if (atMaxWithdraw) {
+            JOptionPane.showMessageDialog(dPay, "You have reached maximum withdraw limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (payOption == 1) {
+                try {
+                    int schoolId = (int) cbSelection.getSelectedIndex() + 1;
+                    String tuitionInfo = iUser.getTuition(String.valueOf(schoolId), txtInput.getText().toUpperCase());
+                    if (!tuitionInfo.equals("")) {
+                        id_uni = String.valueOf(schoolId);
+                        id_student = txtInput.getText().toUpperCase();
+                        String[] info = tuitionInfo.split(": ");
+                        lblNotification.setText("Name: " + info[0]);
+                        lblNotification1.setText("Tuition fee: " + info[1] + " VND");
+                        fee = Integer.parseInt(info[1]);
+                        if (fee != 0) {
+                            btnPay.setEnabled(true);
+                        } else {
+                            JOptionPane.showMessageDialog(dPay, "This student has paid tuition fee");
+                            dPay.setVisible(false);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(dPay, "Student Not Found");
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (payOption == 2) {
+                phoneNum = txtInput.getText();
+                if (phoneNum.matches("(\\+84)[1-9][0-9]{8}") || phoneNum.matches("[0][1-9][0-9]{8}")) {
+                    String ts = (String) cbSelection.getSelectedItem();
+                    String[] temp = ts.split(" ");
+                    fee = Integer.parseInt(temp[0]);
+                    if (userInfo.getMoney() >= fee) {
+                        lblNotification.setText("Phone number: " + phoneNum);
+                        lblNotification1.setText("Amount: " + fee + " VND");
+                        btnPay.setEnabled(true);
+                    } else {
+                        JOptionPane.showMessageDialog(dPay, "You dont have enough money");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(dPay, "Please Input Right Format of Phone Number!!!!");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnCheckActionPerformed
+
+    private void txtInputInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtInputInputMethodTextChanged
+
+    }//GEN-LAST:event_txtInputInputMethodTextChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuyMobile;
     private javax.swing.JButton btnChangeInfo;
+    private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnConfirm;
     private javax.swing.JButton btnConfirmRecPhone;
     private javax.swing.JButton btnConfirmTransfer;
     private javax.swing.JButton btnDeleteAccount;
     private javax.swing.JButton btnDeposit;
     private javax.swing.JButton btnOK;
+    private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPaytuition;
     private javax.swing.JButton btnProceed;
     private javax.swing.JButton btnTransactionHistory;
     private javax.swing.JButton btnTransfer;
     private javax.swing.JButton btnWithdraw;
+    private javax.swing.JComboBox<String> cbSelection;
+    private javax.swing.JDialog dPay;
     private javax.swing.JDialog dialogChangeInfo;
     private javax.swing.JDialog dialogConfirm;
     private javax.swing.JDialog dialogDepositWithdraw;
@@ -1524,8 +1786,11 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFullname;
     private javax.swing.JLabel lblGender;
+    private javax.swing.JLabel lblInput;
     private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblNotification;
+    private javax.swing.JLabel lblNotification1;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPasswordConfirm;
     private javax.swing.JLabel lblPhone;
@@ -1533,9 +1798,11 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblRecName;
     private javax.swing.JLabel lblRecPhone;
     private javax.swing.JLabel lblRecPhoneNum;
+    private javax.swing.JLabel lblSelection;
     private javax.swing.JLabel lblSendBalance;
     private javax.swing.JLabel lblSendName;
     private javax.swing.JLabel lblSendPhone;
+    private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTransAmount;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JLabel lblVND;
@@ -1555,6 +1822,7 @@ public class frmUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtHint;
     private javax.swing.JTextField txtHintConfirm;
+    private javax.swing.JTextField txtInput;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JPasswordField txtPasswordConfirm;
