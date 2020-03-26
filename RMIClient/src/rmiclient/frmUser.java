@@ -37,7 +37,7 @@ public class frmUser extends javax.swing.JFrame {
     boolean atMaxWithdraw; // determines if user reached max withdraw limit
     boolean atMaxDeposit; // determines if user reached max deposit limit
     boolean atMaxTrans; // determines if user reached max transfer limit
-    User newInfo;
+    User newInfo; // store new user info (for change info function)
 
     /**
      * Creates new form frmUser
