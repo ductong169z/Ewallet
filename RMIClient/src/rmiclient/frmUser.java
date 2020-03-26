@@ -1033,7 +1033,7 @@ public class frmUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDepositActionPerformed
 
     private void btnTransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactionHistoryActionPerformed
-       
+
     }//GEN-LAST:event_btnTransactionHistoryActionPerformed
 
     private void btnPaytuitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaytuitionActionPerformed
@@ -1358,10 +1358,9 @@ public class frmUser extends javax.swing.JFrame {
 
             if (userInfo.getMoney() < fee) {
                 JOptionPane.showMessageDialog(dPay, "You Dont Have Enough Money");
-                dPay.setVisible(false);
+                dPay.dispose();
             } else {
                 try {
-                    boolean check = iUser.payTuition(id_uni, id_student);
                     result = iUser.withdraw(userInfo, fee, lblNotification.getText() + " " + lblNotification1.getText());
                     // if user already reached maximum withdraw limit
                     if (result == null) {
@@ -1369,7 +1368,50 @@ public class frmUser extends javax.swing.JFrame {
                         dPay.dispose(); // hides the dialog
                         atMaxWithdraw = true;
                         // if withdrawal is successful
-                    } else if (result.getMoney() != userInfo.getMoney() && check == true) {
+                    } else if (result.getMoney() != userInfo.getMoney()) {
+                        boolean check = iUser.payTuition(id_uni, id_student);
+                        if (check == true) {
+                            JOptionPane.showMessageDialog(dPay, "Paid Successfully");
+                            userInfo = result; // update User info
+
+                            /* set new balance */
+                            txtBalance.setText(String.valueOf(userInfo.getMoney()) + " VND");
+                            txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
+                        }else{
+                            JOptionPane.showMessageDialog(dPay, "Some Error Occur!!! \nPlease Try Again!!!");
+                        }
+                        // if withdrawal failed
+                    } else if (result.getWithdraw_lim() == userInfo.getWithdraw_lim()) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw failed! \nSQL Exception Occured In Server!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        // if the withdraw amount exceeds current balance
+                    } else if (result.getDeposit_lim() == -1) {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw amount exceeds " + userInfo.getMoney() + " VND (your current Balance)! \nYou can only withdraw at maximum " + userInfo.getMoney() + " VND.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                        // if the total withdraw amount in current day exceeds withdraw limit (with current withdraw amount)
+                    } else {
+                        JOptionPane.showMessageDialog(dialogDepositWithdraw, "Total withdraw amount today exceeds limit of " + userInfo.getWithdraw_lim() + " VND! \nYou can only withdraw at maximum " + result.getWithdraw_lim() + " VND more.", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        this.maxWithdrawLim = result.getWithdraw_lim(); // update the maximum withdraw limit
+                    }
+                    dPay.dispose();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        } else if (payOption == 2) {
+            if (userInfo.getMoney() < fee) {
+                JOptionPane.showMessageDialog(dPay, "You Dont Have Enough Money");
+                dPay.dispose();
+            } else {
+                try {
+                    result = iUser.withdraw(userInfo, fee, lblNotification.getText() + " " + lblNotification1.getText());
+                    // if user already reached maximum withdraw limit
+                    if (result == null) {
+                        JOptionPane.showMessageDialog(dPay, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
+                        dPay.dispose(); // hides the dialog
+                        atMaxWithdraw = true;
+                        // if withdrawal is successful
+                    } else if (result.getMoney() != userInfo.getMoney()) {
                         JOptionPane.showMessageDialog(dPay, "Paid Successfully");
                         userInfo = result; // update User info
 
@@ -1394,52 +1436,53 @@ public class frmUser extends javax.swing.JFrame {
                     Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
-        } else if (payOption == 2) {
-
         }
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
         // TODO add your handling code here:
-        if (payOption == 1) {
-            try {
-                int schoolId = (int) cbSelection.getSelectedIndex() + 1;
-                String tuitionInfo = iUser.getTuition(String.valueOf(schoolId), txtInput.getText().toUpperCase());
-                if (!tuitionInfo.equals("")) {
-                    id_uni = String.valueOf(schoolId);
-                    id_student = txtInput.getText().toUpperCase();
-                    String[] info = tuitionInfo.split(": ");
-                    lblNotification.setText("Name: " + info[0]);
-                    lblNotification1.setText("Tuition fee: " + info[1] + " VND");
-                    fee = Integer.parseInt(info[1]);
-                    if (fee != 0) {
+        if (atMaxWithdraw) {
+            JOptionPane.showMessageDialog(dPay, "You have reached maximum withdraw limit!", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (payOption == 1) {
+                try {
+                    int schoolId = (int) cbSelection.getSelectedIndex() + 1;
+                    String tuitionInfo = iUser.getTuition(String.valueOf(schoolId), txtInput.getText().toUpperCase());
+                    if (!tuitionInfo.equals("")) {
+                        id_uni = String.valueOf(schoolId);
+                        id_student = txtInput.getText().toUpperCase();
+                        String[] info = tuitionInfo.split(": ");
+                        lblNotification.setText("Name: " + info[0]);
+                        lblNotification1.setText("Tuition fee: " + info[1] + " VND");
+                        fee = Integer.parseInt(info[1]);
+                        if (fee != 0) {
+                            btnPay.setEnabled(true);
+                        } else {
+                            JOptionPane.showMessageDialog(dPay, "This student has paid tuition fee");
+                            dPay.setVisible(false);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(dPay, "Student Not Found");
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (payOption == 2) {
+                phoneNum = txtInput.getText();
+                if (phoneNum.matches("(\\+84)[1-9][0-9]{8}") || phoneNum.matches("[0][1-9][0-9]{8}")) {
+                    String ts = (String) cbSelection.getSelectedItem();
+                    String[] temp = ts.split(" ");
+                    fee = Integer.parseInt(temp[0]);
+                    if (userInfo.getMoney() >= fee) {
+                        lblNotification.setText("Phone number: " + phoneNum);
+                        lblNotification1.setText("Amount: " + fee + " VND");
                         btnPay.setEnabled(true);
                     } else {
-                        JOptionPane.showMessageDialog(dPay, "This student has paid tuition fee");
-                        dPay.setVisible(false);
+                        JOptionPane.showMessageDialog(dPay, "You dont have enough money");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(dPay, "Student Not Found");
+                    JOptionPane.showMessageDialog(dPay, "Please Input Right Format of Phone Number!!!!");
                 }
-            } catch (RemoteException ex) {
-                Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if (payOption == 2) {
-            phoneNum = txtInput.getText();
-            if (phoneNum.matches("(\\+84)[1-9][0-9]{8}") || phoneNum.matches("[0][1-9][0-9]{8}")) {
-                String ts = (String) cbSelection.getSelectedItem();
-                String[] temp = ts.split(" ");
-                fee = Integer.parseInt(temp[0]);
-                if (userInfo.getMoney() >= fee) {
-                    lblNotification.setText("Phone number: " + phoneNum);
-                    lblNotification1.setText("Amount: " + fee + " VND");
-                    btnPay.setEnabled(true);
-                } else {
-                    JOptionPane.showMessageDialog(dPay, "You dont have enough money");
-                }
-            } else {
-                JOptionPane.showMessageDialog(dPay, "Please Input Right Format of Phone Number!!!!");
             }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
