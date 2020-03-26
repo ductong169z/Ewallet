@@ -47,6 +47,7 @@ public class frmUser extends javax.swing.JFrame {
     boolean atMaxWithdraw; // flag: user reached max withdraw limit
     boolean atMaxDeposit; // flag: user reached max deposit limit
     boolean atMaxTrans; // flag: user reached max transfer limit
+    String[][] icons;
 
     /* CONSTRUCTOR FOR FORM USER */
     public frmUser(User userInfo) {
@@ -80,7 +81,7 @@ public class frmUser extends javax.swing.JFrame {
             Image resizeDeposit = deposit.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon depositIcon = new ImageIcon(resizeDeposit);
             btnDeposit.setIcon(depositIcon);
-
+            
             // Add icon for the Withdraw Button
             BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
             Image resizeWithdraw = withdraw.getScaledInstance(height, width, Image.SCALE_SMOOTH);

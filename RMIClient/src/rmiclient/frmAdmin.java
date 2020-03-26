@@ -258,7 +258,7 @@ public class frmAdmin extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("EWallet (Admin UI)");
+        setTitle("Wibuu Pay (Admin UI)");
 
         lblMenu.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
         lblMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

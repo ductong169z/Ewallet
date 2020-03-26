@@ -35,6 +35,7 @@ public class frmLogin extends javax.swing.JFrame {
         initComponents();
 
         this.setLocationRelativeTo(null); // center the form
+        this.getRootPane().setDefaultButton(btnOKLog); // set "OK" button to perform when user input "Enter" key
         try {
             // look up the registry created in RMI Server
             iAuth = (IAuthentication) Naming.lookup("rmi://localhost:69/Authentication");
