@@ -1187,6 +1187,7 @@ public class frmUser extends javax.swing.JFrame {
                 cbSelection.addItem(value);
             }
             dPay.pack();
+            dPay.setLocationRelativeTo(null);
             payOption = 1;
             dPay.setVisible(true);
 
@@ -1212,6 +1213,7 @@ public class frmUser extends javax.swing.JFrame {
         cbSelection.addItem("200000 VND");
         cbSelection.addItem("500000 VND");
         dPay.pack();
+        dPay.setLocationRelativeTo(null);
         payOption = 2;
         dPay.setVisible(true);
     }//GEN-LAST:event_btnBuyMobileActionPerformed

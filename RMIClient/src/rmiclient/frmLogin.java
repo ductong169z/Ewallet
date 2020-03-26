@@ -59,7 +59,7 @@ public class frmLogin extends javax.swing.JFrame {
         txtUsernameLog = new javax.swing.JTextField();
         txtPasswordLog = new javax.swing.JPasswordField();
         btnOKLog = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Authentication Form");
@@ -85,14 +85,14 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(102, 102, 255));
-        jButton3.setText("Register Now");
-        jButton3.setBorderPainted(false);
-        jButton3.setContentAreaFilled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnRegister.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btnRegister.setForeground(new java.awt.Color(102, 102, 255));
+        btnRegister.setText("Register Now");
+        btnRegister.setBorderPainted(false);
+        btnRegister.setContentAreaFilled(false);
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnRegisterActionPerformed(evt);
             }
         });
 
@@ -116,7 +116,7 @@ public class frmLogin extends javax.swing.JFrame {
                             .addComponent(txtUsernameLog, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelLoginLayout.createSequentialGroup()
                                 .addGap(8, 8, 8)
-                                .addComponent(jButton3)))))
+                                .addComponent(btnRegister)))))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
         panelLoginLayout.setVerticalGroup(
@@ -133,7 +133,7 @@ public class frmLogin extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(btnOKLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(btnRegister)
                 .addGap(45, 45, 45))
         );
 
@@ -219,9 +219,9 @@ public class frmLogin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnOKLogActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         new frmRegister().setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,8 +268,8 @@ public class frmLogin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOKLog;
+    private javax.swing.JButton btnRegister;
     private javax.swing.ButtonGroup grpGender;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel lblPasswordLog;
     private javax.swing.JLabel lblUsernameLog;
     private javax.swing.JPanel panelLogin;
