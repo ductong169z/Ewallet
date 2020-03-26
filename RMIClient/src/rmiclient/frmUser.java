@@ -313,7 +313,6 @@ public class frmUser extends javax.swing.JFrame {
 
         btnConfirm.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnConfirm.setText("Confirm Deposit");
-        btnConfirm.setRequestFocusEnabled(false);
         btnConfirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmActionPerformed(evt);
@@ -395,7 +394,6 @@ public class frmUser extends javax.swing.JFrame {
 
         btnConfirmTransfer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnConfirmTransfer.setText("Confirm Transfer");
-        btnConfirmTransfer.setRequestFocusEnabled(false);
         btnConfirmTransfer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmTransferActionPerformed(evt);
@@ -517,7 +515,6 @@ public class frmUser extends javax.swing.JFrame {
 
         btnConfirmRecPhone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnConfirmRecPhone.setText("Confirm");
-        btnConfirmRecPhone.setRequestFocusEnabled(false);
         btnConfirmRecPhone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmRecPhoneActionPerformed(evt);
@@ -590,7 +587,6 @@ public class frmUser extends javax.swing.JFrame {
 
         btnOK.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnOK.setText("OK");
-        btnOK.setRequestFocusEnabled(false);
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOKActionPerformed(evt);
@@ -691,7 +687,6 @@ public class frmUser extends javax.swing.JFrame {
 
         btnProceed.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnProceed.setText("Proceed");
-        btnProceed.setRequestFocusEnabled(false);
         btnProceed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProceedActionPerformed(evt);
