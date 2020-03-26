@@ -134,9 +134,9 @@ public class frmUser extends javax.swing.JFrame {
             txtPhoneNumber.setText(userInfo.getPhone());
             txtCurrentBalance.setText(String.valueOf(userInfo.getMoney()));
 
-//            set icon for the form
-//              Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/person.png"));
-//            this.setIconImage(icon);
+            /* Set Icon for the form */
+            ImageIcon icon = new ImageIcon("miniWibuu.png");
+            this.setIconImage(icon.getImage());
         } catch (NotBoundException | IOException ex) {
             Logger.getLogger(frmUser.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -536,10 +536,10 @@ public class frmUser extends javax.swing.JFrame {
         lblInput.setText("<Input>:");
 
         txtInput.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txtInputInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -860,7 +860,7 @@ public class frmUser extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("EWallet");
+        setTitle("Wibuu Pay");
 
         panelUser.setPreferredSize(new java.awt.Dimension(580, 600));
 

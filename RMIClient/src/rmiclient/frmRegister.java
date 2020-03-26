@@ -14,6 +14,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import rmiserver.IAdminFunc;
 
@@ -34,6 +35,10 @@ public class frmRegister extends javax.swing.JFrame {
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        /* Set Icon for the form */
+        ImageIcon icon = new ImageIcon("miniWibuu.png");
+        this.setIconImage(icon.getImage());
 
         this.setLocationRelativeTo(null);
     }

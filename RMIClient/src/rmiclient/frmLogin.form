@@ -35,7 +35,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelLogin" pref="348" max="32767" attributes="0"/>
+              <Component id="panelLogin" pref="423" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -57,42 +57,52 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
-                          <Component id="btnOKLog" min="-2" pref="90" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lblPasswordLog" max="32767" attributes="0"/>
-                              <Component id="lblUsernameLog" min="-2" pref="120" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtPasswordLog" max="32767" attributes="0"/>
-                              <Component id="txtUsernameLog" min="-2" pref="242" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnForgotPass" max="32767" attributes="0"/>
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="lblSignUp" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnRegister" min="-2" pref="112" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
+                                  <Component id="btnOKLog" min="-2" pref="90" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="lblPasswordLog" max="32767" attributes="0"/>
+                                      <Component id="lblUsernameLog" min="-2" pref="120" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="txtPasswordLog" max="32767" attributes="0"/>
+                                      <Component id="txtUsernameLog" min="-2" pref="242" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
+                          <Component id="iconWibuuPay" min="-2" pref="150" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="iconWibuuPay" min="-2" pref="100" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblUsernameLog" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtUsernameLog" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -106,12 +116,12 @@
                   <Component id="btnOKLog" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnForgotPass" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="57" max="32767" attributes="0"/>
+                  <EmptySpace pref="36" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnRegister" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblSignUp" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -213,6 +223,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnForgotPassActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="iconWibuuPay">
         </Component>
       </SubComponents>
     </Container>
