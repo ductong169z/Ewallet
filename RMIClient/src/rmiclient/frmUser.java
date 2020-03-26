@@ -1485,9 +1485,9 @@ public class frmUser extends javax.swing.JFrame {
     private void btnConfirmRecPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmRecPhoneActionPerformed
         /* Check if recipient phone is entered correctly */
         if (txtRecPhoneNum.getText() == null || txtRecPhoneNum.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a 10-digit phone number", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtRecPhoneNum.getText().length() != 10) {
-            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a 10-digit phone number", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (!txtPhone.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+            JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtRecPhoneNum.getText().equals(userInfo.getPhone())) {
             JOptionPane.showMessageDialog(dialogTransPhone, "You cannot transfer money to yourself", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -1690,9 +1690,9 @@ public class frmUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(dialogChangeInfo, "The email field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtPhone.getText() == null || txtPhone.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(dialogChangeInfo, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtPhone.getText().length() != 10) {
-            JOptionPane.showMessageDialog(dialogChangeInfo, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-            /* If there are no fields having null value or being empty and both password fields match */
+        } else if (!txtPhone.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+            JOptionPane.showMessageDialog(dialogChangeInfo, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+            /* In case user input is correct */
         } else {
             /* Temp variables to store values from the fields user inputted */
             newInfo.setUsername(txtUsername.getText().trim());

@@ -244,8 +244,8 @@ public class frmRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "The email field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtPhone.getText() == null || txtPhone.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "The phone field must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (txtPhone.getText().length() != 10) {
-            JOptionPane.showMessageDialog(this, "The phone number must consist of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+        } else if (!txtPhone.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
             /* In case user input is correct */
         } else {
             /* Temp variables to store values from the fields user inputted */
