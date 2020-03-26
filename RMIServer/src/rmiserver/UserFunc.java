@@ -35,7 +35,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             this.conn = conn;
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -47,14 +47,14 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param password
      * @param fullname
      * @param gender
-     * @param mail
+     * @param email
      * @param phone
      * @param address
      * @return 0 if operation successful, 1 if unsuccessful, 2 if phone number is duplicated
      * @throws RemoteException
      */
     @Override
-    public int createUser(String username, String password, String fullname, String phone, String mail, String address, String gender) throws RemoteException {
+    public int createUser(String username, String password, String fullname, String gender, String email, String phone, String address) throws RemoteException {
         boolean error = false; // check if there's any errors occured
 
         // add user info to database
@@ -84,7 +84,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                     hashPassword = "0" + hashPassword;
                 }
             } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
                 error = true;
             }
 
@@ -98,7 +98,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             stCreateUser.setString(3, fullname);
             stCreateUser.setString(4, address);
             stCreateUser.setString(5, phone);
-            stCreateUser.setString(6, mail);
+            stCreateUser.setString(6, email);
             stCreateUser.setString(7, gender);
             stCreateUser.setInt(8, 1);
 
@@ -123,7 +123,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             stSetMoney.setInt(2, 0);
             stSetMoney.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -162,8 +162,10 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("SQL ex");
             return new User(); // indicate SQL error occured
         }
+        System.out.println("haha");
         return null; // user does not exist
     }
 
@@ -224,7 +226,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -300,7 +302,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -374,7 +376,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                 stSenderUpdate.setInt(1, newInfo.getMoney() - transferAmount);
                 stSenderUpdate.setInt(2, newInfo.getId());
                 stSenderUpdate.executeUpdate();
-
+                
                 /* Update recipient money in database */
                 PreparedStatement stRecUpdate = conn.prepareStatement("UPDATE user_money SET total_money = ? WHERE user_id = ?");
                 stRecUpdate.setInt(1, recInfo.getMoney() + transferAmount);
@@ -383,7 +385,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
             error = true; // if any errors occured
         }
 
@@ -397,118 +399,13 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
     }
 
     @Override
-    public User changeInfo(User oldInfo, String username, String password, String fullname, String phone, String mail, String address, String gender) throws RemoteException {
-        String hashPassword = ""; // store MD5 hashed version of password
-
-        try {
-            /* code to hash password using MD5 algorithm */
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-
-                byte[] messageDigest = md.digest(password.getBytes());
-
-                BigInteger no = new BigInteger(1, messageDigest);
-
-                // Convert message digest into hex value
-                hashPassword = no.toString(16);
-                while (hashPassword.length() < 32) {
-                    hashPassword = "0" + hashPassword;
-                }
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-                oldInfo.setUsername("Error");
-                return oldInfo;
-            }
-
-            /* Check if password is correct */
-            PreparedStatement stCheckPass = conn.prepareStatement("SELECT * FROM users WHERE id = ? AND password = ?");
-            stCheckPass.setInt(1, oldInfo.getId());
-            stCheckPass.setString(2, hashPassword);
-            ResultSet rsCheckPass = stCheckPass.executeQuery();
-
-            /* Check if phone exists in database (on another account) */
-            PreparedStatement stCheckPhone = conn.prepareStatement("SELECT * FROM users WHERE phone = ? AND id != ?");
-            stCheckPhone.setString(1, phone);
-            stCheckPhone.setInt(2, oldInfo.getId());
-            ResultSet rsCheckPhone = stCheckPhone.executeQuery();
-
-            if (rsCheckPhone.next()) {
-                oldInfo.setPhone("-1");
-                return oldInfo;
-            } else if (rsCheckPass.next()) {
-                PreparedStatement stUpdateInfo = conn.prepareStatement("UPDATE users SET username = ?, fullname = ?, phone = ?, mail = ?, address = ?, gender = ? WHERE id = ?");
-                stUpdateInfo.setString(1, username);
-                stUpdateInfo.setString(2, fullname);
-                stUpdateInfo.setString(3, phone);
-                stUpdateInfo.setString(4, mail);
-                stUpdateInfo.setString(5, address);
-                stUpdateInfo.setString(6, gender);
-                stUpdateInfo.setInt(7, oldInfo.getId());
-                stUpdateInfo.executeUpdate();
-
-                return new User(String.valueOf(oldInfo.getId()), username, fullname, phone, mail, address, gender, String.valueOf(oldInfo.getRole_id()), String.valueOf(oldInfo.getMoney()), String.valueOf(oldInfo.getDeposit_lim()), String.valueOf(oldInfo.getWithdraw_lim()), String.valueOf(oldInfo.getTrans_lim()));
-            } else {
-                return null;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            return new User(); // indicate SQL error occured
-        }
-
+    public int changeInfo() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int deleteAccount(User userInfo, String password) throws RemoteException {
-        String hashPassword = ""; // store MD5 hashed version of password
-
-        try {
-            /* code to hash password using MD5 algorithm */
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-
-                byte[] messageDigest = md.digest(password.getBytes());
-
-                BigInteger no = new BigInteger(1, messageDigest);
-
-                // Convert message digest into hex value
-                hashPassword = no.toString(16);
-                while (hashPassword.length() < 32) {
-                    hashPassword = "0" + hashPassword;
-                }
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-                return 2;
-            }
-
-            /* Check if password is correct */
-            PreparedStatement stCheckPass = conn.prepareStatement("SELECT * FROM users WHERE id = ? AND password = ?");
-            stCheckPass.setInt(1, userInfo.getId());
-            stCheckPass.setString(2, hashPassword);
-            ResultSet rsCheckPass = stCheckPass.executeQuery();
-
-            // if password is correct
-            if (rsCheckPass.next()) {
-                /* SQL Statements to delete user from 3 tables in database */
-                PreparedStatement stDeleteUser = conn.prepareStatement("DELETE FROM users WHERE id = ?");
-                stDeleteUser.setInt(1, userInfo.getId());
-                PreparedStatement stDeleteUserRole = conn.prepareStatement("DELETE FROM user_role WHERE user_id = ?");
-                stDeleteUserRole.setInt(1, userInfo.getId());
-                PreparedStatement stDeleteUserMoney = conn.prepareStatement("DELETE FROM user_money WHERE user_id = ?");
-                stDeleteUserMoney.setInt(1, userInfo.getId());
-
-                /* Execute 3 statements at once */
-                stDeleteUser.executeUpdate();
-                stDeleteUserRole.executeUpdate();
-                stDeleteUserMoney.executeUpdate();
-            } else {
-                return 3;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserFunc.class.getName()).log(Level.SEVERE, null, ex);
-            return 1;
-        }
-
-        return 0;
+    public int deleteAccount() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
