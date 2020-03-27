@@ -39,7 +39,6 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
     }
 
     /* Override methods in IAdminFunc interface */
-    
     /**
      * create user and store into database
      *
@@ -51,7 +50,9 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
      * @param phone
      * @param address
      * @param role
-     * @return 0 (operation successful), 1 (SQL Exception occurred), 2 (phone number already exists), 3 (username already exists), 4 (encrypt password error)
+     * @return 0 (operation successful), 1 (SQL Exception occurred), 2 (phone
+     * number already exists), 3 (username already exists), 4 (encrypt password
+     * error)
      * @throws RemoteException
      */
     @Override
@@ -131,7 +132,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
             stSetMoney.setInt(1, userID);
             stSetMoney.setInt(2, 0);
             stSetMoney.executeUpdate();
-            
+
             return 0; // operation successful
         } catch (SQLException ex) {
             Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,7 +161,6 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
                     PreparedStatement getLim = conn.prepareStatement("SELECT * FROM setting");
                     ResultSet rsLim = getLim.executeQuery();
                     rsLim.next();
-
                     return new User(rs.getString("id"), rs.getString("username"), rs.getString("fullname"), rs.getString("phone"), rs.getString("mail"), rs.getString("address"), rs.getString("gender"), rsRole.getString("role_id"), rsRole.getString("total_money"), rsLim.getString("deposit_lim"), rsLim.getString("withdraw_lim"), rsLim.getString("trans_lim"));
                 }
             }
@@ -239,21 +239,21 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
             String money;
             String stm;
             if (type.equals("user_withdraw")) {
-                stm = "SELECT * FROM user_withdraw WHERE type= 1 ORDER BY created_at DESC";
+                stm = "SELECT * FROM user_withdraw LEFT JOIN users ON users.id=user_withdraw.user_id WHERE type= 1 ORDER BY created_at DESC";
 
             } else if (type.equals("user_deposit")) {
-                stm = "SELECT * FROM user_deposit WHERE type= 0 ORDER BY created_at DESC";
+                stm = "SELECT * FROM user_deposit LEFT JOIN users ON users.id=user_deposit.user_id WHERE type= 0 ORDER BY created_at DESC";
             } else {
-                stm = "SELECT * FROM user_transfer WHERE type= 2 ORDER BY created_at DESC";
+                stm = "SELECT * FROM user_transfer LEFT JOIN users  WHERE type= 2 ORDER BY created_at DESC";
             }
             PreparedStatement st = conn.prepareStatement(stm);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 ReportList newrp;
                 if (type.equals("user_withdraw") || type.equals("user_deposit")) {
-                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"));
+                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"), rs.getString("fullname"));
                 } else {
-                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), "");
+                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), "", rs.getString("fullname"));
                 }
                 rp.add(newrp);
             }
