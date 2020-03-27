@@ -631,7 +631,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
             
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                ReportList rp = new ReportList(rs.getString("id"),rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"));
+                ReportList rp = new ReportList(rs.getString("id"),rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"),"");
                 reports.add(rp);
             }
             return reports;

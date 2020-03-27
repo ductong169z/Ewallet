@@ -240,8 +240,9 @@ public class frmLogin extends javax.swing.JFrame {
             // call method validateUser on server side to execute
             try {
                 result = iAuth.validateUser(username, password);
-                if (iAuth.checkStatus(result.getId() + "")) {
-                    if (result != null) {
+                if (result != null) {
+                    if (iAuth.checkStatus(result.getId() + "")) {
+
                         if (result.getFullname() == null) {
                             JOptionPane.showMessageDialog(this, "Cannot connect to Database\nSQL Exception Occured!", "Login failed", JOptionPane.ERROR_MESSAGE);
                         } else if (result.getRole_id() == 2) {
@@ -257,13 +258,14 @@ public class frmLogin extends javax.swing.JFrame {
                             frmAdmin.setVisible(true);
                             this.setVisible(false);
                         }
-
                     } else {
-                        JOptionPane.showMessageDialog(this, "Username or Password is incorrect", "Login failed", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Your account has been suspended !", "Login failed", JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Your account has been suspended !", "Login failed", JOptionPane.ERROR_MESSAGE);
+
+                } else{
+                    JOptionPane.showMessageDialog(this, "Username or Password is incorrect", "Login failed", JOptionPane.ERROR_MESSAGE);
                 }
+
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(this, "Remote Exception Occured!", "Login failed", JOptionPane.ERROR_MESSAGE);
             }
@@ -293,7 +295,6 @@ public class frmLogin extends javax.swing.JFrame {
         if (option == 0) {
 
             try {
-                System.out.println();
                 user = iAdmin.getUser(txtPhone.getText());
 
                 if (user.getFullname().equals(txtFullname.getText())) {
