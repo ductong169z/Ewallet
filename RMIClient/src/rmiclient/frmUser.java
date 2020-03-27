@@ -47,6 +47,7 @@ public class frmUser extends javax.swing.JFrame {
     boolean atMaxWithdraw; // flag: user reached max withdraw limit
     boolean atMaxDeposit; // flag: user reached max deposit limit
     boolean atMaxTrans; // flag: user reached max transfer limit
+    String[][] icons;
 
     /* CONSTRUCTOR FOR FORM USER */
     public frmUser(User userInfo) {
@@ -80,7 +81,7 @@ public class frmUser extends javax.swing.JFrame {
             Image resizeDeposit = deposit.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon depositIcon = new ImageIcon(resizeDeposit);
             btnDeposit.setIcon(depositIcon);
-
+            
             // Add icon for the Withdraw Button
             BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
             Image resizeWithdraw = withdraw.getScaledInstance(height, width, Image.SCALE_SMOOTH);
@@ -1491,7 +1492,7 @@ public class frmUser extends javax.swing.JFrame {
         /* Check if recipient phone is entered correctly */
         if (txtRecPhoneNum.getText() == null || txtRecPhoneNum.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
-        } else if (!txtPhone.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+        } else if (!txtRecPhoneNum.getText().matches("(\\+84)[1-9][0-9]{8}") && !txtRecPhoneNum.getText().matches("(0)[1-9][0-9]{8}")) {
             JOptionPane.showMessageDialog(dialogTransPhone, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
         } else if (txtRecPhoneNum.getText().equals(userInfo.getPhone())) {
             JOptionPane.showMessageDialog(dialogTransPhone, "You cannot transfer money to yourself", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
