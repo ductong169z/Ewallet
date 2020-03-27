@@ -244,7 +244,7 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
             } else if (type.equals("user_deposit")) {
                 stm = "SELECT * FROM user_deposit LEFT JOIN users ON users.id=user_deposit.user_id WHERE type= 0 ORDER BY created_at DESC";
             } else {
-                stm = "SELECT * FROM user_transfer LEFT JOIN users  WHERE type= 2 ORDER BY created_at DESC";
+                stm = "SELECT * FROM user_transfer ORDER BY created_at DESC";
             }
             PreparedStatement st = conn.prepareStatement(stm);
             ResultSet rs = st.executeQuery();
@@ -253,13 +253,14 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
                 if (type.equals("user_withdraw") || type.equals("user_deposit")) {
                     newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"), rs.getString("fullname"));
                 } else {
-                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), "", rs.getString("fullname"));
+                    newrp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id"), rs.getString("receive_id"), "", "");
                 }
                 rp.add(newrp);
             }
-
+            System.out.println("Hello");
             return rp;
         } catch (SQLException ex) {
+            
             Logger.getLogger(AdminFunc.class.getName()).log(Level.SEVERE, null, ex);
         }
 

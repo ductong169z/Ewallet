@@ -98,6 +98,7 @@ public class frmReport extends javax.swing.JFrame {
                     model.addColumn("Receive_ID");
                     model.addColumn("Amount");
                     model.addColumn("Time");
+                   
                     for (ReportList rp : report) {
                         Object objList[] = {rp.getId(), rp.getUser_id(), rp.getUser_id2(), rp.getMoney(), rp.getCreated_at()};
                         model.addRow(objList);
