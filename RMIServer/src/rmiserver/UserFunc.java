@@ -45,8 +45,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * Get a User's complete info using his/her phone number
      *
      * @param phone
-     * @return user with data (user found), user without data (SQL Exception),
-     * null (user not found)
+     * @return user with data (user found), user without data (SQL Exception), null (user not found)
      * @throws RemoteException
      */
     @Override
@@ -86,9 +85,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      *
      * @param oldInfo
      * @param depositAmount
-     * @return new user info (Successful), old info (SQL Exception), null
-     * (Maximum deposit limit reached), old info with new limit (If current
-     * deposit will reach max limit)
+     * @return new user info (Successful), old info (SQL Exception), null (Maximum deposit limit reached), old info with new limit (If current deposit will
+     * reach max limit)
      * @throws RemoteException
      */
     @Override
@@ -163,9 +161,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param oldInfo
      * @param withdrawAmount
      * @param description
-     * @return new user info (Successful), old info (SQL Exception), null
-     * (Maximum withdraw limit reached), old info with new limit (if current
-     * withdraw will reach max limit or exceed user balance)
+     * @return new user info (Successful), old info (SQL Exception), null (Maximum withdraw limit reached), old info with new limit (if current withdraw will
+     * reach max limit or exceed user balance)
      * @throws RemoteException
      */
     @Override
@@ -245,9 +242,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param oldInfo
      * @param recPhone
      * @param transferAmount
-     * @return new user info (Successful), old info (SQL Exception), null
-     * (Maximum transfer limit reached), old info with new limit (If current
-     * transfer will reach max limit or exceed user balance)
+     * @return new user info (Successful), old info (SQL Exception), null (Maximum transfer limit reached), old info with new limit (If current transfer will
+     * reach max limit or exceed user balance)
      * @throws RemoteException
      */
     @Override
@@ -339,9 +335,8 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param mail
      * @param address
      * @param gender
-     * @return new user (Successful), user with no data (SQL Exception), null
-     * (Password incorrect), old user with "-1" user name or "-1" phone (in case
-     * where username/phone already exists)
+     * @return new user (Successful), user with no data (SQL Exception), null (Password incorrect), old user with "-1" user name or "-1" phone (in case where
+     * username/phone already exists)
      * @throws RemoteException
      */
     @Override
@@ -425,8 +420,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      * @param userInfo
      * @param oldPassword
      * @param newPassword
-     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt password error), 3
-     * (Old password is incorrect)
+     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt password error), 3 (Old password is incorrect)
      * @throws RemoteException
      */
     @Override
@@ -503,8 +497,7 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
      *
      * @param userInfo
      * @param password
-     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt Password Error), 3
-     * (Password is incorrect)
+     * @return 0 (Successful), 1 (SQL Exception), 2 (Encrypt Password Error), 3 (Password is incorrect)
      * @throws RemoteException
      */
     @Override
@@ -628,10 +621,20 @@ public class UserFunc extends UnicastRemoteObject implements IUserFunc {
                     + ") as e ORDER BY created_at DESC");
             st.setString(1, id_user);
             st.setString(2, id_user);
-            
+
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                ReportList rp = new ReportList(rs.getString("id"),rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"),"");
+            while (rs.next()) {
+                ReportList rp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("user_id"), "", rs.getString("description") == null ? "" : rs.getString("description"), "");
+                reports.add(rp);
+            }
+
+            st = conn.prepareStatement("select * from user_transfer where send_id = ? union all select * from user_transfer where receive_id= ?");
+            st.setString(1, id_user);
+            st.setString(2, id_user);
+
+            rs = st.executeQuery();
+            while (rs.next()) {
+                ReportList rp = new ReportList(rs.getString("id"), rs.getString("money"), rs.getString("type"), rs.getString("created_at"), rs.getString("send_id").equals(id_user) ? rs.getString("send_id") : rs.getString("receive_id"), "", rs.getString("send_id").equals(id_user) ? "Send" : "Receive", "");
                 reports.add(rp);
             }
             return reports;
