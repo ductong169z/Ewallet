@@ -263,7 +263,7 @@ public class frmLogin extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "Your account has been suspended !", "Login failed", JOptionPane.ERROR_MESSAGE);
                     }
 
-                } else{
+                } else {
                     JOptionPane.showMessageDialog(this, "Username or Password is incorrect", "Login failed", JOptionPane.ERROR_MESSAGE);
                 }
 
@@ -296,34 +296,47 @@ public class frmLogin extends javax.swing.JFrame {
         if (option == 0) {
 
             try {
-                user = iAdmin.getUser(txtPhone.getText());
+                if (txtPhone.getText().matches("[0][1-9][0-9]{8}")) {
+                    user = iAdmin.getUser(txtPhone.getText());
+                    if (user == null) {
+                        JOptionPane.showMessageDialog(this, "User with phone " + txtPhone.getText() + " doesn't exist");
 
-                if (user.getFullname().equals(txtFullname.getText())) {
-                    boolean loop = true;
-                    do {
-                        JPasswordField txtPassword = new JPasswordField();
-                        JPasswordField txtCPassword = new JPasswordField();
-                        JPanel pnlPassword = new JPanel();
-                        pnlPassword.setLayout(new BoxLayout(pnlPassword, BoxLayout.Y_AXIS));
-                        JLabel lblPassword = new JLabel("Enter your new password:");
-                        JLabel lblCpassword = new JLabel("Enter your new password again :");
-                        pnlPassword.add(lblPassword);
-                        pnlPassword.add(txtPassword);
-                        pnlPassword.add(lblCpassword);
-                        pnlPassword.add(txtCPassword);
-                        int option2 = JOptionPane.showOptionDialog(this, pnlPassword, "Enter new password", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-                                null, options, options[1]);
-                        if (option2 == 0) {
-                            if (String.valueOf(txtPassword.getPassword()).equals(String.valueOf(txtCPassword.getPassword()))) {
-                                iAdmin.changePassword(user.getId() + "", String.valueOf(txtCPassword.getPassword()));
-                                JOptionPane.showMessageDialog(this, "Your password has been reset successfully");
-                                loop = false;
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Password do not match");
-                            }
+                    } else {
+                        if (user.getFullname().equals(txtFullname.getText())) {
+                            boolean loop = true;
+                            do {
+                                JPasswordField txtPassword = new JPasswordField();
+                                JPasswordField txtCPassword = new JPasswordField();
+                                JPanel pnlPassword = new JPanel();
+                                pnlPassword.setLayout(new BoxLayout(pnlPassword, BoxLayout.Y_AXIS));
+                                JLabel lblPassword = new JLabel("Enter your new password:");
+                                JLabel lblCpassword = new JLabel("Enter your new password again :");
+                                pnlPassword.add(lblPassword);
+                                pnlPassword.add(txtPassword);
+                                pnlPassword.add(lblCpassword);
+                                pnlPassword.add(txtCPassword);
+                                int option2 = JOptionPane.showOptionDialog(this, pnlPassword, "Enter new password", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                        null, options, options[1]);
+                                if (option2 == 0) {
+                                    if (String.valueOf(txtPassword.getPassword()).equals(String.valueOf(txtCPassword.getPassword()))) {
+                                        iAdmin.changePassword(user.getId() + "", String.valueOf(txtCPassword.getPassword()));
+                                        JOptionPane.showMessageDialog(this, "Your password has been reset successfully");
+                                        loop = false;
+                                    } else {
+                                        JOptionPane.showMessageDialog(this, "Password do not match");
+                                    }
+                                }
+                            } while (loop);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Username and Phone don't match");
                         }
-                    } while (loop);
+                    }
+                } else {
+
+                    JOptionPane.showMessageDialog(this, "Please enter a valid phone number of 10 digits", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+
                 }
+
             } catch (RemoteException ex) {
                 Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception e) {
