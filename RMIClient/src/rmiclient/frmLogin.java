@@ -319,7 +319,7 @@ public class frmLogin extends javax.swing.JFrame {
                                         null, options, options[1]);
                                 if (option2 == 0) {
                                     if (String.valueOf(txtPassword.getPassword()).equals(String.valueOf(txtCPassword.getPassword()))) {
-                                        if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                                        if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).isEmpty()) {
                                             JOptionPane.showMessageDialog(this, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
 
                                         } else {
