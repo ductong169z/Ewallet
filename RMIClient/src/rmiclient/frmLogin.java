@@ -320,7 +320,6 @@ public class frmLogin extends javax.swing.JFrame {
                                 loop = false;
                             } else {
                                 JOptionPane.showMessageDialog(this, "Password do not match");
-
                             }
                         }
                     } while (loop);
