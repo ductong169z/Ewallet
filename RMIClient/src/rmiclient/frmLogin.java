@@ -319,12 +319,20 @@ public class frmLogin extends javax.swing.JFrame {
                                         null, options, options[1]);
                                 if (option2 == 0) {
                                     if (String.valueOf(txtPassword.getPassword()).equals(String.valueOf(txtCPassword.getPassword()))) {
-                                        iAdmin.changePassword(user.getId() + "", String.valueOf(txtCPassword.getPassword()));
-                                        JOptionPane.showMessageDialog(this, "Your password has been reset successfully");
-                                        loop = false;
+                                        if (String.valueOf(txtPassword.getPassword()) == null || String.valueOf(txtPassword.getPassword()).trim().isEmpty()) {
+                                            JOptionPane.showMessageDialog(this, "The password must not be null or empty!", "Input Notification", JOptionPane.INFORMATION_MESSAGE);
+
+                                        } else {
+                                            iAdmin.changePassword(user.getId() + "", String.valueOf(txtCPassword.getPassword()));
+                                            JOptionPane.showMessageDialog(this, "Your password has been reset successfully");
+                                            loop = false;
+                                        }
                                     } else {
                                         JOptionPane.showMessageDialog(this, "Password do not match");
                                     }
+                                } else {
+                                    loop = false;
+
                                 }
                             } while (loop);
                         } else {
@@ -340,6 +348,7 @@ public class frmLogin extends javax.swing.JFrame {
             } catch (RemoteException ex) {
                 Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception e) {
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, e);
 
             }
         }
