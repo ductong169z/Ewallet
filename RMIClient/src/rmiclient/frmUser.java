@@ -543,10 +543,10 @@ public class frmUser extends javax.swing.JFrame {
         lblInput.setText("<Input>:");
 
         txtInput.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txtInputInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -867,7 +867,7 @@ public class frmUser extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("EWallet");
+        setTitle("WiibuPay EWallet");
 
         panelUser.setPreferredSize(new java.awt.Dimension(580, 600));
 
