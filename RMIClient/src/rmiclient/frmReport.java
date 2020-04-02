@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -106,12 +107,11 @@ public class frmReport extends javax.swing.JFrame {
                     model.addColumn("Receive_ID");
                     model.addColumn("Amount");
                     model.addColumn("Time");
-
+                    
                     for (ReportList rp : report) {
                         Object objList[] = {rp.getId(), rp.getUser_id(), rp.getUser_id2(), rp.getMoney(), rp.getCreated_at()};
                         model.addRow(objList);
                     }
-                    tbReport.setModel(model);
                     break;
                 case 4:
                     this.setTitle("Transaction History");
@@ -129,7 +129,6 @@ public class frmReport extends javax.swing.JFrame {
                         Object objList[] = {rp.getId(), rp.getUser_id(), rp.getCreated_at(), rp.getMoney(), rp.getType().equals("1") ? "Withdrawal" : (rp.getType().equals("0") ? "Deposit" : "Transfer"), rp.getDescription()};
                         model.addRow(objList);
                     }
-                    tbReport.setModel(model);
                     break;
                 default:
                     break;
