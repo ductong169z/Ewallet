@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Ewallet/RMIServer/src/rmiserver/AdminFunc.java</file>
-            <file>file:/E:/Ewallet/RMIServer/src/rmiserver/IAdminFunc.java</file>
+            <file>file:/C:/Users/HAPPY/Documents/NetBeansProjects/Ewallet/RMIServer/src/rmiserver/IAdminFunc.java</file>
+            <file>file:/C:/Users/HAPPY/Documents/NetBeansProjects/Ewallet/RMIServer/src/rmiserver/RMIServer.java</file>
+            <file>file:/C:/Users/HAPPY/Documents/NetBeansProjects/Ewallet/RMIServer/src/rmiserver/AdminFunc.java</file>
+            <file>file:/C:/Users/HAPPY/Documents/NetBeansProjects/Ewallet/RMIServer/src/rmiserver/IUserFunc.java</file>
+            <file>file:/C:/Users/HAPPY/Documents/NetBeansProjects/Ewallet/RMIServer/src/rmiserver/Authentication.java</file>
+            <file>file:/C:/Users/HAPPY/Documents/NetBeansProjects/Ewallet/RMIServer/src/rmiserver/User.java</file>
+            <file>file:/C:/Users/HAPPY/Documents/NetBeansProjects/Ewallet/RMIServer/src/rmiserver/UserFunc.java</file>
         </group>
     </open-files>
 </project-private>

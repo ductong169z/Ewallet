@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -57,11 +58,17 @@ public class frmReport extends javax.swing.JFrame {
     public frmReport(int option, User userInfo) throws SQLException {
         try {
             initComponents();
-            this.userInfo = userInfo; 
+            this.userInfo = userInfo;
             iAdmin = (IAdminFunc) Naming.lookup("rmi://localhost:71/AdminFunctions");
-            iUser =(IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
+            iUser = (IUserFunc) Naming.lookup("rmi://localhost:70/UserFunctions");
             ArrayList<ReportList> report;
             model = (DefaultTableModel) tbReport.getModel();
+            tbReport = new JTable(model) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
             this.option = option;
             this.setLocationRelativeTo(null);
 
@@ -98,7 +105,7 @@ public class frmReport extends javax.swing.JFrame {
                     model.addColumn("Receive_ID");
                     model.addColumn("Amount");
                     model.addColumn("Time");
-                   
+
                     for (ReportList rp : report) {
                         Object objList[] = {rp.getId(), rp.getUser_id(), rp.getUser_id2(), rp.getMoney(), rp.getCreated_at()};
                         model.addRow(objList);
@@ -116,8 +123,8 @@ public class frmReport extends javax.swing.JFrame {
                     model.addColumn("Amount");
                     model.addColumn("Type");
                     model.addColumn("Description");
-                    for (ReportList rp : report){
-                        Object objList[] = {rp.getId(), rp.getUser_id(), rp.getCreated_at(), rp.getMoney(), rp.getType().equals("1")?"Withdrawal":"Deposit", rp.getDescription()};
+                    for (ReportList rp : report) {
+                        Object objList[] = {rp.getId(), rp.getUser_id(), rp.getCreated_at(), rp.getMoney(), rp.getType().equals("1") ? "Withdrawal" : (rp.getType().equals("0") ? "Deposit" : "Transfer"), rp.getDescription()};
                         model.addRow(objList);
                     }
                     tbReport.setModel(model);
@@ -246,11 +253,10 @@ public class frmReport extends javax.swing.JFrame {
                 for (int i = 0; i < model.getColumnCount(); i++) {
                     XSSFCell excelCell = excelRow.createCell(i);
                     String cell = model.getColumnName(i);
-                    System.out.println(cell);
                     excelCell.setCellValue(cell);
                 }
 
-                for (int i = 1; i < model.getRowCount(); i++) {
+                for (int i = 1; i < model.getRowCount() + 1; i++) {
                     excelRow = excelSheet.createRow(i);
                     for (int j = 0; j < model.getColumnCount(); j++) {
                         XSSFCell excelCell = excelRow.createCell(j);
