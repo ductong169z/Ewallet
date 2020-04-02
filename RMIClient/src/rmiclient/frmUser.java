@@ -81,7 +81,7 @@ public class frmUser extends javax.swing.JFrame {
             Image resizeDeposit = deposit.getScaledInstance(height, width, Image.SCALE_SMOOTH);
             ImageIcon depositIcon = new ImageIcon(resizeDeposit);
             btnDeposit.setIcon(depositIcon);
-            
+
             // Add icon for the Withdraw Button
             BufferedImage withdraw = ImageIO.read(new File("withdraw.png"));
             Image resizeWithdraw = withdraw.getScaledInstance(height, width, Image.SCALE_SMOOTH);
@@ -543,10 +543,10 @@ public class frmUser extends javax.swing.JFrame {
         lblInput.setText("<Input>:");
 
         txtInput.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 txtInputInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -867,7 +867,7 @@ public class frmUser extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("EWallet");
+        setTitle("WiibuPay EWallet");
 
         panelUser.setPreferredSize(new java.awt.Dimension(580, 600));
 
@@ -1323,6 +1323,7 @@ public class frmUser extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "You have already reached maximum deposit limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                             dialogDepositWithdraw.dispose(); // dispose the dialog
                             atMaxDeposit = true;
+                            txtAmount.setText("");
                             // if deposit is successful
                         } else if (result.getMoney() != userInfo.getMoney()) {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "Deposit successfully! \nNew Account Balance: " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);
@@ -1388,6 +1389,7 @@ public class frmUser extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "You have already reached maximum withdraw limit!", "Transaction Failed!", JOptionPane.INFORMATION_MESSAGE);
                             dialogDepositWithdraw.dispose(); // dispose the dialog
                             atMaxWithdraw = true;
+                            txtAmount.setText("");
                             // if withdrawal is successful
                         } else if (result.getMoney() != userInfo.getMoney()) {
                             JOptionPane.showMessageDialog(dialogDepositWithdraw, "Withdraw successfully! \nNew Account Balance: " + result.getMoney() + " VND", "Transaction Completed!", JOptionPane.INFORMATION_MESSAGE);

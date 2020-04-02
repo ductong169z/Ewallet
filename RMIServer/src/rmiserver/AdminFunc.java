@@ -257,7 +257,6 @@ public class AdminFunc extends UnicastRemoteObject implements IAdminFunc {
                 }
                 rp.add(newrp);
             }
-            System.out.println("Hello");
             return rp;
         } catch (SQLException ex) {
             
