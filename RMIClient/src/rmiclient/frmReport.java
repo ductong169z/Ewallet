@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -99,24 +100,25 @@ public class frmReport extends javax.swing.JFrame {
                     this.setTitle("Transfer Report");
                     lblTitle.setText("Transfer Report");
                     report = iAdmin.getReportAll("user_transfer");
-                    model = new DefaultTableModel();
+                    model.setColumnCount(0);
+                    model.setRowCount(0);
                     model.addColumn("ID");
                     model.addColumn("Send_ID");
                     model.addColumn("Receive_ID");
                     model.addColumn("Amount");
                     model.addColumn("Time");
-
+                    
                     for (ReportList rp : report) {
                         Object objList[] = {rp.getId(), rp.getUser_id(), rp.getUser_id2(), rp.getMoney(), rp.getCreated_at()};
                         model.addRow(objList);
                     }
-                    tbReport.setModel(model);
                     break;
                 case 4:
                     this.setTitle("Transaction History");
                     lblTitle.setText("Transaction History");
                     report = iUser.viewTransactionHistory(String.valueOf(userInfo.getId()));
-                    model = new DefaultTableModel();
+                    model.setColumnCount(0);
+                    model.setRowCount(0);
                     model.addColumn("ID");
                     model.addColumn("User_Id");
                     model.addColumn("Date");
@@ -127,7 +129,6 @@ public class frmReport extends javax.swing.JFrame {
                         Object objList[] = {rp.getId(), rp.getUser_id(), rp.getCreated_at(), rp.getMoney(), rp.getType().equals("1") ? "Withdrawal" : (rp.getType().equals("0") ? "Deposit" : "Transfer"), rp.getDescription()};
                         model.addRow(objList);
                     }
-                    tbReport.setModel(model);
                     break;
                 default:
                     break;
