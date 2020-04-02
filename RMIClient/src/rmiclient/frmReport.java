@@ -99,7 +99,8 @@ public class frmReport extends javax.swing.JFrame {
                     this.setTitle("Transfer Report");
                     lblTitle.setText("Transfer Report");
                     report = iAdmin.getReportAll("user_transfer");
-                    model = new DefaultTableModel();
+                    model.setColumnCount(0);
+                    model.setRowCount(0);
                     model.addColumn("ID");
                     model.addColumn("Send_ID");
                     model.addColumn("Receive_ID");
@@ -116,7 +117,8 @@ public class frmReport extends javax.swing.JFrame {
                     this.setTitle("Transaction History");
                     lblTitle.setText("Transaction History");
                     report = iUser.viewTransactionHistory(String.valueOf(userInfo.getId()));
-                    model = new DefaultTableModel();
+                    model.setColumnCount(0);
+                    model.setRowCount(0);
                     model.addColumn("ID");
                     model.addColumn("User_Id");
                     model.addColumn("Date");
